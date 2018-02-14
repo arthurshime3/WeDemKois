@@ -1,4 +1,4 @@
-package com.wedemkois.protecc;
+package com.wedemkois.protecc.model;
 
 /**
  * Created by arthurshim on 2/13/18.
