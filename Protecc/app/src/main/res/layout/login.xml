@@ -24,12 +24,12 @@
         android:id="@+id/usernameText"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginBottom="171dp"
+        android:layout_marginBottom="283dp"
         android:layout_marginTop="128dp"
         android:ems="10"
         android:hint="Username"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/loginErrorText"
+        app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,4 +57,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/usernameText" />
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:layout_marginStart="144dp"
+        android:text="Back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usernameText"
+        app:layout_constraintVertical_bias="1.0" />
 </android.support.constraint.ConstraintLayout>

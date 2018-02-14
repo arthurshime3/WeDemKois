@@ -23,6 +23,11 @@ public class MainActivity extends AppCompatActivity {
         User defaultUser = new User("user", "pass");
         users.put(defaultUser.getUsername(), defaultUser);
 
+        welcomeScreen();
+    }
+
+    void welcomeScreen()
+    {
         final Button loginButton = findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -38,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
                 registerScreen();
             }
         });
-
 
     }
 
@@ -59,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
                     if (loginErrorMessage.getVisibility() == v.VISIBLE)
                         loginErrorMessage.setVisibility(v.INVISIBLE);
                     setContentView(R.layout.activity_main);
+                    mainScreen();
                 }
                 else
                 {
@@ -66,6 +71,15 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        final Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v)
+            {
+                changeToWelcomeScreen();
+            }
+        });
+
     }
 
     void registerScreen()
@@ -90,9 +104,34 @@ public class MainActivity extends AppCompatActivity {
                         registerErrorText.setVisibility(v.INVISIBLE);
                     users.put(username, new User(username, password));
                     setContentView(R.layout.activity_main);
+                    mainScreen();
                 }
+            }
+        });
+
+        final Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v)
+            {
+                changeToWelcomeScreen();
             }
         });
     }
 
+    void mainScreen()
+    {
+        final Button logoutButton = findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v)
+            {
+                changeToWelcomeScreen();
+            }
+        });
+    }
+
+    void changeToWelcomeScreen()
+    {
+        setContentView(R.layout.welcomescreen);
+        welcomeScreen();
+    }
 }
