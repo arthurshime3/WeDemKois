@@ -3,35 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteY="81dp">
 
     <EditText
         android:id="@+id/passwordText"
         android:layout_width="wrap_content"
-        android:layout_height="53dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="54dp"
+        android:layout_marginBottom="33dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/loginSubmitButton"
+        app:layout_constraintStart_toStartOf="@+id/usernameText"
         app:layout_constraintTop_toBottomOf="@+id/usernameText" />
 
     <EditText
         android:id="@+id/usernameText"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginBottom="283dp"
-        android:layout_marginTop="128dp"
+        android:layout_height="63dp"
+        android:layout_marginBottom="7dp"
+        android:layout_marginTop="136dp"
         android:ems="10"
         android:hint="Username"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/passwordText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,10 +36,10 @@
         android:id="@+id/loginSubmitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginBottom="21dp"
         android:text="Login"
+        app:layout_constraintBottom_toTopOf="@+id/loginErrorText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordText" />
 
@@ -50,23 +47,22 @@
         android:id="@+id/loginErrorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="147dp"
+        android:layout_marginBottom="94dp"
         android:text="Invalid username or password"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/backButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usernameText" />
+        app:layout_constraintTop_toBottomOf="@+id/loginSubmitButton" />
 
     <Button
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="6dp"
-        android:layout_marginStart="144dp"
         android:text="Back"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usernameText"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/loginErrorText" />
 </android.support.constraint.ConstraintLayout>
