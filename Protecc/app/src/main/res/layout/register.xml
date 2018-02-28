@@ -81,8 +81,8 @@
         android:layout_marginBottom="18dp"
         android:layout_marginTop="29dp"
         android:ems="10"
-        android:inputType="textPersonName"
         android:hint="First Name"
+        android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/lastNameText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -94,10 +94,47 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="18dp"
         android:ems="10"
-        android:inputType="textPersonName"
         android:hint="Last Name"
+        android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/usernameText"
         app:layout_constraintStart_toStartOf="@+id/firstNameText"
         app:layout_constraintTop_toBottomOf="@+id/firstNameText" />
+
+    <TextView
+        android:id="@+id/firstNameError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Invalid first name"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/firstNameText"
+        app:layout_constraintStart_toStartOf="@+id/firstNameText" />
+
+    <TextView
+        android:id="@+id/lastNameError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Invalid last name"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/firstNameText"
+        app:layout_constraintTop_toBottomOf="@+id/firstNameText" />
+
+    <TextView
+        android:id="@+id/usernameError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Invalid username"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/usernameText"
+        app:layout_constraintStart_toStartOf="@+id/lastNameText" />
+
+    <TextView
+        android:id="@+id/passwordError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Invalid password"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/passwordText"
+        app:layout_constraintStart_toStartOf="@+id/usernameText" />
+
 
 </android.support.constraint.ConstraintLayout>
