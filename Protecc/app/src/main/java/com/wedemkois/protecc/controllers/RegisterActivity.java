@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -14,12 +15,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.wedemkois.protecc.R;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView mStatusTextView;
@@ -32,7 +39,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private View registerButton;
 
     private FirebaseAuth mAuth;
-    private FirebaseDatabase mDatabase;
+    private FirebaseFirestore mDatabase;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,10 +57,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         registerButton.setOnClickListener(this);
 
         mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance();
+        mDatabase = FirebaseFirestore.getInstance();
     }
 
-    private void register(String email, String password, String firstname, String lastname) {
+    private void register(String email, String password, final String firstname, final String lastname) {
         if(!validateForm()) {
             return;
         }
@@ -67,7 +74,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            addUserToDatabase();
+                            addUserToDatabase(firstname, lastname, user.getUid());
                             Intent i = new Intent(RegisterActivity.this, DashboardActivity.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
@@ -84,8 +91,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    private void addUserToDatabase() {
-        mDatabase.getReference("message").setValue("Hello, world!");
+    private void addUserToDatabase(String first, String last, String uid) {
+        Map<String, Object> user = new HashMap<>();
+        user.put("firstName", first);
+        user.put("lastName", last);
+        mDatabase.collection("users").document(uid).set(user);
     }
 
     private boolean validateForm() {
