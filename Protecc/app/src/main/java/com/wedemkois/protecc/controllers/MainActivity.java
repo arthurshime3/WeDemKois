@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Spinner;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.wedemkois.protecc.R;
 import com.wedemkois.protecc.model.User;
 
@@ -18,12 +19,20 @@ public class MainActivity extends AppCompatActivity {
     HashMap<String, User> users = new HashMap<>();
     User currentUser = new User(null, null, null, null, null);
 
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mAuth = FirebaseAuth.getInstance();
+
+
         welcomeScreen();
     }
+
+    @Override
+    public void onStart() {}
 
     void welcomeScreen()
     {
@@ -72,21 +81,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        final Button backButton = findViewById(R.id.backButton);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v)
-            {
-                welcomeScreen();
-            }
-        });
-
     }
 
     void registerScreen()
     {
         setContentView(R.layout.register);
 
-        final Button registerSubmitButton = findViewById(R.id.registerSubmitButton);
+        final Button registerSubmitButton = findViewById(R.id.registerButton);
         final EditText usernameTextEdit =  findViewById(R.id.usernameText);
         final EditText passwordTextEdit =  findViewById(R.id.passwordText);
         final TextView registerErrorText = findViewById(R.id.registerErrorText);
@@ -120,14 +121,6 @@ public class MainActivity extends AppCompatActivity {
                     currentUser = users.get(username);
                     mainScreen();
                 }
-            }
-        });
-
-        final Button backButton = findViewById(R.id.backButton);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v)
-            {
-                welcomeScreen();
             }
         });
     }
