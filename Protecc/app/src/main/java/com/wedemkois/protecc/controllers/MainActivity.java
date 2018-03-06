@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     HashMap<String, User> users = new HashMap<>();
     ArrayList<Shelter> shelters = new ArrayList<>();
     User currentUser = new User(null, null, null, null, null);
@@ -257,12 +259,16 @@ public class MainActivity extends AppCompatActivity {
         try
         {
             reader.readLine();
+            int counter = 0;
             while (((line = reader.readLine()) != null))
             {
                 splitLine = line.split(comma);
-                shelters.add(new Shelter(splitLine[1], splitLine[2], splitLine[3],
+                Shelter newShelter = new Shelter(splitLine[1], splitLine[2], splitLine[3],
                         splitLine[5], splitLine[6], splitLine[7] + ", " + splitLine[8]
-                        + ", " + splitLine[9], splitLine[11]));
+                        + ", " + splitLine[9], splitLine[11]);
+                shelters.add(newShelter);
+                db.collection("shelters").document(counter + "").set(newShelter.getName());
+                counter++;
             }
         } catch (IOException e)
         {
