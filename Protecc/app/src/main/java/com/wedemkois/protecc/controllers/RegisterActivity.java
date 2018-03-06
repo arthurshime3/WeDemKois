@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.wedemkois.protecc.R;
+import com.wedemkois.protecc.model.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +41,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore mDatabase;
+
+    private User currentUserModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,7 +63,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         mDatabase = FirebaseFirestore.getInstance();
     }
 
-    private void register(String email, String password, final String firstname, final String lastname) {
+    private void register(final String email, final String password, final String firstname, final String lastname) {
         if(!validateForm()) {
             return;
         }
@@ -74,7 +77,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            addUserToDatabase(firstname, lastname, user.getUid());
+                            currentUserModel = new User(email, User.UserType.USER, firstname, lastname);
+                            mDatabase.collection("users").document(user.getUid()).set(currentUserModel);
                             Intent i = new Intent(RegisterActivity.this, DashboardActivity.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
@@ -89,13 +93,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
 
 
-    }
-
-    private void addUserToDatabase(String first, String last, String uid) {
-        Map<String, Object> user = new HashMap<>();
-        user.put("firstName", first);
-        user.put("lastName", last);
-        mDatabase.collection("users").document(uid).set(user);
     }
 
     private boolean validateForm() {
@@ -125,7 +122,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             mFirstNameField.setError(null);
         }
 
-        String lastName = mPasswordField.getText().toString();
+        String lastName = mLastNameField.getText().toString();
         if (TextUtils.isEmpty(lastName)) {
             mLastNameField.setError("Required.");
             valid = false;

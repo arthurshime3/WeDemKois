@@ -8,19 +8,22 @@ import java.util.List;
 
 public class User
 {
-    private String username, password, firstName, lastName;
+    private String username, firstName, lastName;
     private UserType userType;
 
     public enum UserType
     {
-        USER, ADMIN;
+        USER, ADMIN
     }
 
-    public User(String user, String pass, UserType uT, String firstName, String lastName)
+    public User() {
+
+    }
+
+    public User(String user, UserType uT, String firstName, String lastName)
     {
-        username = user;
-        password = pass;
-        userType = uT;
+        this.username = user;
+        this.userType = uT;
         this.firstName = firstName;
         this.lastName = lastName;
     }
@@ -30,12 +33,21 @@ public class User
         return username;
     }
 
-    public String getPassword()
-    {
-        return password;
-    }
 
     public UserType getUserType() {return userType;}
 
     public String getName() {return firstName + " " + lastName;}
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    @Override
+    public String toString() {
+        return userType + " " + getName() + " " + username;
+    }
 }
