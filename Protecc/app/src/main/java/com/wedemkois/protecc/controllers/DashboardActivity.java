@@ -50,6 +50,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         userTypeView = findViewById(R.id.userTypeText);
 
         findViewById(R.id.logoutButton).setOnClickListener(this);
+        findViewById(R.id.shelterViewButton).setOnClickListener(this);
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseFirestore.getInstance();
@@ -73,7 +74,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
-        addSheltersToDatabase();
+//        addSheltersToDatabase();
 
     }
 
@@ -161,6 +162,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             Intent newIntent = new Intent(DashboardActivity.this, BaseActivity.class);
             newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(newIntent);
+        } else if (i == R.id.shelterViewButton) {
+            startActivity(new Intent(DashboardActivity.this, ShelterActivity.class));
         }
     }
 }

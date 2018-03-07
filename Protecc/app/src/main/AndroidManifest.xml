@@ -25,6 +25,9 @@
         <activity
             android:name=".controllers.DashboardActivity"
             android:label="Dashboard" />
+        <activity
+            android:name=".controllers.ShelterActivity"
+            android:label="Shelters" />
     </application>
 
 </manifest>
