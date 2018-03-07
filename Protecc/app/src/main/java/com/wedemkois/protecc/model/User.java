@@ -1,6 +1,4 @@
 package com.wedemkois.protecc.model;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by arthurshim on 2/13/18.

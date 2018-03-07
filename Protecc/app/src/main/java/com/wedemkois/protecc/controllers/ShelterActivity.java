@@ -1,7 +1,9 @@
 package com.wedemkois.protecc.controllers;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.os.Parcelable;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,20 +11,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.wedemkois.protecc.Filters;
 import com.wedemkois.protecc.R;
 import com.wedemkois.protecc.adapters.ShelterAdapter;
-import com.wedemkois.protecc.model.Shelter;
-
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,11 +36,15 @@ public class ShelterActivity extends AppCompatActivity implements
     private FirebaseFirestore mDatabase;
     private Query mQuery;
 
+    private Filters filters;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shelters);
         ButterKnife.bind(this);
+
+        filters = getIntent().getExtras().getParcelable("filter_parcel");
 
         mDatabase = FirebaseFirestore.getInstance();
 
@@ -79,6 +78,7 @@ public class ShelterActivity extends AppCompatActivity implements
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+        filterShelters();
     }
 
     @Override
@@ -91,28 +91,23 @@ public class ShelterActivity extends AppCompatActivity implements
 
     }
 
-    private void getSheltersFromDatabase() {
-        mDatabase.collection("shelters")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()) {
-                            List<Shelter> out = new ArrayList<>();
-                            for(DocumentSnapshot document : task.getResult()) {
-                                out.add(document.toObject(Shelter.class));
-                            }
-                            Log.d("getShelters", "There was no error getting shelters good job");
-                        } else {
-                            Log.d("getShelters", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-    }
-
     @Override
     public void onShelterSelected(DocumentSnapshot Shelter) {
 
+    }
+
+    public void filterShelters() {
+        Query query = mDatabase.collection("shelters");
+
+        if(filters.hasName()) {
+            query = query.whereEqualTo("name", filters.getName());
+        }
+
+        // Limit items
+        query = query.limit(LIMIT);
+
+        // Update the query
+        mAdapter.setQuery(query);
     }
 
 }

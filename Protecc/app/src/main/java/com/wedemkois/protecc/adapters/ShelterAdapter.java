@@ -7,9 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.wedemkois.protecc.R;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
+import com.wedemkois.protecc.R;
 import com.wedemkois.protecc.model.Shelter;
 
 import butterknife.BindView;

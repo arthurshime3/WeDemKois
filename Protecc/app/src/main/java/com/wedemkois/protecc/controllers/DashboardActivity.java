@@ -1,13 +1,11 @@
 package com.wedemkois.protecc.controllers;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -21,16 +19,10 @@ import com.wedemkois.protecc.R;
 import com.wedemkois.protecc.model.Shelter;
 import com.wedemkois.protecc.model.User;
 
-import org.w3c.dom.Text;
-
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 
 public class DashboardActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView nameView;
@@ -163,7 +155,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(newIntent);
         } else if (i == R.id.shelterViewButton) {
-            startActivity(new Intent(DashboardActivity.this, ShelterActivity.class));
+            startActivity(new Intent(DashboardActivity.this, ShelterSearchActivity.class));
         }
     }
 }
