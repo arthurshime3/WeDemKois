@@ -52,6 +52,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         mLastNameField = findViewById(R.id.lastNameText);
         progressBar = findViewById(R.id.progressBar);
         registerButton = findViewById(R.id.registerButton);
+        userAdminSpinner = findViewById(R.id.userAdminSpinner);
 
         ArrayAdapter<User.UserType> userAdminAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, User.UserType.values());
         userAdminAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
