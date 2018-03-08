@@ -1,5 +1,6 @@
 package com.wedemkois.protecc.controllers;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.PersistableBundle;
@@ -92,8 +93,13 @@ public class ShelterActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onShelterSelected(DocumentSnapshot Shelter) {
+    public void onShelterSelected(DocumentSnapshot shelter) {
+        // Go to the details page for the selected restaurant
+        Intent intent = new Intent(this, ShelterDetailActivity.class);
+        intent.putExtra("shelter_id", shelter.getId());
 
+        startActivity(intent);
+//        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
     }
 
     public void filterShelters() {
@@ -101,6 +107,14 @@ public class ShelterActivity extends AppCompatActivity implements
 
         if(filters.hasName()) {
             query = query.whereEqualTo("name", filters.getName());
+        }
+
+        if(filters.hasGender()) {
+            query = query.whereEqualTo("gender", filters.getGender().toString());
+        }
+
+        if(filters.hasAgeRange()) {
+            query = query.whereEqualTo("ageRange", filters.getAgeRange().toString());
         }
 
         // Limit items

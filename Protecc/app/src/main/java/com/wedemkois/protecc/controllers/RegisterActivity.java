@@ -8,8 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +33,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private EditText mLastNameField;
     private ProgressBar progressBar;
     private View registerButton;
+    private Spinner userAdminSpinner;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore mDatabase;
@@ -50,13 +53,17 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         progressBar = findViewById(R.id.progressBar);
         registerButton = findViewById(R.id.registerButton);
 
+        ArrayAdapter<User.UserType> userAdminAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, User.UserType.values());
+        userAdminAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        userAdminSpinner.setAdapter(userAdminAdapter);
+
         registerButton.setOnClickListener(this);
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseFirestore.getInstance();
     }
 
-    private void register(final String email, final String password, final String firstname, final String lastname) {
+    private void register(final String email, final String password, final String firstname, final String lastname, final User.UserType userType) {
         if(!validateForm()) {
             return;
         }
@@ -70,7 +77,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            currentUserModel = new User(email, User.UserType.USER, firstname, lastname);
+                            currentUserModel = new User(email, userType, firstname, lastname);
                             mDatabase.collection("users").document(user.getUid()).set(currentUserModel);
                             Intent i = new Intent(RegisterActivity.this, DashboardActivity.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -140,7 +147,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             register(mEmailField.getText().toString(),
                     mPasswordField.getText().toString(),
                     mFirstNameField.getText().toString(),
-                    mLastNameField.getText().toString());
+                    mLastNameField.getText().toString(),
+                    (User.UserType)userAdminSpinner.getSelectedItem());
         }
     }
 

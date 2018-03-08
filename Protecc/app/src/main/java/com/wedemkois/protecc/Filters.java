@@ -4,20 +4,14 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
+import com.wedemkois.protecc.model.Shelter;
+
 import java.util.List;
 
 public class Filters implements Parcelable {
     private String name = null;
-    private Gender gender = null;
-    private List<AgeRange> ageRanges = null;
-
-    public enum Gender {
-        MALE, FEMALE, NONBINARY
-    }
-
-    public enum AgeRange {
-        NEWBORNS, CHILDREN, YOUNG_ADULTS, ANYONE
-    }
+    private Shelter.Gender gender = null;
+    private Shelter.AgeRange ageRange = null;
 
     public Filters() {}
 
@@ -25,21 +19,22 @@ public class Filters implements Parcelable {
     public void setName(String name) { this.name = name; }
     public boolean hasName() { return !TextUtils.isEmpty(name); }
 
-    public Gender getGender() { return gender; }
-    public void setGender(Gender gender) { this.gender = gender; }
+    public Shelter.Gender getGender() { return gender; }
+    public void setGender(Shelter.Gender gender) { this.gender = gender; }
     public boolean hasGender() { return gender != null;}
 
-    public List<AgeRange> getAgeRanges() { return ageRanges; }
-    public void setAgeRanges(List<AgeRange> ageRanges) { this.ageRanges = ageRanges; }
-    public boolean hasAgeRanges() {return !(ageRanges==null || ageRanges.isEmpty()); }
+    public Shelter.AgeRange getAgeRange() { return ageRange; }
+    public void setAgeRange(Shelter.AgeRange ageRange) { this.ageRange = ageRange; }
+    public boolean hasAgeRange() {return ageRange!=null; }
 
     // Parcelization stuff
 
     Filters(Parcel p) {
         this.name = p.readString();
         int genderIndex = p.readInt();
-        this.gender = genderIndex == -1 ? null : Filters.Gender.values()[genderIndex];
-        p.readList(this.ageRanges, Filters.AgeRange.class.getClassLoader());
+        this.gender = genderIndex == -1 ? null : Shelter.Gender.values()[genderIndex];
+        int ageRangeIndex = p.readInt();
+        this.ageRange = ageRangeIndex == -1 ? null : Shelter.AgeRange.values()[ageRangeIndex];
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
@@ -58,7 +53,7 @@ public class Filters implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(this.name);
         parcel.writeInt(this.gender == null ? -1 : this.gender.ordinal());
-        parcel.writeList(ageRanges);
+        parcel.writeInt(this.ageRange == null ? -1 : this.ageRange.ordinal());
     }
 
     @Override

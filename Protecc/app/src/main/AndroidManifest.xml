@@ -31,6 +31,9 @@
         <activity
             android:name=".controllers.ShelterSearchActivity"
             android:label="Shelter Search" />
+        <activity
+            android:name=".controllers.ShelterDetailActivity"
+            android:label="Shelter Detail" />
     </application>
 
 </manifest>

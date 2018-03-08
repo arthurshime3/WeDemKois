@@ -7,45 +7,71 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Shelter {
-    private String name, address, phoneNumber;
+    private String name;
     private String capacity;
+    private String ageRange;
+    private String gender;
+    private boolean childrenAllowed;
+    private String requirements;
     private GeoPoint coordinates;
-    private String restrictions;
+    private String address;
     private List<String> notes;
+    private String phoneNumber;
 
+    public enum Gender {
+        MEN, WOMEN, BOTH
+    }
+
+    public enum AgeRange {
+        ADULTS, FAMILY, YOUNGADULTS, ALL
+    }
 
     public Shelter() { }
 
-    public Shelter(String name, String capacity, String restrictions, GeoPoint coordinates, String address, List<String> notes, String phone) {
+    // The parser constructor, calls the full param constructor
+    public Shelter(String name, String capacity, String ageRange, String gender, String childrenAllowed,
+                   String requirements, String longitude, String latitude, String address, String notes, String phone)
+    {
+        this(
+                name.trim(),
+                capacity,
+                ageRange.replaceAll("\\s+","").toUpperCase(),
+                gender.replaceAll("\\s+","").toUpperCase(),
+                childrenAllowed.replaceAll("\\s+","").equals("T"),
+                requirements,
+                new GeoPoint(Double.parseDouble(longitude), Double.parseDouble(latitude)),
+                address,
+                new ArrayList<>(Arrays.asList(notes.split(","))),
+                phone);
+    }
+
+    public Shelter(String name, String capacity, String ageRange, String gender,
+                   boolean childrenAllowed, String requirements, GeoPoint coordinates,
+                   String address, List<String> notes, String phone) {
         this.name = name;
         this.capacity = capacity;
-        this.restrictions = restrictions;
+        this.ageRange = ageRange;
+        this.gender = gender;
+        this.childrenAllowed = childrenAllowed;
+        this.requirements = requirements;
         this.coordinates = coordinates;
         this.address = address;
         this.notes = notes;
         this.phoneNumber = phone;
     }
 
-    // The parser constructor, calls the full param constructor
-    public Shelter(String name, String capacity, String restrictions, String longitude, String latitude, String address, String notes, String phone)
-    {
-        this(name,
-                capacity,
-                restrictions,
-                new GeoPoint(Double.parseDouble(longitude), Double.parseDouble(latitude)),
-                address,
-                new ArrayList<String>(Arrays.asList(notes.split(","))),
-                phone);
-    }
-
     public String getName()
     { return name; }
 
-    public String getRestrictions()
-    { return restrictions; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public void setRestrictions(String restrictions) {
-        this.restrictions = restrictions;
+    public String getRequirements()
+    { return requirements; }
+
+    public void setRequirements(String requirements) {
+        this.requirements = requirements;
     }
 
     public String getAddress()
@@ -81,5 +107,29 @@ public class Shelter {
 
     public void setNotes(List<String> notes) {
         this.notes = notes;
+    }
+
+    public String getAgeRange() {
+        return ageRange;
+    }
+
+    public void setAgeRange(String ageRange) {
+        this.ageRange = ageRange;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public boolean isChildrenAllowed() {
+        return childrenAllowed;
+    }
+
+    public void setChildrenAllowed(boolean childrenAllowed) {
+        this.childrenAllowed = childrenAllowed;
     }
 }

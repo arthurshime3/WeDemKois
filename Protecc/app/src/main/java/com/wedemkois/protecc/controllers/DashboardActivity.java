@@ -66,7 +66,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
-//        addSheltersToDatabase();
+        addSheltersToDatabase();
 
     }
 
@@ -82,7 +82,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             int counter = 0;
             while ((splitLine = reader.readNext()) != null) {
                 Shelter newShelter = new Shelter(splitLine[1], splitLine[2], splitLine[3], splitLine[4],
-                        splitLine[5], splitLine[6], splitLine[7], splitLine[8]);
+                        splitLine[5], splitLine[6], splitLine[7], splitLine[8], splitLine[9], splitLine[10], splitLine[11]);
                 Log.d("addSheltersToDatabase","Hi");
                 mDatabase.collection("shelters").document(counter + "").set(newShelter);
                 counter++;
@@ -99,39 +99,6 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
             }
         }
-        /*InputStream is = getResources().openRawResource(R.raw.shelterdb);
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
-
-        String line;
-        String comma = ",";
-        String[] splitLine;
-
-        try
-        {
-            reader.readLine();
-            int counter = 0;
-            while (((line = reader.readLine()) != null))
-            {
-                splitLine = line.split(comma);
-                Shelter newShelter = new Shelter(splitLine[1], splitLine[2], splitLine[3], splitLine[4],
-                        splitLine[5], splitLine[6], splitLine[7], splitLine[8]);
-                mDatabase.collection("shelters").document(counter + "").set(newShelter.getName());
-                counter++;
-            }
-        } catch (IOException e)
-        {
-            Log.d("CSV", "IO Exception");
-        } finally
-        {
-            try
-            {
-                reader.close();
-            } catch (IOException e)
-            {
-                Log.d("CSV", "IO Exception");
-            }
-        }*/
 
     }
 

@@ -11,6 +11,7 @@ import android.widget.RadioGroup;
 
 import com.wedemkois.protecc.Filters;
 import com.wedemkois.protecc.R;
+import com.wedemkois.protecc.model.Shelter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,40 +48,36 @@ public class ShelterSearchActivity extends AppCompatActivity implements View.OnC
     private Filters createFiltersFromView() {
         Filters out = new Filters();
         out.setName(shelterNameEditText.getText().toString());
-        out.setAgeRanges(getSelectedAgeRange());
+        out.setAgeRange(getSelectedAgeRange());
         out.setGender(getSelectedGender());
         return out;
     }
 
-    private Filters.Gender getSelectedGender() {
+    private Shelter.Gender getSelectedGender() {
         int selectedButtonId = genderRadioGroup.getCheckedRadioButtonId();
         switch (selectedButtonId) {
             case R.id.maleRadio:
-                return Filters.Gender.MALE;
+                return Shelter.Gender.MEN;
             case R.id.femaleRadio:
-                return Filters.Gender.FEMALE;
+                return Shelter.Gender.WOMEN;
             case R.id.nonbinaryRadio:
-                return Filters.Gender.NONBINARY;
+                return Shelter.Gender.BOTH;
             default:
                 return null;
         }
     }
 
-    private List<Filters.AgeRange> getSelectedAgeRange() {
-        List<Filters.AgeRange> out = new ArrayList<>();
-        if (((CheckBox) findViewById(R.id.childrenCheckBox)).isChecked()) {
-            out.add(Filters.AgeRange.CHILDREN);
-        }
+    private Shelter.AgeRange getSelectedAgeRange() {
         if (((CheckBox) findViewById(R.id.familyCheckBox)).isChecked()) {
-            out.add(Filters.AgeRange.NEWBORNS);
+            return Shelter.AgeRange.FAMILY;
+        } else if (((CheckBox) findViewById(R.id.adultCheckBox)).isChecked()) {
+            return Shelter.AgeRange.ADULTS;
+        } else if (((CheckBox) findViewById(R.id.yaCheckBox)).isChecked()) {
+            return Shelter.AgeRange.YOUNGADULTS;
+        }else if (((CheckBox) findViewById(R.id.anyoneCheckBox)).isChecked()) {
+            return Shelter.AgeRange.ALL;
         }
-        if (((CheckBox) findViewById(R.id.yaCheckBox)).isChecked()) {
-            out.add(Filters.AgeRange.YOUNG_ADULTS);
-        }
-        if (((CheckBox) findViewById(R.id.anyoneCheckBox)).isChecked()) {
-            out.add(Filters.AgeRange.ANYONE);
-        }
-        return out;
+        return null;
     }
 
     @Override
