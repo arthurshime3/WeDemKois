@@ -9,7 +9,7 @@
     <EditText
         android:id="@+id/passwordText"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="19dp"
         android:ems="10"
         android:hint="Password"
@@ -21,7 +21,7 @@
     <EditText
         android:id="@+id/usernameText"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="13dp"
         android:ems="10"
         android:hint="Username"
@@ -31,10 +31,9 @@
         app:layout_constraintTop_toBottomOf="@+id/lastNameText" />
 
     <Button
-        android:id="@+id/registerSubmitButton"
+        android:id="@+id/registerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="11dp"
         android:layout_marginStart="33dp"
         android:text="Register"
         app:layout_constraintBottom_toTopOf="@+id/registerErrorText"
@@ -45,31 +44,20 @@
         android:id="@+id/registerErrorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="35dp"
+        android:layout_marginBottom="8dp"
         android:text="Username already exists"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/backButton"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerSubmitButton" />
-
-    <Button
-        android:id="@+id/backButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginEnd="25dp"
-        android:text="Back"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/registerErrorText"
-        app:layout_constraintTop_toBottomOf="@+id/registerErrorText" />
+        app:layout_constraintTop_toBottomOf="@+id/registerButton" />
 
     <Spinner
         android:id="@+id/userAdminSpinner"
         android:layout_width="150dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="26dp"
-        app:layout_constraintBottom_toTopOf="@+id/registerSubmitButton"
+        app:layout_constraintBottom_toTopOf="@+id/registerButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordText" />
@@ -100,41 +88,16 @@
         app:layout_constraintStart_toStartOf="@+id/firstNameText"
         app:layout_constraintTop_toBottomOf="@+id/firstNameText" />
 
-    <TextView
-        android:id="@+id/firstNameError"
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Invalid first name"
+        android:layout_marginTop="24dp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/firstNameText"
-        app:layout_constraintStart_toStartOf="@+id/firstNameText" />
-
-    <TextView
-        android:id="@+id/lastNameError"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Invalid last name"
-        android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="@+id/firstNameText"
-        app:layout_constraintTop_toBottomOf="@+id/firstNameText" />
-
-    <TextView
-        android:id="@+id/usernameError"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Invalid username"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/usernameText"
-        app:layout_constraintStart_toStartOf="@+id/lastNameText" />
-
-    <TextView
-        android:id="@+id/passwordError"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Invalid password"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/passwordText"
-        app:layout_constraintStart_toStartOf="@+id/usernameText" />
-
+        app:layout_constraintBottom_toTopOf="@+id/registerErrorText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userAdminSpinner" />
 
 </android.support.constraint.ConstraintLayout>
