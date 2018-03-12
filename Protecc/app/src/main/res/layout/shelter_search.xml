@@ -101,44 +101,44 @@
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <RadioGroup
+            android:id="@+id/ageRangeRadioGroup"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@id/ageTextView">
+            app:layout_constraintTop_toBottomOf="@+id/ageTextView">
 
-            <CheckBox
-                android:id="@+id/familyCheckBox"
+            <RadioButton
+                android:id="@+id/familyRadio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Families with Newborns"
                 tools:layout_editor_absoluteY="32dp" />
 
-            <CheckBox
-                android:id="@+id/adultCheckBox"
+            <RadioButton
+                android:id="@+id/adultRadio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Adults"
                 tools:layout_editor_absoluteY="32dp" />
 
-            <CheckBox
-                android:id="@+id/yaCheckBox"
+            <RadioButton
+                android:id="@+id/yaRadio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Young Adults"
                 tools:layout_editor_absoluteY="32dp" />
 
-            <CheckBox
-                android:id="@+id/anyoneCheckBox"
+            <RadioButton
+                android:id="@+id/anyoneRadio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Anyone"
                 tools:layout_editor_absoluteY="32dp" />
-        </LinearLayout>
+        </RadioGroup>
 
     </android.support.constraint.ConstraintLayout>
 

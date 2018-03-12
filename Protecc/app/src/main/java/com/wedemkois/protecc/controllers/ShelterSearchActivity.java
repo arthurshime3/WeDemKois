@@ -5,16 +5,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 
 import com.wedemkois.protecc.Filters;
 import com.wedemkois.protecc.R;
 import com.wedemkois.protecc.model.Shelter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,6 +21,9 @@ public class ShelterSearchActivity extends AppCompatActivity implements View.OnC
 
     @BindView(R.id.genderRadioGroup)
     RadioGroup genderRadioGroup;
+
+    @BindView(R.id.ageRangeRadioGroup)
+    RadioGroup ageRangeRadioGroup;
 
     @BindView(R.id.shelterSearchButton)
     Button shelterSearchButton;
@@ -68,16 +67,19 @@ public class ShelterSearchActivity extends AppCompatActivity implements View.OnC
     }
 
     private Shelter.AgeRange getSelectedAgeRange() {
-        if (((CheckBox) findViewById(R.id.familyCheckBox)).isChecked()) {
-            return Shelter.AgeRange.FAMILY;
-        } else if (((CheckBox) findViewById(R.id.adultCheckBox)).isChecked()) {
-            return Shelter.AgeRange.ADULTS;
-        } else if (((CheckBox) findViewById(R.id.yaCheckBox)).isChecked()) {
-            return Shelter.AgeRange.YOUNGADULTS;
-        }else if (((CheckBox) findViewById(R.id.anyoneCheckBox)).isChecked()) {
-            return Shelter.AgeRange.ALL;
+        int selectedButtonId = ageRangeRadioGroup.getCheckedRadioButtonId();
+        switch (selectedButtonId) {
+            case R.id.familyRadio:
+                return Shelter.AgeRange.FAMILY;
+            case R.id.adultRadio:
+                return Shelter.AgeRange.ADULT;
+            case R.id.yaRadio:
+                return Shelter.AgeRange.YOUNGADULTS;
+            case R.id.anyoneRadio:
+                return Shelter.AgeRange.ALL;
+            default:
+                return null;
         }
-        return null;
     }
 
     @Override
