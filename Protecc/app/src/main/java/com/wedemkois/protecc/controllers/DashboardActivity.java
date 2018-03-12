@@ -49,7 +49,6 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
         String uid = mAuth.getUid();
 
-        String path = mDatabase.collection("users").getPath();
         DocumentReference docRef = mDatabase.collection("users").document(uid);
 
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {

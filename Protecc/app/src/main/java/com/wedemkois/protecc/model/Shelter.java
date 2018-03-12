@@ -23,7 +23,7 @@ public class Shelter {
     }
 
     public enum AgeRange {
-        ADULTS, FAMILY, YOUNGADULTS, ALL
+        ADULT, FAMILY, YOUNGADULTS, ALL
     }
 
     public Shelter() { }
