@@ -6,27 +6,23 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.wedemkois.protecc.R;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.wedemkois.protecc.model.User;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView mStatusTextView;
@@ -37,9 +33,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private EditText mLastNameField;
     private ProgressBar progressBar;
     private View registerButton;
+    private Spinner userAdminSpinner;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore mDatabase;
+
+    private User currentUserModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +52,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         mLastNameField = findViewById(R.id.lastNameText);
         progressBar = findViewById(R.id.progressBar);
         registerButton = findViewById(R.id.registerButton);
+        userAdminSpinner = findViewById(R.id.userAdminSpinner);
+
+        ArrayAdapter<User.UserType> userAdminAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, User.UserType.values());
+        userAdminAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        userAdminSpinner.setAdapter(userAdminAdapter);
 
         registerButton.setOnClickListener(this);
 
@@ -60,7 +64,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         mDatabase = FirebaseFirestore.getInstance();
     }
 
-    private void register(String email, String password, final String firstname, final String lastname) {
+    private void register(final String email, final String password, final String firstname, final String lastname, final User.UserType userType) {
         if(!validateForm()) {
             return;
         }
@@ -74,7 +78,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            addUserToDatabase(firstname, lastname, user.getUid());
+                            currentUserModel = new User(email, userType, firstname, lastname);
+                            mDatabase.collection("users").document(user.getUid()).set(currentUserModel);
                             Intent i = new Intent(RegisterActivity.this, DashboardActivity.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
@@ -89,13 +94,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
 
 
-    }
-
-    private void addUserToDatabase(String first, String last, String uid) {
-        Map<String, Object> user = new HashMap<>();
-        user.put("firstName", first);
-        user.put("lastName", last);
-        mDatabase.collection("users").document(uid).set(user);
     }
 
     private boolean validateForm() {
@@ -125,7 +123,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             mFirstNameField.setError(null);
         }
 
-        String lastName = mPasswordField.getText().toString();
+        String lastName = mLastNameField.getText().toString();
         if (TextUtils.isEmpty(lastName)) {
             mLastNameField.setError("Required.");
             valid = false;
@@ -150,7 +148,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             register(mEmailField.getText().toString(),
                     mPasswordField.getText().toString(),
                     mFirstNameField.getText().toString(),
-                    mLastNameField.getText().toString());
+                    mLastNameField.getText().toString(),
+                    (User.UserType)userAdminSpinner.getSelectedItem());
         }
     }
 
