@@ -104,4 +104,24 @@ public class ShelterDetailActivity extends AppCompatActivity {
 
 
     }
+
+    public boolean checkQualifications(String[] ageGroup, String[] gender, boolean childrenAllowed) {
+        if (!(currentShelter.getAgeRange().equals("All"))) {
+            for (int i = 0; i < ageGroup.length; i++) {
+                if (!(ageGroup[i].equals(currentShelter.getAgeRange()))) {
+                    return false;
+                }
+            }
+        }
+        if (!(currentShelter.getGender().equals("Both"))) {
+            for (int i = 0; i < gender.length; i++) {
+                if (!(gender[i].equals(currentShelter.getGender()))) {
+                    return false;
+                }
+            }
+        }
+        if (!(childrenAllowed == currentShelter.isChildrenAllowed())) return false;
+        return true;
+    }
 }
+
