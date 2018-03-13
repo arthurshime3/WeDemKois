@@ -60,7 +60,6 @@ public class ShelterDetailActivity extends AppCompatActivity {
     @BindView(R.id.shelterDetailPhoneTextView)
     TextView shelterPhoneTextView;
 
-<<<<<<< HEAD
     @BindView(R.id.shelterDetailGroupTextView)
     TextView shelterGroupTextView;
 
@@ -70,8 +69,6 @@ public class ShelterDetailActivity extends AppCompatActivity {
     @BindView(R.id.shelterDetailGroupsTakenTextView)
     TextView shelterGroupsTakenView;
 
-=======
->>>>>>> master
     private FirebaseFirestore mDatabase;
     private DocumentReference mShelterRef;
     private Shelter currentShelter;
@@ -116,7 +113,6 @@ public class ShelterDetailActivity extends AppCompatActivity {
 
 
     }
-<<<<<<< HEAD
     /*
     * Method that updates number of vacant beds at the shelter if possible.
     * @param users can be positive (checking in) or negative (checking out)
@@ -149,6 +145,5 @@ public class ShelterDetailActivity extends AppCompatActivity {
         }
         return false;
     }
-=======
->>>>>>> master
+
 }

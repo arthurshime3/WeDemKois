@@ -17,12 +17,9 @@ public class Shelter {
     private String address;
     private List<String> notes;
     private String phoneNumber;
-<<<<<<< HEAD
     private String groupCapacity;
     private String bedsTaken;
     private String groupsTaken;
-=======
->>>>>>> master
 
     public enum Gender {
         MEN, WOMEN, BOTH
@@ -36,12 +33,8 @@ public class Shelter {
 
     // The parser constructor, calls the full param constructor
     public Shelter(String name, String capacity, String ageRange, String gender, String childrenAllowed,
-<<<<<<< HEAD
                    String requirements, String longitude, String latitude, String address, String notes, String phone,
                    String groupCapacity, String bedsTaken, String groupsTaken)
-=======
-                   String requirements, String longitude, String latitude, String address, String notes, String phone)
->>>>>>> master
     {
         this(
                 name.trim(),
@@ -53,21 +46,13 @@ public class Shelter {
                 new GeoPoint(Double.parseDouble(longitude), Double.parseDouble(latitude)),
                 address,
                 new ArrayList<>(Arrays.asList(notes.split(","))),
-<<<<<<< HEAD
                 phone, groupCapacity, bedsTaken, groupsTaken);
-=======
-                phone);
->>>>>>> master
     }
 
     public Shelter(String name, String capacity, String ageRange, String gender,
                    boolean childrenAllowed, String requirements, GeoPoint coordinates,
-<<<<<<< HEAD
                    String address, List<String> notes, String phone, String groupCapacity,
                    String bedsTaken, String groupsTaken) {
-=======
-                   String address, List<String> notes, String phone) {
->>>>>>> master
         this.name = name;
         this.capacity = capacity;
         this.ageRange = ageRange;
@@ -78,12 +63,9 @@ public class Shelter {
         this.address = address;
         this.notes = notes;
         this.phoneNumber = phone;
-<<<<<<< HEAD
         this.groupCapacity = groupCapacity;
         this.bedsTaken = bedsTaken;
         this.groupsTaken = groupsTaken;
-=======
->>>>>>> master
     }
 
     public String getName()
@@ -157,5 +139,29 @@ public class Shelter {
 
     public void setChildrenAllowed(boolean childrenAllowed) {
         this.childrenAllowed = childrenAllowed;
+    }
+
+    public String getGroupCapacity() {
+        return groupCapacity;
+    }
+
+    public void setGroupCapacity(String groupCapacity) {
+        this.groupCapacity = groupCapacity;
+    }
+
+    public String getBedsTaken() {
+        return bedsTaken;
+    }
+
+    public void setBedsTaken(String bedsTaken) {
+        this.bedsTaken = bedsTaken;
+    }
+
+    public String getGroupsTaken() {
+        return groupsTaken;
+    }
+
+    public void setGroupsTaken(String groupsTaken) {
+        this.groupsTaken = groupsTaken;
     }
 }
