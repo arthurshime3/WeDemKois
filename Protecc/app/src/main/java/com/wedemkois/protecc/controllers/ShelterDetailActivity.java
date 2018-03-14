@@ -60,6 +60,15 @@ public class ShelterDetailActivity extends AppCompatActivity {
     @BindView(R.id.shelterDetailPhoneTextView)
     TextView shelterPhoneTextView;
 
+    @BindView(R.id.shelterDetailGroupTextView)
+    TextView shelterGroupTextView;
+
+    @BindView(R.id.shelterDetailBedsTakenTextView)
+    TextView shelterBedsTakenTextView;
+
+    @BindView(R.id.shelterDetailGroupsTakenTextView)
+    TextView shelterGroupsTakenView;
+
     private FirebaseFirestore mDatabase;
     private DocumentReference mShelterRef;
     private Shelter currentShelter;
@@ -104,4 +113,37 @@ public class ShelterDetailActivity extends AppCompatActivity {
 
 
     }
+    /*
+    * Method that updates number of vacant beds at the shelter if possible.
+    * @param users can be positive (checking in) or negative (checking out)
+    * @return true if check-in/out was valid, false if not
+    */
+
+    public boolean updateVacancy(int users) {
+        if (users == 0) {
+            return true;
+        } else if (users == 1 || users == -1) {
+            int unavailable = Integer.parseInt(shelterBedsTakenTextView.getText());
+            if (unavailable == 0 && users == -1) {
+               return false;
+            }
+            int vacancies = Integer.parseInt(shelterCapacityTextView.getText()) - unavailable;
+            if (vacancies >= users) {
+                shelterBedsTakenTextView.setText(unavailable + users);
+                return true;
+            }
+        } else {
+            int unavailable = Integer.parseInt(shelterGroupsTakenTextView.getText());
+            if (unavailable == 0 && users < 0) {
+                return false;
+            }
+            int vacancies = Integer.parseInt(shelterGroupTextView.getText()) - unavailable;
+            if (vacancies >= users) {
+                shelterGroupsTakenTextView.setText(unavailable + users);
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
