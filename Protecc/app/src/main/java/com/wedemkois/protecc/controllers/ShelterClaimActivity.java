@@ -2,14 +2,22 @@ package com.wedemkois.protecc.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.wedemkois.protecc.Filters;
 import com.wedemkois.protecc.R;
 import com.wedemkois.protecc.model.Shelter;
@@ -51,7 +59,9 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
 
     private Shelter currentShelter;
     private User user;
-
+    private String shelterId;
+    private FirebaseFirestore mDatabase;
+    private DocumentReference mShelterRef;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,7 +69,26 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
         setContentView(R.layout.shelter_claim);
         ButterKnife.bind(this);
 
+
         claimBedsButton.setOnClickListener(this);
+
+        shelterId = getIntent().getStringExtra("shelter_id");
+
+        mDatabase = FirebaseFirestore.getInstance();
+        mShelterRef = mDatabase.collection("shelters").document(shelterId);
+        mShelterRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                currentShelter = documentSnapshot.toObject(Shelter.class);
+                Log.d("DashboardActivity", currentShelter.toString());
+                onShelterLoaded(currentShelter);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("DashboardActivity", e.toString());
+            }
+        });
 
     }
 
@@ -82,6 +111,8 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
             }
             else
             {
+                Toast toast = Toast.makeText(getApplicationContext(), "checkInput() failed", Toast.LENGTH_SHORT);
+                toast.show();
                 //display warning
             }
         }
@@ -140,6 +171,7 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
         }
 
         int numOfPeople = Integer.parseInt(numOfUsers.getText().toString());
+        Log.d("checkInput", "We got past checkInput");
         return checkQualifications(ages, genders, children) && updateVacancy(numOfPeople, Math.abs(numOfPeople) != 1)[0];
     }
 
