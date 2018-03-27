@@ -4,6 +4,7 @@ import com.google.firebase.firestore.GeoPoint;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class Shelter {
@@ -20,6 +21,7 @@ public class Shelter {
     private String address;
     private List<String> notes;
     private String phoneNumber;
+    private HashMap<String, User.OccupantType> occupants;
 
     public enum Gender {
         MEN, WOMEN, BOTH
@@ -68,6 +70,8 @@ public class Shelter {
         this.address = address;
         this.notes = notes;
         this.phoneNumber = phone;
+
+        occupants = new HashMap<>();
     }
 
     public String getName()
@@ -153,5 +157,15 @@ public class Shelter {
 
     public void setChildrenAllowed(boolean childrenAllowed) {
         this.childrenAllowed = childrenAllowed;
+    }
+
+    public void addOccupant(String name, User.OccupantType type)
+    {
+        occupants.put(name, type);
+    }
+
+    public HashMap<String, User.OccupantType> getOccupants()
+    {
+        return occupants;
     }
 }

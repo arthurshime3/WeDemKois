@@ -20,10 +20,6 @@ public class User
         INDIVIDUAL, GROUP
     }
 
-    public User() {
-
-    }
-
     public User(String user, UserType uT, String firstName, String lastName)
     {
         this.username = user;
