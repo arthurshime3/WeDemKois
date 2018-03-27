@@ -54,6 +54,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Log.d("DashboardActivity", documentSnapshot.toString());
                 currentUser = documentSnapshot.toObject(User.class);
                 Log.d("DashboardActivity", currentUser.toString());
                 updateUI(currentUser);

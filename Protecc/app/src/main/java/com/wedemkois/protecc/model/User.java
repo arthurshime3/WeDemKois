@@ -20,6 +20,12 @@ public class User
         INDIVIDUAL, GROUP
     }
 
+    // Default no-arg constructor needed to retrieve a User from firestore
+    public User()
+    {
+
+    }
+
     public User(String user, UserType uT, String firstName, String lastName)
     {
         this.username = user;

@@ -2,14 +2,22 @@ package com.wedemkois.protecc.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.wedemkois.protecc.Filters;
 import com.wedemkois.protecc.R;
 import com.wedemkois.protecc.model.Shelter;
@@ -54,7 +62,9 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
 
     private Shelter currentShelter;
     private User user;
-
+    private String shelterId;
+    private FirebaseFirestore mDatabase;
+    private DocumentReference mShelterRef;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,7 +72,26 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
         setContentView(R.layout.shelter_claim);
         ButterKnife.bind(this);
 
+
         claimBedsButton.setOnClickListener(this);
+
+        shelterId = getIntent().getStringExtra("shelter_id");
+
+        mDatabase = FirebaseFirestore.getInstance();
+        mShelterRef = mDatabase.collection("shelters").document(shelterId);
+        mShelterRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                currentShelter = documentSnapshot.toObject(Shelter.class);
+                Log.d("DashboardActivity", currentShelter.toString());
+                onShelterLoaded(currentShelter);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("DashboardActivity", e.toString());
+            }
+        });
 
     }
 
@@ -83,10 +112,13 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
                 if (errorMessage.getVisibility() == View.VISIBLE)
                     errorMessage.setVisibility(View.INVISIBLE);
                 Intent newIntent = new Intent(ShelterClaimActivity.this, ShelterDetailActivity.class);
+                newIntent.putExtra("shelter_id", shelterId);
                 startActivity(newIntent);
             }
             else
             {
+                Toast toast = Toast.makeText(getApplicationContext(), "checkInput() failed", Toast.LENGTH_SHORT);
+                toast.show();
                 //display warning
                 errorMessage.setVisibility(View.VISIBLE);
             }
@@ -117,12 +149,12 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
         int i = 0;
         if (maleCheckBox.isChecked())
         {
-            genders[i] = "Men";
+            genders[i] = "MEN";
             i++;
         }
         if (femaleCheckBox.isChecked())
         {
-            genders[i] = "Women";
+            genders[i] = "WOMEN";
             i++;
         }
 
@@ -136,28 +168,29 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
         i = 0;
         if (youngAdultCheckBox.isChecked())
         {
-            ages[i] = "Young adults";
+            ages[i] = "YOUNGADULTS";
             i++;
         }
         if (adultCheckBox.isChecked())
         {
-            ages[i] = "Adult";
+            ages[i] = "ADULT";
             i++;
         }
 
         int numOfPeople = Integer.parseInt(numOfUsers.getText().toString());
+        Log.d("checkInput", "We got past checkInput");
         return checkQualifications(ages, genders, children) && updateVacancy(numOfPeople, Math.abs(numOfPeople) != 1)[0];
     }
 
     private boolean checkQualifications(String[] ageGroup, String[] gender, boolean childrenAllowed) {
-        if (!(currentShelter.getAgeRange().equals("All"))) {
+        if (!(currentShelter.getAgeRange().equals("ALL"))) {
             for (int i = 0; i < ageGroup.length; i++) {
                 if (!(ageGroup[i].equals(currentShelter.getAgeRange()))) {
                     return false;
                 }
             }
         }
-        if (!(currentShelter.getGender().equals("Both"))) {
+        if (!(currentShelter.getGender().equals("BOTH"))) {
             for (int i = 0; i < gender.length; i++) {
                 if (!(gender[i].equals(currentShelter.getGender()))) {
                     return false;
