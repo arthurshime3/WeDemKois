@@ -8,7 +8,10 @@ import java.util.List;
 
 public class Shelter {
     private String name;
-    private String capacity;
+    private String individualCapacity;
+    private String groupCapacity;
+    private String individualBedsTaken;
+    private String groupBedsTaken;
     private String ageRange;
     private String gender;
     private boolean childrenAllowed;
@@ -29,12 +32,16 @@ public class Shelter {
     public Shelter() { }
 
     // The parser constructor, calls the full param constructor
-    public Shelter(String name, String capacity, String ageRange, String gender, String childrenAllowed,
-                   String requirements, String longitude, String latitude, String address, String notes, String phone)
+    public Shelter(String name, String individualCapacity, String groupCapacity, String individualBedsTaken, String groupBedsTaken,
+                   String ageRange, String gender, String childrenAllowed, String requirements, String longitude, String latitude,
+                   String address, String notes, String phone)
     {
         this(
                 name.trim(),
-                capacity,
+                individualCapacity,
+                groupCapacity,
+                individualBedsTaken,
+                groupBedsTaken,
                 ageRange.replaceAll("\\s+","").toUpperCase(),
                 gender.replaceAll("\\s+","").toUpperCase(),
                 childrenAllowed.replaceAll("\\s+","").equals("T"),
@@ -45,11 +52,14 @@ public class Shelter {
                 phone);
     }
 
-    public Shelter(String name, String capacity, String ageRange, String gender,
-                   boolean childrenAllowed, String requirements, GeoPoint coordinates,
+    public Shelter(String name, String individualCapacity, String groupCapacity, String individualBedsTaken, String groupBedsTaken,
+                   String ageRange, String gender, boolean childrenAllowed, String requirements, GeoPoint coordinates,
                    String address, List<String> notes, String phone) {
         this.name = name;
-        this.capacity = capacity;
+        this.individualCapacity = individualCapacity;
+        this.groupCapacity = groupCapacity;
+        this.individualBedsTaken =  individualBedsTaken;
+        this.groupBedsTaken = groupBedsTaken;
         this.ageRange = ageRange;
         this.gender = gender;
         this.childrenAllowed = childrenAllowed;
@@ -88,12 +98,24 @@ public class Shelter {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getCapacity()
-    { return capacity; }
+    public String getIndividualCapacity()
+    { return individualCapacity; }
 
-    public void setCapacity(String capacity) {
-        this.capacity = capacity;
+    public void setIndividualCapacity(String capacity) {
+        this.individualCapacity = capacity;
     }
+
+    public String getGroupCapacity() { return groupCapacity; }
+
+    public void setGroupCapacity(String capacity) { this.groupCapacity = capacity; }
+
+    public String getIndividualBedsTaken() { return individualBedsTaken; }
+
+    public void setIndividualBedsTaken(String taken) { this.individualBedsTaken = taken; }
+
+    public String getGroupBedsTaken() { return groupBedsTaken; }
+
+    public void setGroupBedsTaken(String taken) { this.groupBedsTaken = taken; }
 
     public GeoPoint getCoordinates()
     { return coordinates; }

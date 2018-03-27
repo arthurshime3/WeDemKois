@@ -1,11 +1,13 @@
 package com.wedemkois.protecc.controllers;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -15,6 +17,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.wedemkois.protecc.Filters;
 import com.wedemkois.protecc.R;
 import com.wedemkois.protecc.model.Shelter;
 import com.wedemkois.protecc.model.User;
@@ -27,7 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class ShelterDetailActivity extends AppCompatActivity {
+public class ShelterDetailActivity extends AppCompatActivity implements View.OnClickListener{
     private String shelterId;
 
     @BindView(R.id.shelterDetailShelterName)
@@ -88,11 +91,15 @@ public class ShelterDetailActivity extends AppCompatActivity {
                 Log.d("DashboardActivity", e.toString());
             }
         });
+
+        findViewById(R.id.shelterDetailClaimBedsButton).setOnClickListener(this);
     }
 
     public void onShelterLoaded(Shelter shelter) {
+        currentShelter = shelter;
+
         shelterNameTextView.setText(shelter.getName());
-        shelterCapacityTextView.setText(shelter.getCapacity());
+        updateCapacityTextView();
         shelterAgeGroupTextView.setText(shelter.getAgeRange());
         shelterGenderTextView.setText(shelter.getGender());
         shelterChildrenTextView.setText(shelter.isChildrenAllowed() ? "Children allowed" : "Children not allowed");
@@ -101,7 +108,21 @@ public class ShelterDetailActivity extends AppCompatActivity {
         shelterAddressTextView.setText(shelter.getAddress());
         shelterNotesTextView.setText(String.join(",", shelter.getNotes()));
         shelterPhoneTextView.setText(shelter.getPhoneNumber());
+    }
 
+    private void updateCapacityTextView()
+    {
+        int totalCapacity = Integer.parseInt(currentShelter.getIndividualCapacity()) + Integer.parseInt(currentShelter.getGroupCapacity()) * 4;
+        int bedsTaken =  Integer.parseInt(currentShelter.getIndividualBedsTaken()) + Integer.parseInt(currentShelter.getGroupBedsTaken()) * 4;
+        shelterCapacityTextView.setText((totalCapacity - bedsTaken) + " out of " + totalCapacity + " total beds");
+    }
 
+    public void onClick(View view) {
+        int i = view.getId();
+        if (i == R.id.shelterDetailClaimBedsButton) {
+            Intent newIntent = new Intent(ShelterDetailActivity.this, ShelterClaimActivity.class);
+//            newIntent.putExtra("shelter_id", currentShelter);
+            startActivity(newIntent);
+        }
     }
 }

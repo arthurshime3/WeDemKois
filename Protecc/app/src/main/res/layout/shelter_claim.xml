@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/sc_shelterName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Shelter"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/sc_nameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/sc_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="First and Last Name"
+            android:inputType="textPersonName"
+            app:layout_constraintTop_toBottomOf="@+id/sc_nameTextView" />
+
+        <TextView
+            android:id="@+id/sc_numOfPeopleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Party Size"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@+id/sc_name" />
+
+        <EditText
+            android:id="@+id/sc_numOfPeople"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:ems="5"
+            android:inputType="number"
+            app:layout_constraintTop_toBottomOf="@+id/sc_numOfPeopleTextView" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/sc_genderTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gender"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"  />
+
+        <CheckBox
+            android:id="@+id/sc_maleCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Male"
+            app:layout_constraintTop_toBottomOf="@+id/sc_genderTextView"  />
+
+        <CheckBox
+            android:id="@+id/sc_femaleCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Female"
+            app:layout_constraintTop_toBottomOf="@+id/sc_maleCheckBox"  />
+
+        <CheckBox
+            android:id="@+id/sc_nonBinaryCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Non-binary"
+            app:layout_constraintTop_toBottomOf="@+id/sc_femaleCheckBox"  />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/sc_ageTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Age Range"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
+
+
+        <CheckBox
+            android:id="@+id/sc_childrenCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Children (12 and younger)"
+            tools:layout_editor_absoluteY="32dp"
+            app:layout_constraintTop_toBottomOf="@+id/sc_ageTextView" />
+
+        <CheckBox
+            android:id="@+id/sc_youngAdultCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Young Adults (13 - 17)"
+            tools:layout_editor_absoluteY="32dp"
+            app:layout_constraintTop_toBottomOf="@+id/sc_childrenCheckBox" />
+
+        <CheckBox
+            android:id="@+id/sc_adultCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Adults (18+)"
+            tools:layout_editor_absoluteY="32dp"
+            app:layout_constraintTop_toBottomOf="@+id/sc_youngAdultCheckBox" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <Button
+        android:id="@+id/sc_claimBedsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Claim Beds" />
+
+</LinearLayout>
