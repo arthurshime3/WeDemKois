@@ -105,7 +105,7 @@ public class Shelter {
         this.individualCapacity = capacity;
     }
 
-    public String getGroupCapcity() { return groupCapacity; }
+    public String getGroupCapacity() { return groupCapacity; }
 
     public void setGroupCapacity(String capacity) { this.groupCapacity = capacity; }
 

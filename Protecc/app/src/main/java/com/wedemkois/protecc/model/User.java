@@ -6,12 +6,18 @@ package com.wedemkois.protecc.model;
 
 public class User
 {
-    private String username, firstName, lastName;
+    private String username, firstName, lastName, shelter;
     private UserType userType;
+    private OccupantType occupantType;
 
     public enum UserType
     {
         USER, ADMIN
+    }
+
+    public enum OccupantType
+    {
+        INDIVIDUAL, GROUP
     }
 
     public User() {
@@ -31,7 +37,6 @@ public class User
         return username;
     }
 
-
     public UserType getUserType() {return userType;}
 
     public String getName() {return firstName + " " + lastName;}
@@ -42,6 +47,26 @@ public class User
 
     public String getLastName() {
         return lastName;
+    }
+
+    public void setShelter(String shelterName)
+    {
+        shelter = shelterName;
+    }
+
+    public String getShelter()
+    {
+        return shelter;
+    }
+
+    public OccupantType getOccupantType()
+    {
+        return occupantType;
+    }
+
+    public void setOccupantType(OccupantType o)
+    {
+        occupantType = o;
     }
 
     @Override

@@ -81,7 +81,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             int counter = 0;
             while ((splitLine = reader.readNext()) != null) {
                 Shelter newShelter = new Shelter(splitLine[1], splitLine[2], splitLine[3], splitLine[4],
-                        splitLine[5], splitLine[6], splitLine[7], splitLine[8], splitLine[9], splitLine[10], splitLine[11]);
+                        splitLine[5], splitLine[6], splitLine[7], splitLine[8], splitLine[9], splitLine[10],
+                        splitLine[11], splitLine[12], splitLine[13], splitLine[14]);
                 Log.d("addSheltersToDatabase","Hi");
                 mDatabase.collection("shelters").document(counter + "").set(newShelter);
                 counter++;
