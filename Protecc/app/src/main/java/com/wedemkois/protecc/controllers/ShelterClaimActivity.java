@@ -107,6 +107,7 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
             {
                 // beds successfully claimed
                 Intent newIntent = new Intent(ShelterClaimActivity.this, ShelterDetailActivity.class);
+                newIntent.putExtra("shelter_id", shelterId);
                 startActivity(newIntent);
             }
             else
@@ -142,12 +143,12 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
         int i = 0;
         if (maleCheckBox.isChecked())
         {
-            genders[i] = "Men";
+            genders[i] = "MEN";
             i++;
         }
         if (femaleCheckBox.isChecked())
         {
-            genders[i] = "Women";
+            genders[i] = "WOMEN";
             i++;
         }
 
@@ -161,12 +162,12 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
         i = 0;
         if (youngAdultCheckBox.isChecked())
         {
-            ages[i] = "Young adults";
+            ages[i] = "YOUNGADULTS";
             i++;
         }
         if (adultCheckBox.isChecked())
         {
-            ages[i] = "Adult";
+            ages[i] = "ADULT";
             i++;
         }
 
@@ -176,14 +177,14 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
     }
 
     private boolean checkQualifications(String[] ageGroup, String[] gender, boolean childrenAllowed) {
-        if (!(currentShelter.getAgeRange().equals("All"))) {
+        if (!(currentShelter.getAgeRange().equals("ALL"))) {
             for (int i = 0; i < ageGroup.length; i++) {
                 if (!(ageGroup[i].equals(currentShelter.getAgeRange()))) {
                     return false;
                 }
             }
         }
-        if (!(currentShelter.getGender().equals("Both"))) {
+        if (!(currentShelter.getGender().equals("BOTH"))) {
             for (int i = 0; i < gender.length; i++) {
                 if (!(gender[i].equals(currentShelter.getGender()))) {
                     return false;
