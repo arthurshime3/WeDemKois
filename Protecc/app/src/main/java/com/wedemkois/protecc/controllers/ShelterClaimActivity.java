@@ -57,6 +57,9 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
     @BindView(R.id.sc_adultCheckBox)
     CheckBox adultCheckBox;
 
+    @BindView(R.id.sc_error)
+    TextView errorMessage;
+
     private Shelter currentShelter;
     private User user;
     private String shelterId;
@@ -106,6 +109,8 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
             if (checkInput())
             {
                 // beds successfully claimed
+                if (errorMessage.getVisibility() == View.VISIBLE)
+                    errorMessage.setVisibility(View.INVISIBLE);
                 Intent newIntent = new Intent(ShelterClaimActivity.this, ShelterDetailActivity.class);
                 newIntent.putExtra("shelter_id", shelterId);
                 startActivity(newIntent);
@@ -115,6 +120,7 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
                 Toast toast = Toast.makeText(getApplicationContext(), "checkInput() failed", Toast.LENGTH_SHORT);
                 toast.show();
                 //display warning
+                errorMessage.setVisibility(View.VISIBLE);
             }
         }
     }

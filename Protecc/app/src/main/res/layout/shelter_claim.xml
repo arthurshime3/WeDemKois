@@ -146,4 +146,13 @@
         android:layout_height="wrap_content"
         android:text="Claim Beds" />
 
+    <TextView
+        android:id="@+id/sc_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Error: Not all fields filled in properly"
+        android:textColor="@android:color/black"
+        android:visibility="invisible"
+        android:textSize="12sp"  />
+
 </LinearLayout>
