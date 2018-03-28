@@ -25,8 +25,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import butterknife.BindView;
-
 public class DashboardActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView nameView;
     private TextView userTypeView;
@@ -35,6 +33,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     private Button checkOutButton;
 
     private User currentUser;
+    private Shelter currentShelter;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore mDatabase;
@@ -57,16 +56,18 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseFirestore.getInstance();
 
+//        addSheltersToDatabase();
+
         String uid = mAuth.getUid();
 
         DocumentReference docRef = mDatabase.collection("users").document(uid);
-
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Log.d("DashboardActivity", documentSnapshot.toString());
                 currentUser = documentSnapshot.toObject(User.class);
                 Log.d("DashboardActivity", currentUser.toString());
+                retrieveCurrentShelter();
                 updateUI(currentUser);
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -76,7 +77,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
-        addSheltersToDatabase();
+
 
     }
 
@@ -113,17 +114,32 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
     }
 
-    private void updateUI(User user) {
-        if(user==null) {
-            return;
+    private void retrieveCurrentShelter() {
+        if (!currentUser.getShelterId().equals("")) {
+            mDatabase.collection("shelters").document(currentUser.getShelterId())
+                    .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    currentShelter = documentSnapshot.toObject(Shelter.class);
+                    updateShelterUI(currentShelter);
+                    Log.d("DashboardActivity", currentShelter.toString());
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("DashboardActivity", e.toString());
+                }
+            });
+        } else {
+            updateShelterUI(null);
         }
+    }
 
-        nameView.setText(user.getName());
-        userTypeView.setText(user.getUserType().toString());
 
-        if (user.getShelter() != null)
+    private void updateShelterUI(Shelter shelter) {
+        if (shelter != null)
         {
-            currentShelterView.setText(user.getShelter().getName());
+            currentShelterView.setText(shelter.getName());
             currentShelterView.setVisibility(View.VISIBLE);
             checkOutButton.setVisibility(View.VISIBLE);
             currentShelterHeaderView.setVisibility(View.VISIBLE);
@@ -134,6 +150,14 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             checkOutButton.setVisibility(View.INVISIBLE);
             currentShelterHeaderView.setVisibility(View.INVISIBLE);
         }
+    }
+    private void updateUI(User user) {
+        if(user==null) {
+            return;
+        }
+
+        nameView.setText(user.getName());
+        userTypeView.setText(user.getUserType().toString());
 //        displayShelters();
     }
 
@@ -142,16 +166,54 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         int i = view.getId();
         if (i == R.id.logoutButton) {
             mAuth.signOut();
-            Intent newIntent = new Intent(DashboardActivity.this, BaseActivity.class);
+            Intent newIntent = new Intent(DashboardActivity.this, WelcomeActivity.class);
             newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(newIntent);
         } else if (i == R.id.shelterViewButton) {
             startActivity(new Intent(DashboardActivity.this, ShelterSearchActivity.class));
         } else if (i == R.id.shelterCheckOutButton)
         {
-            currentUser.getShelter().removeOccupant(currentUser.getUsername(), currentUser.getOccupantType());
-            currentUser.setShelter(null);
-            updateUI(currentUser);
+            if(currentUser.getShelterId()!="") {
+                currentShelter.removeOccupant(currentUser.getUsername(), currentUser.getOccupantType());
+                pushShelterUpdates();
+                currentUser.setShelterId("");
+                pushUserUpdates();
+                updateUI(currentUser);
+                updateShelterUI(null);
+            }
         }
+    }
+
+    private void pushShelterUpdates () {
+        mDatabase.collection("shelters")
+                .document(currentUser.getShelterId())
+                .set(currentShelter)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("pushUpdates", "shelter written successfully");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("pushUpdates", e.toString());
+                    }
+                });
+    }
+    private void pushUserUpdates() {
+        mDatabase.collection("users").document(mAuth.getUid()).set(currentUser)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("pushUpdates", "user written successfully");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("pushUpdates", e.toString());
+                    }
+                });
     }
 }
