@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -24,9 +25,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import butterknife.BindView;
+
 public class DashboardActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView nameView;
     private TextView userTypeView;
+    private TextView currentShelterHeaderView;
+    private TextView currentShelterView;
+    private Button checkOutButton;
 
     private User currentUser;
 
@@ -40,9 +46,13 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
         nameView = findViewById(R.id.nameText);
         userTypeView = findViewById(R.id.userTypeText);
+        currentShelterHeaderView = findViewById(R.id.currentShelterHeader);
+        currentShelterView = findViewById(R.id.currentShelter);
+        checkOutButton = findViewById(R.id.shelterCheckOutButton);
 
         findViewById(R.id.logoutButton).setOnClickListener(this);
         findViewById(R.id.shelterViewButton).setOnClickListener(this);
+        checkOutButton.setOnClickListener(this);
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseFirestore.getInstance();
@@ -54,6 +64,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Log.d("DashboardActivity", documentSnapshot.toString());
                 currentUser = documentSnapshot.toObject(User.class);
                 Log.d("DashboardActivity", currentUser.toString());
                 updateUI(currentUser);
@@ -81,7 +92,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             int counter = 0;
             while ((splitLine = reader.readNext()) != null) {
                 Shelter newShelter = new Shelter(splitLine[1], splitLine[2], splitLine[3], splitLine[4],
-                        splitLine[5], splitLine[6], splitLine[7], splitLine[8], splitLine[9], splitLine[10], splitLine[11]);
+                        splitLine[5], splitLine[6], splitLine[7], splitLine[8], splitLine[9], splitLine[10],
+                        splitLine[11], splitLine[12], splitLine[13], splitLine[14]);
                 Log.d("addSheltersToDatabase","Hi");
                 mDatabase.collection("shelters").document(counter + "").set(newShelter);
                 counter++;
@@ -109,6 +121,19 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         nameView.setText(user.getName());
         userTypeView.setText(user.getUserType().toString());
 
+        if (user.getShelter() != null)
+        {
+            currentShelterView.setText(user.getShelter().getName());
+            currentShelterView.setVisibility(View.VISIBLE);
+            checkOutButton.setVisibility(View.VISIBLE);
+            currentShelterHeaderView.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            currentShelterView.setVisibility(View.INVISIBLE);
+            checkOutButton.setVisibility(View.INVISIBLE);
+            currentShelterHeaderView.setVisibility(View.INVISIBLE);
+        }
 //        displayShelters();
     }
 
@@ -122,6 +147,11 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             startActivity(newIntent);
         } else if (i == R.id.shelterViewButton) {
             startActivity(new Intent(DashboardActivity.this, ShelterSearchActivity.class));
+        } else if (i == R.id.shelterCheckOutButton)
+        {
+            currentUser.getShelter().removeOccupant(currentUser.getUsername(), currentUser.getOccupantType());
+            currentUser.setShelter(null);
+            updateUI(currentUser);
         }
     }
 }
