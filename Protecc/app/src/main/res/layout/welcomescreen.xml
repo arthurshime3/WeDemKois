@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -33,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Already a user? Hit login. Or, hit register to sign up."
+        android:text="Already a user?  Tap login!\n\nOr, tap register to sign up."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,10 +42,12 @@
 
     <TextView
         android:id="@+id/welcomeMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="24dp"
+        android:layout_width="150dp"
+        android:layout_height="80dp"
         android:layout_marginTop="32dp"
-        android:text="Welcome!"
+        android:text="Welcome to Protecc!"
+        android:textSize="26sp"
+        android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
