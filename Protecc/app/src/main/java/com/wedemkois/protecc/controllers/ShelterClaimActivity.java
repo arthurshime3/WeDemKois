@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -32,9 +33,6 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
 
     @BindView(R.id.sc_claimBedsButton)
     Button claimBedsButton;
-
-    @BindView(R.id.sc_name)
-    TextView userName;
 
     @BindView(R.id.sc_numOfPeople)
     TextView numOfUsers;
@@ -57,12 +55,17 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
     @BindView(R.id.sc_adultCheckBox)
     CheckBox adultCheckBox;
 
-    @BindView(R.id.sc_error)
-    TextView errorMessage;
+    @BindView(R.id.sc_inputError)
+    TextView inputErrorMessage;
+
+    @BindView(R.id.sc_userError)
+    TextView userErrorMessage;
 
     private Shelter currentShelter;
-    private User user;
+    private User currentUser;
     private String shelterId;
+
+    private FirebaseAuth mAuth;
     private FirebaseFirestore mDatabase;
     private DocumentReference mShelterRef;
 
@@ -71,7 +74,6 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shelter_claim);
         ButterKnife.bind(this);
-
 
         claimBedsButton.setOnClickListener(this);
 
@@ -93,9 +95,27 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
             }
         });
 
+        mAuth = FirebaseAuth.getInstance();
+
+        String uid = mAuth.getUid();
+
+        DocumentReference docRef = mDatabase.collection("users").document(uid);
+
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Log.d("DashboardActivity", documentSnapshot.toString());
+                currentUser = documentSnapshot.toObject(User.class);
+                Log.d("DashboardActivity", currentUser.toString());
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("DashboardActivity", e.toString());
+            }
+        });
     }
 
-    // Don't know if I should have this method
     public void onShelterLoaded(Shelter shelter)
     {
         currentShelter = shelter;
@@ -106,26 +126,31 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View view) {
         int i = view.getId();
         if (i == R.id.sc_claimBedsButton) {
-            if (checkInput())
+            if (currentUser.getShelter() != null)   // user is already checked into a shelter
+            {
+                userErrorMessage.setVisibility(View.VISIBLE);
+            }
+            else if (checkIn())
             {
                 // beds successfully claimed
-                if (errorMessage.getVisibility() == View.VISIBLE)
-                    errorMessage.setVisibility(View.INVISIBLE);
-                Intent newIntent = new Intent(ShelterClaimActivity.this, ShelterDetailActivity.class);
-                newIntent.putExtra("shelter_id", shelterId);
+                if (inputErrorMessage.getVisibility() == View.VISIBLE)
+                    inputErrorMessage.setVisibility(View.INVISIBLE);
+                if (userErrorMessage.getVisibility() == View.VISIBLE)
+                    userErrorMessage.setVisibility(View.INVISIBLE);
+                Intent newIntent = new Intent(ShelterClaimActivity.this, DashboardActivity.class);
                 startActivity(newIntent);
             }
             else
             {
-                Toast toast = Toast.makeText(getApplicationContext(), "checkInput() failed", Toast.LENGTH_SHORT);
-                toast.show();
+//                Toast toast = Toast.makeText(getApplicationContext(), "checkInput() failed", Toast.LENGTH_SHORT);
+//                toast.show();
                 //display warning
-                errorMessage.setVisibility(View.VISIBLE);
+                inputErrorMessage.setVisibility(View.VISIBLE);
             }
         }
     }
 
-    private boolean checkInput()
+    private boolean checkIn()
     {
         int gendersCheckedCount = 0, agesCheckedCount = 0;
         if (maleCheckBox.isChecked()) gendersCheckedCount++;
@@ -140,7 +165,7 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
 
         if (agesCheckedCount == 0) return false;
 
-        if (userName.getText().toString().trim().isEmpty() || numOfUsers.getText().toString().trim().isEmpty())
+        if (numOfUsers.getText().toString().trim().isEmpty())
             return false;
 
         if (nonBinaryCheckBox.isChecked())
@@ -179,99 +204,23 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
 
         int numOfPeople = Integer.parseInt(numOfUsers.getText().toString());
         Log.d("checkInput", "We got past checkInput");
-        return checkQualifications(ages, genders, children) && updateVacancy(numOfPeople, Math.abs(numOfPeople) != 1)[0];
-    }
+        boolean[] vacancyData = currentShelter.updateVacancy(numOfPeople, numOfPeople > 1);
 
-    private boolean checkQualifications(String[] ageGroup, String[] gender, boolean childrenAllowed) {
-        if (!(currentShelter.getAgeRange().equals("ALL"))) {
-            for (int i = 0; i < ageGroup.length; i++) {
-                if (!(ageGroup[i].equals(currentShelter.getAgeRange()))) {
-                    return false;
-                }
-            }
-        }
-        if (!(currentShelter.getGender().equals("BOTH"))) {
-            for (int i = 0; i < gender.length; i++) {
-                if (!(gender[i].equals(currentShelter.getGender()))) {
-                    return false;
-                }
-            }
-        }
-        if (!(childrenAllowed == currentShelter.isChildrenAllowed())) return false;
-        return true;
-    }
-
-    /*
-    * Method that updates number of vacant beds at the shelter if possible.
-    * @param users can be positive (checking in) or negative (checking out)
-    * @param group true if a "group bed" is updating its vacancy
-    * @return boolean array of length 2, with index 0 being true if check-in/out was valid, false if not
-    *   and index 1 being true if the check in/out was a type group, false for type individual
-    */
-    private boolean[] updateVacancy(int users, boolean group) {
-        if (users == 1 && group)
-            throw new IllegalArgumentException("Error: A single user checking in is not a group");
-        if (users > 1 && !group)
-            throw new IllegalArgumentException("Error: More than one user checking in is a group");
-
-        boolean[] output = {false, group};
-        if (users == 0) {
-            output[0] = true;
-            return output;
-        } else if (!group)  // 1 user checking in or any number checking out
+        if (currentShelter.checkQualifications(ages, genders, children) && vacancyData[0])
         {
-            int bedsTaken = Integer.parseInt(currentShelter.getIndividualBedsTaken());
-            if (bedsTaken == 0 && users < 0) {
-                output[0] = false;
-                return output;
-            }
-            int vacancies = Integer.parseInt(currentShelter.getIndividualCapacity()) - bedsTaken;
-            if (vacancies >= users) {
-                currentShelter.setIndividualBedsTaken((Integer.parseInt(currentShelter.getIndividualBedsTaken()) + users) + "");
-                output[0] = true;
-                return output;
-            }
-            else    // individual beds full, check group beds (this code is only reached for checking in)
-            {
-                bedsTaken = Integer.parseInt(currentShelter.getGroupBedsTaken());
-                vacancies = Integer.parseInt(currentShelter.getGroupCapacity()) - bedsTaken;
+            Log.d("Check In", "Adding shelter " + currentShelter.getName() + " to user");
+            currentUser.setShelter(currentShelter);
+            Log.d("Check In", currentUser.getShelter().getName() + " has been added");
+            if (vacancyData[1]) //group
+                currentUser.setOccupantType(User.OccupantType.GROUP);
+            else
+                currentUser.setOccupantType(User.OccupantType.INDIVIDUAL);
 
-                if (vacancies > 0)  // check for open group beds
-                {
-                    currentShelter.setGroupBedsTaken((Integer.parseInt(currentShelter.getGroupBedsTaken()) + 1) + "");
-                    output[0] = true;
-                    return output;
-                }
+            currentShelter.addOccupant(currentUser.getUsername(), numOfPeople);
 
-                return output;  // no beds found
-            }
-        } else {    // group checking in or any number checking out
-            output[1] = true;
-            int bedsTaken = Integer.parseInt(currentShelter.getGroupBedsTaken());
-            if (bedsTaken == 0 && users < 0) {
-                output[0] = false;
-                return output;
-            }
-            int vacancies = Integer.parseInt(currentShelter.getGroupCapacity()) - bedsTaken;
-            if (vacancies >= users) {
-                currentShelter.setIndividualBedsTaken((Integer.parseInt(currentShelter.getIndividualBedsTaken()) + users) + "");
-                output[0] = true;
-                return output;
-            }
-            else    // group beds full, check individual beds (this code is only reached for checking in
-            {
-                bedsTaken = Integer.parseInt(currentShelter.getIndividualBedsTaken());
-                vacancies = Integer.parseInt(currentShelter.getIndividualCapacity()) - bedsTaken;
-
-                if (vacancies >= users)
-                {
-                    currentShelter.setIndividualBedsTaken((Integer.parseInt(currentShelter.getIndividualBedsTaken()) + users) + "");
-                    output[0] = true;
-                    return output;
-                }
-
-                return output;  // no beds found
-            }
+            return true;
         }
+        return false;
     }
+
 }
