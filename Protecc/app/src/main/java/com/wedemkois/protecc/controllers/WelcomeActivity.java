@@ -10,7 +10,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.wedemkois.protecc.R;
 
-public class BaseActivity extends AppCompatActivity {
+public class WelcomeActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class BaseActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            Intent newIntent = new Intent(BaseActivity.this, DashboardActivity.class);
+            Intent newIntent = new Intent(WelcomeActivity.this, DashboardActivity.class);
             newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(newIntent);
         }

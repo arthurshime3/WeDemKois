@@ -126,7 +126,7 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View view) {
         int i = view.getId();
         if (i == R.id.sc_claimBedsButton) {
-            if (currentUser.getShelter() != null)   // user is already checked into a shelter
+            if (currentUser.getShelterId() != "")   // user is already checked into a shelter
             {
                 userErrorMessage.setVisibility(View.VISIBLE);
             }
@@ -137,7 +137,11 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
                     inputErrorMessage.setVisibility(View.INVISIBLE);
                 if (userErrorMessage.getVisibility() == View.VISIBLE)
                     userErrorMessage.setVisibility(View.INVISIBLE);
+
+                pushUpdates();
                 Intent newIntent = new Intent(ShelterClaimActivity.this, DashboardActivity.class);
+                newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                newIntent.putExtra("shelter_id", shelterId);
                 startActivity(newIntent);
             }
             else
@@ -150,6 +154,35 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+
+    private void pushUpdates() {
+        mDatabase.collection("shelters").document(shelterId).set(currentShelter)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("pushUpdates", "shelter written successfully");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("pushUpdates", e.toString());
+                    }
+                });
+        mDatabase.collection("users").document(mAuth.getUid()).set(currentUser)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("pushUpdates", "user written successfully");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("pushUpdates", e.toString());
+                    }
+                });
+    }
     private boolean checkIn()
     {
         int gendersCheckedCount = 0, agesCheckedCount = 0;
@@ -209,8 +242,8 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
         if (currentShelter.checkQualifications(ages, genders, children) && vacancyData[0])
         {
             Log.d("Check In", "Adding shelter " + currentShelter.getName() + " to user");
-            currentUser.setShelter(currentShelter);
-            Log.d("Check In", currentUser.getShelter().getName() + " has been added");
+            currentUser.setShelterId(shelterId);
+            Log.d("Check In", currentUser.getShelterId() + " has been added");
             if (vacancyData[1]) //group
                 currentUser.setOccupantType(User.OccupantType.GROUP);
             else

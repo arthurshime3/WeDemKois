@@ -9,7 +9,7 @@ public class User
     private String username, firstName, lastName;
     private UserType userType;
     private OccupantType occupantType;
-    private Shelter shelter;
+    private String shelterId;
 
     public enum UserType
     {
@@ -33,6 +33,7 @@ public class User
         this.userType = uT;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.shelterId = "";
     }
 
     public String getUsername()
@@ -62,14 +63,12 @@ public class User
         occupantType = o;
     }
 
-    public Shelter getShelter()
-    {
-        return shelter;
+    public String getShelterId() {
+        return shelterId;
     }
 
-    public void setShelter(Shelter s)
-    {
-        shelter = s;
+    public void setShelterId(String shelterId) {
+        this.shelterId = shelterId;
     }
 
     @Override
