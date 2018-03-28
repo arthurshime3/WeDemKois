@@ -122,7 +122,6 @@ public class ShelterDetailActivity extends AppCompatActivity implements View.OnC
         if (i == R.id.shelterDetailClaimBedsButton) {
             Intent newIntent = new Intent(ShelterDetailActivity.this, ShelterClaimActivity.class);
             newIntent.putExtra("shelter_id", shelterId);
-//            newIntent.putExtra()
             startActivity(newIntent);
         }
     }

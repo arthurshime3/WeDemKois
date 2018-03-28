@@ -24,35 +24,17 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/sc_nameTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Name"
-            android:textColor="@android:color/black"
-            android:textSize="18sp" />
-
-        <EditText
-            android:id="@+id/sc_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="First and Last Name"
-            android:inputType="textPersonName"
-            app:layout_constraintTop_toBottomOf="@+id/sc_nameTextView" />
-
-        <TextView
             android:id="@+id/sc_numOfPeopleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Party Size"
             android:textColor="@android:color/black"
-            android:textSize="18sp"
-            app:layout_constraintTop_toBottomOf="@+id/sc_name" />
+            android:textSize="18sp"/>
 
         <EditText
             android:id="@+id/sc_numOfPeople"
             android:layout_width="wrap_content"
-            android:layout_height="36dp"
+            android:layout_height="wrap_content"
             android:ems="5"
             android:inputType="number"
             app:layout_constraintTop_toBottomOf="@+id/sc_numOfPeopleTextView" />
@@ -147,10 +129,19 @@
         android:text="Claim Beds" />
 
     <TextView
-        android:id="@+id/sc_error"
+    android:id="@+id/sc_inputError"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Error: Check that all fields are filled in and input values are\n valid for this shelter"
+    android:textColor="@android:color/black"
+    android:visibility="invisible"
+    android:textSize="12sp"  />
+
+    <TextView
+        android:id="@+id/sc_userError"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Error: Not all fields filled in properly"
+        android:text="Error: User is already checked into a shelter"
         android:textColor="@android:color/black"
         android:visibility="invisible"
         android:textSize="12sp"  />

@@ -21,7 +21,7 @@ public class Shelter {
     private String address;
     private List<String> notes;
     private String phoneNumber;
-    private HashMap<String, User.OccupantType> occupants;
+    private HashMap<String, Integer> occupants;   // maps username to number of people in their group
 
     public enum Gender {
         MEN, WOMEN, BOTH
@@ -72,6 +72,99 @@ public class Shelter {
         this.phoneNumber = phone;
 
         occupants = new HashMap<>();
+    }
+
+    public boolean checkQualifications(String[] ageGroup, String[] gender, boolean childrenAllowed) {
+        if (!getAgeRange().equals("ALL")) {
+            for (int i = 0; i < ageGroup.length; i++) {
+                if (!(ageGroup[i].equals(getAgeRange()))) {
+                    return false;
+                }
+            }
+        }
+        if (!getGender().equals("BOTH")) {
+            for (int i = 0; i < gender.length; i++) {
+                if (!(gender[i].equals(getGender()))) {
+                    return false;
+                }
+            }
+        }
+        if (!(childrenAllowed == isChildrenAllowed())) return false;
+        return true;
+    }
+
+    /*
+    * Method that updates number of vacant beds at the shelter if possible.
+    * @param users can be positive (checking in) or negative (checking out)
+    * @param group true if a "group bed" is updating its vacancy
+    * @return boolean array of length 2, with index 0 being true if check-in/out was valid, false if not
+    *   and index 1 being true if the check in/out was a type group, false for type individual
+    */
+    public boolean[] updateVacancy(int users, boolean group) {
+        if (users == 1 && group)
+            throw new IllegalArgumentException("Error: A single user checking in is not a group");
+        if (users > 1 && !group)
+            throw new IllegalArgumentException("Error: More than one user checking in is a group");
+
+        boolean[] output = {false, group};
+        if (users == 0) {
+            output[0] = true;
+            return output;
+        } else if (!group)  // 1 user checking in or any number checking out
+        {
+            int bedsTaken = Integer.parseInt(getIndividualBedsTaken());
+            if (bedsTaken == 0 && users < 0) {
+                output[0] = false;
+                return output;
+            }
+            int vacancies = Integer.parseInt(getIndividualCapacity()) - bedsTaken;
+            if (vacancies >= users) {
+                setIndividualBedsTaken((Integer.parseInt(getIndividualBedsTaken()) + users) + "");
+                output[0] = true;
+                return output;
+            }
+            else    // individual beds full, check group beds (this code is only reached for checking in)
+            {
+                bedsTaken = Integer.parseInt(getGroupBedsTaken());
+                vacancies = Integer.parseInt(getGroupCapacity()) - bedsTaken;
+
+                if (vacancies > 0)  // check for open group beds
+                {
+                    setGroupBedsTaken((Integer.parseInt(getGroupBedsTaken()) + 1) + "");
+                    output[0] = true;
+                    return output;
+                }
+
+                return output;  // no beds found
+            }
+        } else {    // group checking in or any number checking out
+            output[1] = true;
+            int bedsTaken = Integer.parseInt(getGroupBedsTaken());
+            if (bedsTaken == 0 && users < 0) {
+                output[0] = false;
+                return output;
+            }
+            int vacancies = Integer.parseInt(getGroupCapacity()) - bedsTaken;
+            if (vacancies >= users) {
+                setIndividualBedsTaken((Integer.parseInt(getIndividualBedsTaken()) + users) + "");
+                output[0] = true;
+                return output;
+            }
+            else    // group beds full, check individual beds (this code is only reached for checking in
+            {
+                bedsTaken = Integer.parseInt(getIndividualBedsTaken());
+                vacancies = Integer.parseInt(getIndividualCapacity()) - bedsTaken;
+
+                if (vacancies >= users)
+                {
+                    setIndividualBedsTaken((Integer.parseInt(getIndividualBedsTaken()) + users) + "");
+                    output[0] = true;
+                    return output;
+                }
+
+                return output;  // no beds found
+            }
+        }
     }
 
     public String getName()
@@ -159,13 +252,21 @@ public class Shelter {
         this.childrenAllowed = childrenAllowed;
     }
 
-    public void addOccupant(String name, User.OccupantType type)
+    public void addOccupant(String user, int num)
     {
-        occupants.put(name, type);
+        occupants.put(user, num);
     }
 
-    public HashMap<String, User.OccupantType> getOccupants()
+    public HashMap<String, Integer> getOccupants()
     {
         return occupants;
+    }
+
+    public void removeOccupant(String username, User.OccupantType occupantType)
+    {
+        if (!occupants.keySet().contains(username)) return;
+
+        updateVacancy(occupants.get(username) * -1, occupantType == User.OccupantType.GROUP);
+        occupants.remove(username);
     }
 }
