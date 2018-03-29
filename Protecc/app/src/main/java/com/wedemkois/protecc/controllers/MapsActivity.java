@@ -30,7 +30,6 @@ import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 
 import android.Manifest;
 import com.wedemkois.protecc.R;
-import com.wedemkois.protecc.model.MapMarker;
 import com.wedemkois.protecc.adapters.PermissionUtils;
 
 public class MapsActivity extends AppCompatActivity implements
@@ -39,7 +38,6 @@ public class MapsActivity extends AppCompatActivity implements
         OnMyLocationClickListener,
         ActivityCompat.OnRequestPermissionsResultCallback,
         OnMarkerClickListener
-//        , OnInfoWindowClickListener
 {
 
     private GoogleMap mMap;
@@ -88,19 +86,7 @@ public class MapsActivity extends AppCompatActivity implements
         getLocationPermission();
         enableMyLocation();
         mMap.setOnMarkerClickListener(this);
-        mMap.setOnMyLocationClickListener(this);
-
         addMarkersToMap();
-
-//        mMap.setOnInfoWindowClickListener(this);
-        // Add a marker in Sydney and move the camera
-//        MapMarker[] shelterMarkers = mapMaker();
-//        for (int i = 0; i < shelterMarkers.length; i++) {
-//            LatLng location = shelterMarkers[i].getLocation();
-//            mMap.addMarker(new MarkerOptions().position(location).
-//                    title(shelterMarkers[i].getShelterName()));
-//        }
-
     }
 
     /**
@@ -116,10 +102,7 @@ public class MapsActivity extends AppCompatActivity implements
     public boolean onMarkerClick(final Marker marker) {
         return false;
     }
-//    @Override
-//    public void onInfoWindowClick(Marker marker) {
-//        Toast.makeText(this, "Click Info Window", Toast.LENGTH_SHORT).show();
-//    }
+
     /**
      * When the cross hair is clicked, the map zooms toward my location
      * @return false so that we don't consume the event and the default behavior still occurs
