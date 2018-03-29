@@ -23,21 +23,31 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
 import com.google.android.gms.maps.CameraUpdate;
-
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 
 import android.Manifest;
 import com.wedemkois.protecc.R;
 import com.wedemkois.protecc.model.MapMarker;
 import com.wedemkois.protecc.adapters.PermissionUtils;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, OnMyLocationButtonClickListener,
-        OnMyLocationClickListener, ActivityCompat.OnRequestPermissionsResultCallback{
+public class MapsActivity extends AppCompatActivity implements
+        OnMapReadyCallback,
+        OnMyLocationButtonClickListener,
+        OnMyLocationClickListener,
+        ActivityCompat.OnRequestPermissionsResultCallback,
+        OnMarkerClickListener
+//        , OnInfoWindowClickListener
+{
 
     private GoogleMap mMap;
     private static final String FINE_LOCATION = android.Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COURSE_LOCATION = android.Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private Boolean mLocationPermissionsGranted = false;
+    private LatLng myLocation;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,17 +84,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-
-
-
-        }
         mMap.setOnMyLocationButtonClickListener(this);
-        mMap.setOnMyLocationClickListener(this);
         getLocationPermission();
         enableMyLocation();
+        mMap.setOnMarkerClickListener(this);
+        mMap.setOnMyLocationClickListener(this);
 
+        addMarkersToMap();
+
+//        mMap.setOnInfoWindowClickListener(this);
         // Add a marker in Sydney and move the camera
 //        MapMarker[] shelterMarkers = mapMaker();
 //        for (int i = 0; i < shelterMarkers.length; i++) {
@@ -95,6 +103,60 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    /**
+     * place to add the markers
+     */
+    private void addMarkersToMap() {
+        Marker mySistersHouse = mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(33.780174, -84.410142))
+                .title("My Sister's House")
+                .snippet("Phone Number: (404) 367-2465"));
+    }
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+        return false;
+    }
+//    @Override
+//    public void onInfoWindowClick(Marker marker) {
+//        Toast.makeText(this, "Click Info Window", Toast.LENGTH_SHORT).show();
+//    }
+    /**
+     * When the cross hair is clicked, the map zooms toward my location
+     * @return false so that we don't consume the event and the default behavior still occurs
+     * (I don't know what this means)
+     */
+    @Override
+    public boolean onMyLocationButtonClick() {
+        Toast.makeText(this, "Current Location button clicked", Toast.LENGTH_SHORT).show();
+        LocationManager locationManager = (LocationManager)
+                getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            Location location = locationManager.getLastKnownLocation(locationManager
+                    .getBestProvider(criteria, true));
+            myLocation = new LatLng(location.getLatitude(), location.getLongitude());
+            CameraUpdate point = CameraUpdateFactory.newLatLng(myLocation);
+            mMap.moveCamera(point);
+            mMap.animateCamera(point);
+
+            mMap.setMyLocationEnabled(true);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 15f));
+        }
+
+        return false;
+    }
+
+
+    @Override
+    public void onMyLocationClick(@NonNull Location location) {
+        Toast.makeText(this, "Current location:\n" + location, Toast.LENGTH_LONG).show();
+    }
+
+
+    /**
+     * Permission requests for my location to work
+     */
     private void enableMyLocation() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -106,36 +168,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mMap.setMyLocationEnabled(true);
         }
     }
-    @Override
-    public boolean onMyLocationButtonClick() {
-        Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
-        LocationManager locationManager = (LocationManager)
-                getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        Location location = locationManager.getLastKnownLocation(locationManager
-                .getBestProvider(criteria, true));
-        LatLng currentPos = new LatLng(location.getLatitude(), location.getLongitude());
-        CameraUpdate point = CameraUpdateFactory.newLatLng(currentPos);
-        mMap.moveCamera(point);
-        mMap.animateCamera(point);
-
-        mMap.setMyLocationEnabled(true);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentPos, 15f));
-        // Return false so that we don't consume the event and the default behavior still occurs
-        // (the camera animates to the user's current position).
-
-        return true;
-    }
-    @Override
-    public void onMyLocationClick(@NonNull Location location) {
-        Toast.makeText(this, "Current location:\n" + location, Toast.LENGTH_LONG).show();
-    }
-
-
-    private MapMarker[] mapMaker() {
-        return null;
-    }
-
 
     private void getLocationPermission(){
         String[] permissions = {android.Manifest.permission.ACCESS_FINE_LOCATION,
