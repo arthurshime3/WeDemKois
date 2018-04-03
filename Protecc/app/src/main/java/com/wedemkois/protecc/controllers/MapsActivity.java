@@ -126,7 +126,7 @@ public class MapsActivity extends AppCompatActivity implements
             Marker newMarker = mMap.addMarker(new MarkerOptions()
             .position(new LatLng(shelter.getCoordinates().getLatitude(), shelter.getCoordinates().getLongitude()))
             .title(shelter.getName())
-            .snippet(shelter.getAddress() + "\n" + shelter.getPhoneNumber()));
+            .snippet(shelter.getPhoneNumber()));
             markers.add(newMarker);
         }
 
