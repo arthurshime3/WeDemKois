@@ -48,7 +48,7 @@ public class Shelter {
                 gender.replaceAll("\\s+","").toUpperCase(),
                 childrenAllowed.replaceAll("\\s+","").equals("T"),
                 requirements,
-                new GeoPoint(Double.parseDouble(longitude), Double.parseDouble(latitude)),
+                new GeoPoint(Double.parseDouble(latitude), Double.parseDouble(longitude)),
                 address,
                 new ArrayList<>(Arrays.asList(notes.split(","))),
                 phone);

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 import android.location.Location;
 import android.location.LocationManager;
@@ -19,6 +20,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
@@ -29,8 +31,21 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 
 import android.Manifest;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.wedemkois.protecc.Filters;
 import com.wedemkois.protecc.R;
 import com.wedemkois.protecc.adapters.PermissionUtils;
+import com.wedemkois.protecc.model.Shelter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapsActivity extends AppCompatActivity implements
         OnMapReadyCallback,
@@ -39,6 +54,7 @@ public class MapsActivity extends AppCompatActivity implements
         ActivityCompat.OnRequestPermissionsResultCallback,
         OnMarkerClickListener
 {
+    private final int LIMIT = 50;
 
     private GoogleMap mMap;
     private static final String FINE_LOCATION = android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -46,6 +62,13 @@ public class MapsActivity extends AppCompatActivity implements
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private Boolean mLocationPermissionsGranted = false;
     private LatLng myLocation;
+
+    private FirebaseFirestore mDatabase;
+    private Query mQuery;
+    private Filters filters;
+
+    private List<Shelter> shelters;
+    private List<Marker> markers;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +79,12 @@ public class MapsActivity extends AppCompatActivity implements
         mapFragment.getMapAsync(this);
 
 
+        filters = getIntent().getExtras().getParcelable("filter_parcel");
+
+        mDatabase = FirebaseFirestore.getInstance();
+
+        shelters = new ArrayList<>();
+        markers = new ArrayList<>();
 
     }
     private void initMap() {
@@ -86,18 +115,71 @@ public class MapsActivity extends AppCompatActivity implements
         getLocationPermission();
         enableMyLocation();
         mMap.setOnMarkerClickListener(this);
-        addMarkersToMap();
+        filterShelters();
     }
 
     /**
      * place to add the markers
      */
     private void addMarkersToMap() {
-        Marker mySistersHouse = mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(33.780174, -84.410142))
-                .title("My Sister's House")
-                .snippet("Phone Number: (404) 367-2465"));
+        for (Shelter shelter: shelters) {
+            Marker newMarker = mMap.addMarker(new MarkerOptions()
+            .position(new LatLng(shelter.getCoordinates().getLatitude(), shelter.getCoordinates().getLongitude()))
+            .title(shelter.getName())
+            .snippet(shelter.getAddress() + "\n" + shelter.getPhoneNumber()));
+            markers.add(newMarker);
+        }
+
+        // Set the camera bounds correctly
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for (Marker marker : markers) {
+            builder.include(marker.getPosition());
+        }
+        LatLngBounds bounds = builder.build();
+
+        int padding = 100;
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+
+        mMap.moveCamera(cu);
+//        Marker mySistersHouse = mMap.addMarker(new MarkerOptions()
+//                .position(new LatLng(33.780174, -84.410142))
+//                .title("My Sister's House")
+//                .snippet("Phone Number: (404) 367-2465"));
     }
+
+    public void filterShelters() {
+        Query query = mDatabase.collection("shelters");
+
+        if (filters.hasName()) {
+            query = query.whereEqualTo("name", filters.getName());
+        }
+
+        if (filters.hasGender()) {
+            query = query.whereEqualTo("gender", filters.getGender().toString());
+        }
+
+        if (filters.hasAgeRange()) {
+            query = query.whereEqualTo("ageRange", filters.getAgeRange().toString());
+        }
+
+        // Limit items
+        query = query.limit(LIMIT);
+
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        shelters.add(document.toObject(Shelter.class));
+                        addMarkersToMap();
+                    }
+                } else {
+                    Log.d("MapsActivity", task.getException().toString());
+                }
+            }
+        });
+    }
+
     @Override
     public boolean onMarkerClick(final Marker marker) {
         return false;
