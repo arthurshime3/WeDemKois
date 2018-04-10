@@ -8,13 +8,22 @@ public class User
 {
     private String username, firstName, lastName;
     private UserType userType;
+    private OccupantType occupantType;
+    private String shelterId;
 
     public enum UserType
     {
         USER, ADMIN
     }
 
-    public User() {
+    public enum OccupantType
+    {
+        INDIVIDUAL, GROUP
+    }
+
+    // Default no-arg constructor needed to retrieve a User from firestore
+    public User()
+    {
 
     }
 
@@ -24,13 +33,13 @@ public class User
         this.userType = uT;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.shelterId = "";
     }
 
     public String getUsername()
     {
         return username;
     }
-
 
     public UserType getUserType() {return userType;}
 
@@ -42,6 +51,24 @@ public class User
 
     public String getLastName() {
         return lastName;
+    }
+
+    public OccupantType getOccupantType()
+    {
+        return occupantType;
+    }
+
+    public void setOccupantType(OccupantType o)
+    {
+        occupantType = o;
+    }
+
+    public String getShelterId() {
+        return shelterId;
+    }
+
+    public void setShelterId(String shelterId) {
+        this.shelterId = shelterId;
     }
 
     @Override

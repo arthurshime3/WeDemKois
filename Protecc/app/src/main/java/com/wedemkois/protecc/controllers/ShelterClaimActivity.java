@@ -1,0 +1,259 @@
+package com.wedemkois.protecc.controllers;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.wedemkois.protecc.Filters;
+import com.wedemkois.protecc.R;
+import com.wedemkois.protecc.model.Shelter;
+import com.wedemkois.protecc.model.User;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class ShelterClaimActivity extends AppCompatActivity implements View.OnClickListener{
+    @BindView(R.id.sc_shelterName)
+    TextView shelterNameTextView;
+
+    @BindView(R.id.sc_claimBedsButton)
+    Button claimBedsButton;
+
+    @BindView(R.id.sc_numOfPeople)
+    TextView numOfUsers;
+
+    @BindView(R.id.sc_maleCheckBox)
+    CheckBox maleCheckBox;
+
+    @BindView(R.id.sc_femaleCheckBox)
+    CheckBox femaleCheckBox;
+
+    @BindView(R.id.sc_nonBinaryCheckBox)
+    CheckBox nonBinaryCheckBox;
+
+    @BindView(R.id.sc_childrenCheckBox)
+    CheckBox childrenCheckBox;
+
+    @BindView(R.id.sc_youngAdultCheckBox)
+    CheckBox youngAdultCheckBox;
+
+    @BindView(R.id.sc_adultCheckBox)
+    CheckBox adultCheckBox;
+
+    @BindView(R.id.sc_inputError)
+    TextView inputErrorMessage;
+
+    @BindView(R.id.sc_userError)
+    TextView userErrorMessage;
+
+    private Shelter currentShelter;
+    private User currentUser;
+    private String shelterId;
+
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore mDatabase;
+    private DocumentReference mShelterRef;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.shelter_claim);
+        ButterKnife.bind(this);
+
+        claimBedsButton.setOnClickListener(this);
+
+        shelterId = getIntent().getStringExtra("shelter_id");
+
+        mDatabase = FirebaseFirestore.getInstance();
+        mShelterRef = mDatabase.collection("shelters").document(shelterId);
+        mShelterRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                currentShelter = documentSnapshot.toObject(Shelter.class);
+                Log.d("DashboardActivity", currentShelter.toString());
+                onShelterLoaded(currentShelter);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("DashboardActivity", e.toString());
+            }
+        });
+
+        mAuth = FirebaseAuth.getInstance();
+
+        String uid = mAuth.getUid();
+
+        DocumentReference docRef = mDatabase.collection("users").document(uid);
+
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Log.d("DashboardActivity", documentSnapshot.toString());
+                currentUser = documentSnapshot.toObject(User.class);
+                Log.d("DashboardActivity", currentUser.toString());
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("DashboardActivity", e.toString());
+            }
+        });
+    }
+
+    public void onShelterLoaded(Shelter shelter)
+    {
+        currentShelter = shelter;
+        shelterNameTextView.setText(currentShelter.getName());
+    }
+
+    @Override
+    public void onClick(View view) {
+        int i = view.getId();
+        if (i == R.id.sc_claimBedsButton) {
+            if (currentUser.getShelterId() != "")   // user is already checked into a shelter
+            {
+                userErrorMessage.setVisibility(View.VISIBLE);
+            }
+            else if (checkIn())
+            {
+                // beds successfully claimed
+                if (inputErrorMessage.getVisibility() == View.VISIBLE)
+                    inputErrorMessage.setVisibility(View.INVISIBLE);
+                if (userErrorMessage.getVisibility() == View.VISIBLE)
+                    userErrorMessage.setVisibility(View.INVISIBLE);
+
+                pushUpdates();
+                Intent newIntent = new Intent(ShelterClaimActivity.this, DashboardActivity.class);
+                newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                newIntent.putExtra("shelter_id", shelterId);
+                startActivity(newIntent);
+            }
+            else
+            {
+//                Toast toast = Toast.makeText(getApplicationContext(), "checkInput() failed", Toast.LENGTH_SHORT);
+//                toast.show();
+                //display warning
+                inputErrorMessage.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+
+    private void pushUpdates() {
+        mDatabase.collection("shelters").document(shelterId).set(currentShelter)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("pushUpdates", "shelter written successfully");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("pushUpdates", e.toString());
+                    }
+                });
+        mDatabase.collection("users").document(mAuth.getUid()).set(currentUser)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("pushUpdates", "user written successfully");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("pushUpdates", e.toString());
+                    }
+                });
+    }
+    private boolean checkIn()
+    {
+        int gendersCheckedCount = 0, agesCheckedCount = 0;
+        if (maleCheckBox.isChecked()) gendersCheckedCount++;
+        if (femaleCheckBox.isChecked()) gendersCheckedCount++;
+        if (nonBinaryCheckBox.isChecked()) gendersCheckedCount++;
+
+        if (gendersCheckedCount == 0) return false;
+
+        if (childrenCheckBox.isChecked()) agesCheckedCount++;
+        if (youngAdultCheckBox.isChecked()) agesCheckedCount++;
+        if (adultCheckBox.isChecked()) agesCheckedCount++;
+
+        if (agesCheckedCount == 0) return false;
+
+        if (numOfUsers.getText().toString().trim().isEmpty())
+            return false;
+
+        if (nonBinaryCheckBox.isChecked())
+            gendersCheckedCount--;
+        String[] genders = new String[gendersCheckedCount];
+        int i = 0;
+        if (maleCheckBox.isChecked())
+        {
+            genders[i] = "MEN";
+            i++;
+        }
+        if (femaleCheckBox.isChecked())
+        {
+            genders[i] = "WOMEN";
+            i++;
+        }
+
+        boolean children = false;
+        if (childrenCheckBox.isChecked())
+        {
+            agesCheckedCount--;
+            children = true;
+        }
+        String[] ages = new String[agesCheckedCount];
+        i = 0;
+        if (youngAdultCheckBox.isChecked())
+        {
+            ages[i] = "YOUNGADULTS";
+            i++;
+        }
+        if (adultCheckBox.isChecked())
+        {
+            ages[i] = "ADULT";
+            i++;
+        }
+
+        int numOfPeople = Integer.parseInt(numOfUsers.getText().toString());
+        Log.d("checkInput", "We got past checkInput");
+        boolean[] vacancyData = currentShelter.updateVacancy(numOfPeople, numOfPeople > 1);
+
+        if (currentShelter.checkQualifications(ages, genders, children) && vacancyData[0])
+        {
+            Log.d("Check In", "Adding shelter " + currentShelter.getName() + " to user");
+            currentUser.setShelterId(shelterId);
+            Log.d("Check In", currentUser.getShelterId() + " has been added");
+            if (vacancyData[1]) //group
+                currentUser.setOccupantType(User.OccupantType.GROUP);
+            else
+                currentUser.setOccupantType(User.OccupantType.INDIVIDUAL);
+
+            currentShelter.addOccupant(currentUser.getUsername(), numOfPeople);
+
+            return true;
+        }
+        return false;
+    }
+
+}

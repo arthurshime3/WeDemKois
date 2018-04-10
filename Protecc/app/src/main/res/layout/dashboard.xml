@@ -23,6 +23,9 @@
         android:layout_marginTop="44dp"
         android:gravity="center"
         android:text="Name"
+        android:textSize="28sp"
+        android:textStyle="italic"
+        android:textAllCaps="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -41,10 +44,40 @@
         android:id="@+id/shelterViewButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Shelters"
+        android:layout_marginTop="92dp"
+        android:text="Find Shelters"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userTypeText" />
+
+    <TextView
+        android:id="@+id/currentShelterHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Current Shelter:"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shelterViewButton" />
+
+    <TextView
+        android:id="@+id/currentShelter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.019"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currentShelterHeader" />
+
+    <Button
+        android:id="@+id/shelterCheckOutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Check Out"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currentShelter" />
 
 </android.support.constraint.ConstraintLayout>
