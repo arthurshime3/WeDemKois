@@ -13,12 +13,14 @@ import com.wedemkois.protecc.R;
 public class WelcomeActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcomescreen);
 
         final Button loginButton = findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
                 startActivity(new Intent(v.getContext(), LoginActivity.class));
             }
@@ -26,6 +28,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
         final Button registerButton = findViewById(R.id.registerButton);
         registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
                 startActivity(new Intent(v.getContext(), RegisterActivity.class));
             }

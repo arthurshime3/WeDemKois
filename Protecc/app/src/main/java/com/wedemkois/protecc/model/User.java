@@ -1,12 +1,14 @@
 package com.wedemkois.protecc.model;
 
 /**
- * Created by arthurshim on 2/13/18.
+ * Created by Arthur Shim on 2/13/18.
  */
 
 public class User
 {
-    private String username, firstName, lastName;
+    private String username;
+    private String firstName;
+    private String lastName;
     private UserType userType;
     private OccupantType occupantType;
     private String shelterId;
@@ -43,7 +45,7 @@ public class User
 
     public UserType getUserType() {return userType;}
 
-    public String getName() {return firstName + " " + lastName;}
+    public CharSequence getName() {return firstName + " " + lastName;}
 
     public String getFirstName() {
         return firstName;

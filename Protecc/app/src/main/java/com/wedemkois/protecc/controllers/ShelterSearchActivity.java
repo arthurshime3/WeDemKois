@@ -43,11 +43,13 @@ public class ShelterSearchActivity extends AppCompatActivity implements View.OnC
 
     }
 
+    @SuppressWarnings("EmptyMethod")
     @Override
     protected void onStart() {
         super.onStart();
     }
 
+    @SuppressWarnings("FeatureEnvy")
     private Filters createFiltersFromView() {
         Filters out = new Filters();
         out.setName(shelterNameEditText.getText().toString());

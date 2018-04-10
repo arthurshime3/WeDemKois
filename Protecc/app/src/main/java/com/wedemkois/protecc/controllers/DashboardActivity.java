@@ -15,12 +15,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 import com.wedemkois.protecc.R;
 import com.wedemkois.protecc.model.Shelter;
 import com.wedemkois.protecc.model.User;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -56,7 +57,13 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseFirestore.getInstance();
 
-//        addSheltersToDatabase();
+        // FLAG for overwriting the database with CSV data
+        // hopefully we don't need to do this for a while
+        boolean UPDATE_WITH_CSV = false;
+        //noinspection ConstantConditions
+        if (UPDATE_WITH_CSV) {
+            addSheltersToDatabase();
+        }
 
         String uid = mAuth.getUid();
 
@@ -81,23 +88,27 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
     }
 
+    @SuppressWarnings("MagicNumber")
     private void addSheltersToDatabase () {
         CSVReader reader = null;
         try {
-            reader = new CSVReader(
-                    new BufferedReader(new InputStreamReader(getResources().openRawResource(R.raw.shelterdb))),
-                    ',',
-                    '"',
-                    1);
-            String[] splitLine;
+            reader = new CSVReaderBuilder(new InputStreamReader(getResources().openRawResource(R.raw.shelterdb)))
+                    .withCSVParser(new CSVParserBuilder()
+                            .withQuoteChar('"')
+                            .withSeparator(',')
+                            .build())
+                    .withSkipLines(1)
+                    .build();
+            String[] splitLine = reader.readNext();
             int counter = 0;
-            while ((splitLine = reader.readNext()) != null) {
+            while (splitLine != null) {
                 Shelter newShelter = new Shelter(splitLine[1], splitLine[2], splitLine[3], splitLine[4],
                         splitLine[5], splitLine[6], splitLine[7], splitLine[8], splitLine[9], splitLine[10],
                         splitLine[11], splitLine[12], splitLine[13], splitLine[14]);
                 Log.d("addSheltersToDatabase","Hi");
                 mDatabase.collection("shelters").document(counter + "").set(newShelter);
                 counter++;
+                splitLine = reader.readNext();
             }
 
         } catch (FileNotFoundException e) {
@@ -107,15 +118,15 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         } finally {
             try {
                 reader.close();
-            } catch (IOException e) {
-
+            } catch (IOException ignored) {
+                Log.d("addSheltersToDatabase", ignored.toString());
             }
         }
 
     }
 
     private void retrieveCurrentShelter() {
-        if (!currentUser.getShelterId().equals("")) {
+        if (!"".equals(currentUser.getShelterId())) {
             mDatabase.collection("shelters").document(currentUser.getShelterId())
                     .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
@@ -161,26 +172,30 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 //        displayShelters();
     }
 
+    @SuppressWarnings("FeatureEnvy")
     @Override
     public void onClick(View view) {
         int i = view.getId();
-        if (i == R.id.logoutButton) {
-            mAuth.signOut();
-            Intent newIntent = new Intent(DashboardActivity.this, WelcomeActivity.class);
-            newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(newIntent);
-        } else if (i == R.id.shelterViewButton) {
-            startActivity(new Intent(DashboardActivity.this, ShelterSearchActivity.class));
-        } else if (i == R.id.shelterCheckOutButton)
-        {
-            if(currentUser.getShelterId()!="") {
-                currentShelter.removeOccupant(currentUser.getUsername(), currentUser.getOccupantType());
-                pushShelterUpdates();
-                currentUser.setShelterId("");
-                pushUserUpdates();
-                updateUI(currentUser);
-                updateShelterUI(null);
-            }
+        switch (i) {
+            case R.id.logoutButton:
+                mAuth.signOut();
+                Intent newIntent = new Intent(DashboardActivity.this, WelcomeActivity.class);
+                newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(newIntent);
+                break;
+            case R.id.shelterViewButton:
+                startActivity(new Intent(DashboardActivity.this, ShelterSearchActivity.class));
+                break;
+            case R.id.shelterCheckOutButton:
+                if (!"".equals(currentUser.getShelterId())) {
+                    currentShelter.removeOccupant(currentUser.getUsername(), currentUser.getOccupantType());
+                    pushShelterUpdates();
+                    currentUser.setShelterId("");
+                    pushUserUpdates();
+                    updateUI(currentUser);
+                    updateShelterUI(null);
+                }
+                break;
         }
     }
 
