@@ -2,9 +2,7 @@ package com.wedemkois.protecc.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -14,17 +12,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.wedemkois.protecc.Filters;
 import com.wedemkois.protecc.R;
 import com.wedemkois.protecc.model.Shelter;
-import com.wedemkois.protecc.model.User;
-
-import org.w3c.dom.Text;
-
-import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,8 +53,6 @@ public class ShelterDetailActivity extends AppCompatActivity implements View.OnC
     @BindView(R.id.shelterDetailPhoneTextView)
     TextView shelterPhoneTextView;
 
-    private FirebaseFirestore mDatabase;
-    private DocumentReference mShelterRef;
     private Shelter currentShelter;
 
 
@@ -76,8 +64,8 @@ public class ShelterDetailActivity extends AppCompatActivity implements View.OnC
 
         shelterId = getIntent().getStringExtra("shelter_id");
 
-        mDatabase = FirebaseFirestore.getInstance();
-        mShelterRef = mDatabase.collection("shelters").document(shelterId);
+        FirebaseFirestore mDatabase = FirebaseFirestore.getInstance();
+        DocumentReference mShelterRef = mDatabase.collection("shelters").document(shelterId);
         mShelterRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -95,6 +83,7 @@ public class ShelterDetailActivity extends AppCompatActivity implements View.OnC
         findViewById(R.id.shelterDetailClaimBedsButton).setOnClickListener(this);
     }
 
+    @SuppressWarnings("FeatureEnvy")
     public void onShelterLoaded(Shelter shelter) {
         currentShelter = shelter;
 
@@ -110,13 +99,15 @@ public class ShelterDetailActivity extends AppCompatActivity implements View.OnC
         shelterPhoneTextView.setText(shelter.getPhoneNumber());
     }
 
+    @SuppressWarnings("FeatureEnvy")
     private void updateCapacityTextView()
     {
-        int totalCapacity = Integer.parseInt(currentShelter.getIndividualCapacity()) + Integer.parseInt(currentShelter.getGroupCapacity()) * 4;
-        int bedsTaken =  Integer.parseInt(currentShelter.getIndividualBedsTaken()) + Integer.parseInt(currentShelter.getGroupBedsTaken()) * 4;
+        int totalCapacity = Integer.parseInt(currentShelter.getIndividualCapacity()) + (Integer.parseInt(currentShelter.getGroupCapacity()) * 4);
+        int bedsTaken = Integer.parseInt(currentShelter.getIndividualBedsTaken()) + (Integer.parseInt(currentShelter.getGroupBedsTaken()) * 4);
         shelterCapacityTextView.setText((totalCapacity - bedsTaken) + " out of " + totalCapacity + " total beds");
     }
 
+    @Override
     public void onClick(View view) {
         int i = view.getId();
         if (i == R.id.shelterDetailClaimBedsButton) {
@@ -124,25 +115,6 @@ public class ShelterDetailActivity extends AppCompatActivity implements View.OnC
             newIntent.putExtra("shelter_id", shelterId);
             startActivity(newIntent);
         }
-    }
-
-    public boolean checkQualifications(String[] ageGroup, String[] gender, boolean childrenAllowed) {
-        if (!(currentShelter.getAgeRange().equals("All"))) {
-            for (int i = 0; i < ageGroup.length; i++) {
-                if (!(ageGroup[i].equals(currentShelter.getAgeRange()))) {
-                    return false;
-                }
-            }
-        }
-        if (!(currentShelter.getGender().equals("Both"))) {
-            for (int i = 0; i < gender.length; i++) {
-                if (!(gender[i].equals(currentShelter.getGender()))) {
-                    return false;
-                }
-            }
-        }
-        if (!(childrenAllowed == currentShelter.isChildrenAllowed())) return false;
-        return true;
     }
 }
 

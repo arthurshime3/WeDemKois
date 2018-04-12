@@ -25,6 +25,7 @@ import android.support.v7.app.AppCompatActivity;
 /**
  * Utility class for access to runtime permissions.
  */
+@SuppressWarnings("UtilityClass")
 public abstract class PermissionUtils {
 
     /**
@@ -67,7 +68,7 @@ public abstract class PermissionUtils {
 
         private static final String ARGUMENT_FINISH_ACTIVITY = "finish";
 
-        private boolean mFinishActivity = false;
+        private final boolean mFinishActivity = false;
 
         /**
          * Creates a new instance of this dialog and optionally finishes the calling Activity
@@ -117,7 +118,7 @@ public abstract class PermissionUtils {
 
         private static final String ARGUMENT_FINISH_ACTIVITY = "finish";
 
-        private boolean mFinishActivity = false;
+        private final boolean mFinishActivity = false;
 
         /**
          * Creates a new instance of a dialog displaying the rationale for the use of the location

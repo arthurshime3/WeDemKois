@@ -26,7 +26,7 @@ public class ShelterAdapter extends FirestoreAdapter<ShelterAdapter.ViewHolder> 
 
     }
 
-    private OnShelterSelectedListener mListener;
+    private final OnShelterSelectedListener mListener;
 
     public ShelterAdapter(Query query, OnShelterSelectedListener listener) {
         super(query);
@@ -66,6 +66,7 @@ public class ShelterAdapter extends FirestoreAdapter<ShelterAdapter.ViewHolder> 
 
         public ViewHolder(View itemView) {
             super(itemView);
+            //noinspection ThisEscapedInObjectConstruction
             ButterKnife.bind(this, itemView);
         }
 

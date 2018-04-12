@@ -8,10 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -19,7 +16,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.wedemkois.protecc.Filters;
 import com.wedemkois.protecc.R;
 import com.wedemkois.protecc.model.Shelter;
 import com.wedemkois.protecc.model.User;
@@ -67,7 +63,6 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore mDatabase;
-    private DocumentReference mShelterRef;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,7 +75,7 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
         shelterId = getIntent().getStringExtra("shelter_id");
 
         mDatabase = FirebaseFirestore.getInstance();
-        mShelterRef = mDatabase.collection("shelters").document(shelterId);
+        DocumentReference mShelterRef = mDatabase.collection("shelters").document(shelterId);
         mShelterRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -116,7 +111,7 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
-    public void onShelterLoaded(Shelter shelter)
+    private void onShelterLoaded(Shelter shelter)
     {
         currentShelter = shelter;
         shelterNameTextView.setText(currentShelter.getName());
@@ -126,17 +121,19 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View view) {
         int i = view.getId();
         if (i == R.id.sc_claimBedsButton) {
-            if (currentUser.getShelterId() != "")   // user is already checked into a shelter
+            if (!"".equals(currentUser.getShelterId()))   // user is already checked into a shelter
             {
                 userErrorMessage.setVisibility(View.VISIBLE);
             }
             else if (checkIn())
             {
                 // beds successfully claimed
-                if (inputErrorMessage.getVisibility() == View.VISIBLE)
+                if (inputErrorMessage.getVisibility() == View.VISIBLE) {
                     inputErrorMessage.setVisibility(View.INVISIBLE);
-                if (userErrorMessage.getVisibility() == View.VISIBLE)
+                }
+                if (userErrorMessage.getVisibility() == View.VISIBLE) {
                     userErrorMessage.setVisibility(View.INVISIBLE);
+                }
 
                 pushUpdates();
                 Intent newIntent = new Intent(ShelterClaimActivity.this, DashboardActivity.class);
@@ -183,26 +180,46 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
                     }
                 });
     }
+    @SuppressWarnings("FeatureEnvy")
     private boolean checkIn()
     {
-        int gendersCheckedCount = 0, agesCheckedCount = 0;
-        if (maleCheckBox.isChecked()) gendersCheckedCount++;
-        if (femaleCheckBox.isChecked()) gendersCheckedCount++;
-        if (nonBinaryCheckBox.isChecked()) gendersCheckedCount++;
+        int gendersCheckedCount = 0;
+        int agesCheckedCount = 0;
+        if (maleCheckBox.isChecked()) {
+            gendersCheckedCount++;
+        }
+        if (femaleCheckBox.isChecked()) {
+            gendersCheckedCount++;
+        }
+        if (nonBinaryCheckBox.isChecked()) {
+            gendersCheckedCount++;
+        }
 
-        if (gendersCheckedCount == 0) return false;
-
-        if (childrenCheckBox.isChecked()) agesCheckedCount++;
-        if (youngAdultCheckBox.isChecked()) agesCheckedCount++;
-        if (adultCheckBox.isChecked()) agesCheckedCount++;
-
-        if (agesCheckedCount == 0) return false;
-
-        if (numOfUsers.getText().toString().trim().isEmpty())
+        if (gendersCheckedCount == 0) {
             return false;
+        }
 
-        if (nonBinaryCheckBox.isChecked())
+        if (childrenCheckBox.isChecked()) {
+            agesCheckedCount++;
+        }
+        if (youngAdultCheckBox.isChecked()) {
+            agesCheckedCount++;
+        }
+        if (adultCheckBox.isChecked()) {
+            agesCheckedCount++;
+        }
+
+        if (agesCheckedCount == 0) {
+            return false;
+        }
+
+        if (numOfUsers.getText().toString().trim().isEmpty()) {
+            return false;
+        }
+
+        if (nonBinaryCheckBox.isChecked()) {
             gendersCheckedCount--;
+        }
         String[] genders = new String[gendersCheckedCount];
         int i = 0;
         if (maleCheckBox.isChecked())
@@ -245,9 +262,11 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
             currentUser.setShelterId(shelterId);
             Log.d("Check In", currentUser.getShelterId() + " has been added");
             if (vacancyData[1]) //group
+            {
                 currentUser.setOccupantType(User.OccupantType.GROUP);
-            else
+            } else {
                 currentUser.setOccupantType(User.OccupantType.INDIVIDUAL);
+            }
 
             currentShelter.addOccupant(currentUser.getUsername(), numOfPeople);
 
