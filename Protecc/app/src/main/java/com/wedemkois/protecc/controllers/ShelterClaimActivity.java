@@ -183,55 +183,17 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
     @SuppressWarnings("FeatureEnvy")
     private boolean checkIn()
     {
-        int gendersCheckedCount = 0;
-        int agesCheckedCount = 0;
-        if (maleCheckBox.isChecked()) {
-            gendersCheckedCount++;
-        }
-        if (femaleCheckBox.isChecked()) {
-            gendersCheckedCount++;
-        }
-        if (nonBinaryCheckBox.isChecked()) {
-            gendersCheckedCount++;
-        }
+        int agesCheckedCount = getAgesCheckedCount();
+        int gendersCheckedCount = getGendersCheckedCount();
 
-        if (gendersCheckedCount == 0) {
-            return false;
-        }
-
-        if (childrenCheckBox.isChecked()) {
-            agesCheckedCount++;
-        }
-        if (youngAdultCheckBox.isChecked()) {
-            agesCheckedCount++;
-        }
-        if (adultCheckBox.isChecked()) {
-            agesCheckedCount++;
-        }
-
-        if (agesCheckedCount == 0) {
-            return false;
-        }
-
-        if (numOfUsers.getText().toString().trim().isEmpty()) {
+        if (gendersCheckedCount == 0 || agesCheckedCount == 0 || numOfUsers.getText().toString().trim().isEmpty()) {
             return false;
         }
 
         if (nonBinaryCheckBox.isChecked()) {
             gendersCheckedCount--;
         }
-        String[] genders = new String[gendersCheckedCount];
-        int i = 0;
-        if (maleCheckBox.isChecked())
-        {
-            genders[i] = "MEN";
-            i++;
-        }
-        if (femaleCheckBox.isChecked())
-        {
-            genders[i] = "WOMEN";
-            i++;
-        }
+        String[] genders = getGenders(gendersCheckedCount);
 
         boolean children = false;
         if (childrenCheckBox.isChecked())
@@ -239,18 +201,8 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
             agesCheckedCount--;
             children = true;
         }
-        String[] ages = new String[agesCheckedCount];
-        i = 0;
-        if (youngAdultCheckBox.isChecked())
-        {
-            ages[i] = "YOUNGADULTS";
-            i++;
-        }
-        if (adultCheckBox.isChecked())
-        {
-            ages[i] = "ADULT";
-            i++;
-        }
+        String[] ages = getAges(agesCheckedCount);
+
 
         int numOfPeople = Integer.parseInt(numOfUsers.getText().toString());
         Log.d("checkInput", "We got past checkInput");
@@ -275,4 +227,71 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
         return false;
     }
 
+    private int getGendersCheckedCount()
+    {
+        int gendersCheckedCount = 0;
+        if (maleCheckBox.isChecked()) {
+            gendersCheckedCount++;
+        }
+        if (femaleCheckBox.isChecked()) {
+            gendersCheckedCount++;
+        }
+        if (nonBinaryCheckBox.isChecked()) {
+            gendersCheckedCount++;
+        }
+        return gendersCheckedCount;
+    }
+
+    private int getAgesCheckedCount()
+    {
+        int agesCheckedCount = 0;
+        if (childrenCheckBox.isChecked()) {
+            agesCheckedCount++;
+        }
+        if (youngAdultCheckBox.isChecked()) {
+            agesCheckedCount++;
+        }
+        if (adultCheckBox.isChecked()) {
+            agesCheckedCount++;
+        }
+        return agesCheckedCount;
+    }
+
+    private String[] getGenders(int gendersCheckedCount)
+    {
+        String[] genders = new String[gendersCheckedCount];
+
+        int i = 0;
+        if (maleCheckBox.isChecked())
+        {
+            genders[i] = "MEN";
+            i++;
+        }
+        if (femaleCheckBox.isChecked())
+        {
+            genders[i] = "WOMEN";
+            i++;
+        }
+
+        return  genders;
+    }
+
+    private String[] getAges(int agesCheckedCount)
+    {
+        String[] ages = new String[agesCheckedCount];
+
+        int i = 0;
+        if (youngAdultCheckBox.isChecked())
+        {
+            ages[i] = "YOUNGADULTS";
+            i++;
+        }
+        if (adultCheckBox.isChecked())
+        {
+            ages[i] = "ADULT";
+            i++;
+        }
+
+        return ages;
+    }
 }
