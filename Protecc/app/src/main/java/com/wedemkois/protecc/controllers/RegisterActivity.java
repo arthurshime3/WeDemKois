@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,8 +24,6 @@ import com.wedemkois.protecc.R;
 import com.wedemkois.protecc.model.User;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
-    private TextView mStatusTextView;
-    private TextView mDetailTextView;
     private EditText mEmailField;
     private EditText mPasswordField;
     private EditText mFirstNameField;
@@ -153,12 +150,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    public void showProgressBar() {
+    private void showProgressBar() {
         registerButton.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
     }
 
-    public void hideProgressBar() {
+    private void hideProgressBar() {
         if (progressBar.getVisibility() == View.VISIBLE) {
             progressBar.setVisibility(View.GONE);
             registerButton.setVisibility(View.VISIBLE);
