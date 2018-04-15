@@ -116,58 +116,68 @@ public class Shelter {
             return output;
         } else if (!group)  // 1 user checking in or any number checking out
         {
-            int bedsTaken = Integer.parseInt(getIndividualBedsTaken());
-            if ((bedsTaken == 0) && (users < 0)) {
-                output[0] = false;
-                return output;
-            }
-            int vacancies = Integer.parseInt(getIndividualCapacity()) - bedsTaken;
-            if (vacancies >= users) {
-                setIndividualBedsTaken((Integer.parseInt(getIndividualBedsTaken()) + users) + "");
-                output[0] = true;
-                return output;
-            }
-            else    // individual beds full, check group beds (this code is only reached for checking in)
-            {
-                bedsTaken = Integer.parseInt(getGroupBedsTaken());
-                vacancies = Integer.parseInt(getGroupCapacity()) - bedsTaken;
-
-                if (vacancies > 0)  // check for open group beds
-                {
-                    setGroupBedsTaken((Integer.parseInt(getGroupBedsTaken()) + 1) + "");
-                    output[0] = true;
-                    return output;
-                }
-
-                return output;  // no beds found
-            }
+            return checkInOneOrCheckOut(users, output);
         } else {    // group checking in or any number checking out
-            output[1] = true;
-            int bedsTaken = Integer.parseInt(getGroupBedsTaken());
-            if ((bedsTaken == 0) && (users < 0)) {
-                output[0] = false;
+            return checkInGroupOrCheckOut(users, output);
+        }
+    }
+
+    private boolean[] checkInOneOrCheckOut(int users, boolean[] output)
+    {
+        int bedsTaken = Integer.parseInt(getIndividualBedsTaken());
+        if ((bedsTaken == 0) && (users < 0)) {
+            output[0] = false;
+            return output;
+        }
+        int vacancies = Integer.parseInt(getIndividualCapacity()) - bedsTaken;
+        if (vacancies >= users) {
+            setIndividualBedsTaken((Integer.parseInt(getIndividualBedsTaken()) + users) + "");
+            output[0] = true;
+            return output;
+        }
+        else    // individual beds full, check group beds (this code is only reached for checking in)
+        {
+            bedsTaken = Integer.parseInt(getGroupBedsTaken());
+            vacancies = Integer.parseInt(getGroupCapacity()) - bedsTaken;
+
+            if (vacancies > 0)  // check for open group beds
+            {
+                setGroupBedsTaken((Integer.parseInt(getGroupBedsTaken()) + 1) + "");
+                output[0] = true;
                 return output;
             }
-            int vacancies = Integer.parseInt(getGroupCapacity()) - bedsTaken;
-            if (vacancies >= users) {
+
+            return output;  // no beds found
+        }
+    }
+
+    private boolean[] checkInGroupOrCheckOut(int users, boolean[] output)
+    {
+        output[1] = true;
+        int bedsTaken = Integer.parseInt(getGroupBedsTaken());
+        if ((bedsTaken == 0) && (users < 0)) {
+            output[0] = false;
+            return output;
+        }
+        int vacancies = Integer.parseInt(getGroupCapacity()) - bedsTaken;
+        if (vacancies >= users) {
+            setIndividualBedsTaken((Integer.parseInt(getIndividualBedsTaken()) + users) + "");
+            output[0] = true;
+            return output;
+        }
+        else    // group beds full, check individual beds (this code is only reached for checking in
+        {
+            bedsTaken = Integer.parseInt(getIndividualBedsTaken());
+            vacancies = Integer.parseInt(getIndividualCapacity()) - bedsTaken;
+
+            if (vacancies >= users)
+            {
                 setIndividualBedsTaken((Integer.parseInt(getIndividualBedsTaken()) + users) + "");
                 output[0] = true;
                 return output;
             }
-            else    // group beds full, check individual beds (this code is only reached for checking in
-            {
-                bedsTaken = Integer.parseInt(getIndividualBedsTaken());
-                vacancies = Integer.parseInt(getIndividualCapacity()) - bedsTaken;
 
-                if (vacancies >= users)
-                {
-                    setIndividualBedsTaken((Integer.parseInt(getIndividualBedsTaken()) + users) + "");
-                    output[0] = true;
-                    return output;
-                }
-
-                return output;  // no beds found
-            }
+            return output;  // no beds found
         }
     }
 
