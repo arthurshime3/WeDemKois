@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Protecc</string>
+<<<<<<< HEAD
+=======
     <string name="title_activity_maps">Map</string>
 
     <string name="textView_string">TextView</string>
@@ -55,4 +57,5 @@
     <string name="helpfulMessage_string">Already a user?  Tap login!\n\nOr, tap register to sign up.</string>
     <string name="welcome_string">Welcome to Protecc!</string>
 
+>>>>>>> master
 </resources>

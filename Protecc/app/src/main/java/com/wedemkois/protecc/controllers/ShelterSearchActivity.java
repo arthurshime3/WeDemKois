@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
-import android.util.Log;
 
 import com.wedemkois.protecc.Filters;
 import com.wedemkois.protecc.R;
@@ -29,8 +28,6 @@ public class ShelterSearchActivity extends AppCompatActivity implements View.OnC
     @BindView(R.id.shelterSearchButton)
     Button shelterSearchButton;
 
-    @BindView(R.id.mapSearchButton)
-    Button mapSearchButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,17 +36,14 @@ public class ShelterSearchActivity extends AppCompatActivity implements View.OnC
         ButterKnife.bind(this);
 
         shelterSearchButton.setOnClickListener(this);
-        mapSearchButton.setOnClickListener(this);
 
     }
 
-    @SuppressWarnings("EmptyMethod")
     @Override
     protected void onStart() {
         super.onStart();
     }
 
-    @SuppressWarnings("FeatureEnvy")
     private Filters createFiltersFromView() {
         Filters out = new Filters();
         out.setName(shelterNameEditText.getText().toString());
@@ -91,6 +85,9 @@ public class ShelterSearchActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View view) {
         int i = view.getId();
+<<<<<<< HEAD
+        if (i == R.id.shelterSearchButton) {
+=======
         if (i == R.id.mapSearchButton) {
             Log.d("HELLO", "Map Search Button Clicked");
             Filters filters = createFiltersFromView();
@@ -99,6 +96,7 @@ public class ShelterSearchActivity extends AppCompatActivity implements View.OnC
             startActivity(newIntent);
         } else if (i == R.id.shelterSearchButton) {
             Log.d("HELLO", "Shelter Search Button Clicked");
+>>>>>>> master
             Filters filters = createFiltersFromView();
             Intent newIntent = new Intent(ShelterSearchActivity.this, ShelterActivity.class);
             newIntent.putExtra("filter_parcel", filters);

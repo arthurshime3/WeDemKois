@@ -2,6 +2,9 @@ package com.wedemkois.protecc.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,7 +34,10 @@ public class ShelterActivity extends AppCompatActivity implements
 
     private ShelterAdapter mAdapter;
 
+    private RecyclerView.LayoutManager mLayoutManager;
+
     private FirebaseFirestore mDatabase;
+    private Query mQuery;
 
     private Filters filters;
 
@@ -46,7 +52,7 @@ public class ShelterActivity extends AppCompatActivity implements
         mDatabase = FirebaseFirestore.getInstance();
 
         // Get ${LIMIT} shelters
-        Query mQuery = mDatabase.collection("shelters")
+        mQuery = mDatabase.collection("shelters")
                 .orderBy("name", Query.Direction.DESCENDING)
                 .limit(LIMIT);
 
@@ -57,7 +63,7 @@ public class ShelterActivity extends AppCompatActivity implements
         mAdapter = new ShelterAdapter(mQuery, this) {
             @Override
             protected void onDataChanged() {
-                // eventually we want to change this to have an empty query result view
+                // TODO eventually we want to change this to have an empty query result view
                 if(getItemCount() == 0) {
                     Log.d("ShelterActivity", "So there's no shelters for some reason");
                 }
@@ -73,7 +79,7 @@ public class ShelterActivity extends AppCompatActivity implements
             }
         };
 
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+        mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
         filterShelters();
@@ -99,8 +105,7 @@ public class ShelterActivity extends AppCompatActivity implements
 //        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
     }
 
-    @SuppressWarnings("FeatureEnvy")
-    private void filterShelters() {
+    public void filterShelters() {
         Query query = mDatabase.collection("shelters");
 
         if(filters.hasName()) {

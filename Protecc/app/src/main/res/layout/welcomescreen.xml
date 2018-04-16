@@ -33,7 +33,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+<<<<<<< HEAD
+        android:text="Already a user? Hit login. Or, hit register to sign up."
+=======
         android:text="@string/helpfulMessage_string"
+>>>>>>> master
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,12 +45,16 @@
 
     <TextView
         android:id="@+id/welcomeMessage"
-        android:layout_width="150dp"
-        android:layout_height="80dp"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
         android:layout_marginTop="32dp"
+<<<<<<< HEAD
+        android:text="Welcome!"
+=======
         android:text="@string/welcome_string"
         android:textSize="26sp"
         android:textStyle="italic"
+>>>>>>> master
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,6 +1,5 @@
 package com.wedemkois.protecc.adapters;
 
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
@@ -13,7 +12,6 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * RecyclerView adapter for displaying the results of a Firestore {@link Query}.
@@ -29,12 +27,11 @@ public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
     private static final String TAG = "FirestoreAdapter";
 
     private Query mQuery;
-    @Nullable
     private ListenerRegistration mRegistration;
 
-    private final List<DocumentSnapshot> mSnapshots = new ArrayList<>();
+    private ArrayList<DocumentSnapshot> mSnapshots = new ArrayList<>();
 
-    FirestoreAdapter(Query query) {
+    public FirestoreAdapter(Query query) {
         mQuery = query;
     }
 
@@ -66,12 +63,12 @@ public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
     }
 
     public void startListening() {
-        if ((mQuery != null) && (mRegistration == null)) {
+        if (mQuery != null && mRegistration == null) {
             mRegistration = mQuery.addSnapshotListener(this);
         }
     }
 
-    private void stopListening() {
+    public void stopListening() {
         if (mRegistration != null) {
             mRegistration.remove();
             mRegistration = null;
@@ -99,16 +96,16 @@ public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
         return mSnapshots.size();
     }
 
-    DocumentSnapshot getSnapshot(int index) {
+    protected DocumentSnapshot getSnapshot(int index) {
         return mSnapshots.get(index);
     }
 
-    private void onDocumentAdded(DocumentChange change) {
+    protected void onDocumentAdded(DocumentChange change) {
         mSnapshots.add(change.getNewIndex(), change.getDocument());
         notifyItemInserted(change.getNewIndex());
     }
 
-    private void onDocumentModified(DocumentChange change) {
+    protected void onDocumentModified(DocumentChange change) {
         if (change.getOldIndex() == change.getNewIndex()) {
             // Item changed but remained in same position
             mSnapshots.set(change.getOldIndex(), change.getDocument());
@@ -121,14 +118,12 @@ public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
         }
     }
 
-    private void onDocumentRemoved(DocumentChange change) {
+    protected void onDocumentRemoved(DocumentChange change) {
         mSnapshots.remove(change.getOldIndex());
         notifyItemRemoved(change.getOldIndex());
     }
 
-    protected void onError(FirebaseFirestoreException e) {
-        Log.d("FirestoreAdapter", e.toString());
-    }
+    protected void onError(FirebaseFirestoreException e) {};
 
     protected void onDataChanged() {}
 }

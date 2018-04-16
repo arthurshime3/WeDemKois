@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 26
     defaultConfig {
         applicationId "com.wedemkois.protecc"
-        minSdkVersion 27
-        targetSdkVersion 27
+        minSdkVersion 26
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -20,6 +20,10 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+<<<<<<< HEAD
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+=======
 
     // We need these explicitly or gradle will yell at us
     implementation 'com.android.support:support-media-compat:27.1.1'
@@ -28,29 +32,31 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
 
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
-
-//    implementation 'com.google.firebase:firebase-database:11.0.4'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-//    compile 'com.google.firebase:firebase-firestore:11.0.4'
+>>>>>>> master
 
     // Firebase auth and firestore
+<<<<<<< HEAD
+    implementation 'com.google.firebase:firebase-firestore:11.8.0'
+    implementation 'com.google.firebase:firebase-auth:11.8.0'
+
+    // OpenCSV for reading CSV files
+    implementation 'com.opencsv:opencsv:4.1'
+=======
     implementation 'com.google.firebase:firebase-firestore:15.0.0'
     implementation 'com.google.firebase:firebase-auth:15.0.0'
 
     // OpenCSV for reading CSV files
     implementation 'com.opencsv:opencsv:4.1'
     implementation 'com.google.android.gms:play-services-maps:15.0.0'
+>>>>>>> master
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
 
     // ButterKnife (for sample code brevity)
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-
 }
 
 

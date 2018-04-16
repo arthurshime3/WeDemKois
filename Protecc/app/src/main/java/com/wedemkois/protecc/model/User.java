@@ -1,26 +1,30 @@
 package com.wedemkois.protecc.model;
 
 /**
+<<<<<<< HEAD
+ * Created by arthurshim on 2/13/18.
+ */
+=======
  * A class representing a User
  *
  * @version 1.0
  * @author Arthur Shim
  * */
+>>>>>>> master
 
 public class User
 {
-    private String username;
-    private String firstName;
-    private String lastName;
+    private String username, firstName, lastName;
     private UserType userType;
-    private OccupantType occupantType;
-    private String shelterId;
 
     public enum UserType
     {
         USER, ADMIN
     }
 
+<<<<<<< HEAD
+    public User() {
+=======
     public enum OccupantType
     {
         INDIVIDUAL, GROUP
@@ -32,6 +36,7 @@ public class User
 
     public User()
     {
+>>>>>>> master
 
     }
 
@@ -48,7 +53,6 @@ public class User
         this.userType = uT;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.shelterId = "";
     }
 
     /**
@@ -60,6 +64,12 @@ public class User
         return username;
     }
 
+<<<<<<< HEAD
+
+    public UserType getUserType() {return userType;}
+
+    public String getName() {return firstName + " " + lastName;}
+=======
     /**
      *
      * @return user type
@@ -71,6 +81,7 @@ public class User
      * @return first and last name
      */
     public CharSequence getName() {return firstName + " " + lastName;}
+>>>>>>> master
 
     /**
      *
@@ -88,6 +99,8 @@ public class User
         return lastName;
     }
 
+<<<<<<< HEAD
+=======
     /**
      *
      * @return occupant type
@@ -122,6 +135,7 @@ public class User
         this.shelterId = shelterId;
     }
 
+>>>>>>> master
     @Override
     public String toString() {
         return userType + " " + getName() + " " + username;

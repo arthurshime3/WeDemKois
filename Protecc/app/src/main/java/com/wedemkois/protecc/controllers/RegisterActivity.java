@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,6 +27,8 @@ import com.wedemkois.protecc.model.User;
 import java.util.Objects;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
+    private TextView mStatusTextView;
+    private TextView mDetailTextView;
     private EditText mEmailField;
     private EditText mPasswordField;
     private EditText mFirstNameField;
@@ -150,10 +153,16 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             // Hide the keyboard
             View currentFocus = getWindow().getDecorView().getRootView();
             if (currentFocus != null) {
+<<<<<<< HEAD
+                InputMethodManager imm = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+=======
                 InputMethodManager imm =
                         (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 Objects.requireNonNull(imm)
                         .hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+>>>>>>> master
             }
             //
             register(mEmailField.getText().toString(),
@@ -164,12 +173,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void showProgressBar() {
+    public void showProgressBar() {
         registerButton.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
     }
 
-    private void hideProgressBar() {
+    public void hideProgressBar() {
         if (progressBar.getVisibility() == View.VISIBLE) {
             progressBar.setVisibility(View.GONE);
             registerButton.setVisibility(View.VISIBLE);

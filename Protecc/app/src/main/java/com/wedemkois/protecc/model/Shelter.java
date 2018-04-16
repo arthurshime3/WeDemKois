@@ -4,10 +4,7 @@ import com.google.firebase.firestore.GeoPoint;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A class representing a Shelter
@@ -17,10 +14,7 @@ import java.util.Map;
  */
 public class Shelter {
     private String name;
-    private String individualCapacity;
-    private String groupCapacity;
-    private String individualBedsTaken;
-    private String groupBedsTaken;
+    private String capacity;
     private String ageRange;
     private String gender;
     private boolean childrenAllowed;
@@ -29,7 +23,13 @@ public class Shelter {
     private String address;
     private List<String> notes;
     private String phoneNumber;
+<<<<<<< HEAD
+    private String groupCapacity;
+    private String bedsTaken;
+    private String groupsTaken;
+=======
     private HashMap<String, Integer> occupants; // maps username to number of people in their group
+>>>>>>> master
 
     public enum Gender {
         MEN, WOMEN, BOTH
@@ -61,6 +61,12 @@ public class Shelter {
      * @param phone phone number of the shelter
      */
     // The parser constructor, calls the full param constructor
+<<<<<<< HEAD
+    public Shelter(String name, String capacity, String ageRange, String gender,
+                   String childrenAllowed, String requirements, String longitude,
+                   String latitude, String address, String notes, String phone,
+                   String groupCapacity, String bedsTaken, String groupsTaken)
+=======
     @SuppressWarnings("ConstructorWithTooManyParameters")
     public Shelter(String name,
                    String individualCapacity,
@@ -76,23 +82,29 @@ public class Shelter {
                    String address,
                    String notes,
                    String phone)
+>>>>>>> master
     {
         this(
                 name.trim(),
-                individualCapacity,
-                groupCapacity,
-                individualBedsTaken,
-                groupBedsTaken,
+                capacity,
                 ageRange.replaceAll("\\s+","").toUpperCase(),
                 gender.replaceAll("\\s+","").toUpperCase(),
-                "T".equals(childrenAllowed.replaceAll("\\s+", "")),
+                childrenAllowed.replaceAll("\\s+","").equals("T"),
                 requirements,
-                new GeoPoint(Double.parseDouble(latitude), Double.parseDouble(longitude)),
+                new GeoPoint(Double.parseDouble(longitude), Double.parseDouble(latitude)),
                 address,
                 new ArrayList<>(Arrays.asList(notes.split(","))),
-                phone);
+                phone, groupCapacity, bedsTaken, groupsTaken);
     }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+    public Shelter(String name, String capacity, String ageRange, String gender,
+                   boolean childrenAllowed, String requirements, GeoPoint coordinates,
+                   String address, List<String> notes, String phone, String groupCapacity,
+                   String bedsTaken, String groupsTaken) {
+=======
+=======
     /**
      * Shelter Constructor
      *
@@ -110,6 +122,7 @@ public class Shelter {
      * @param notes notes about the shelter
      * @param phone phone number of the shelter
      */
+>>>>>>> master
     @SuppressWarnings("ConstructorWithTooManyParameters")
     public Shelter(String name,
                    String individualCapacity,
@@ -124,20 +137,22 @@ public class Shelter {
                    String address,
                    List<String> notes,
                    String phone) {
+>>>>>>> master
         this.name = name;
-        this.individualCapacity = individualCapacity;
-        this.groupCapacity = groupCapacity;
-        this.individualBedsTaken =  individualBedsTaken;
-        this.groupBedsTaken = groupBedsTaken;
+        this.capacity = capacity;
         this.ageRange = ageRange;
         this.gender = gender;
         this.childrenAllowed = childrenAllowed;
         this.requirements = requirements;
         this.coordinates = coordinates;
         this.address = address;
-        //noinspection AssignmentOrReturnOfFieldWithMutableType
         this.notes = notes;
         this.phoneNumber = phone;
+<<<<<<< HEAD
+        this.groupCapacity = groupCapacity;
+        this.bedsTaken = bedsTaken;
+        this.groupsTaken = groupsTaken;
+=======
 
         occupants = new HashMap<>();
     }
@@ -267,6 +282,7 @@ public class Shelter {
 
             return output;  // no beds found
         }
+>>>>>>> master
     }
 
     /**
@@ -284,11 +300,15 @@ public class Shelter {
         this.name = name;
     }
 
+<<<<<<< HEAD
+    public String getRequirements()
+=======
     /**
      *
      * @return the character sequence of the requirements
      */
     public CharSequence getRequirements()
+>>>>>>> master
     { return requirements; }
 
     /**
@@ -299,11 +319,15 @@ public class Shelter {
         this.requirements = requirements;
     }
 
+<<<<<<< HEAD
+    public String getAddress()
+=======
     /**
      *
      * @return this shelter address
      */
     public CharSequence getAddress()
+>>>>>>> master
     { return address; }
 
     /**
@@ -329,6 +353,17 @@ public class Shelter {
         this.phoneNumber = phoneNumber;
     }
 
+<<<<<<< HEAD
+    public String getCapacity()
+    { return capacity; }
+
+    public void setCapacity(String capacity) {
+        this.capacity = capacity;
+    }
+
+<<<<<<< HEAD
+=======
+=======
     /**
      *
      * @return the max capacity of the individual beds
@@ -347,6 +382,7 @@ public class Shelter {
      *
      * @return the max capacity of the group beds
      */
+>>>>>>> master
     public String getGroupCapacity() { return groupCapacity; }
 
     /**
@@ -379,10 +415,14 @@ public class Shelter {
      */
     private void setGroupBedsTaken(String taken) { this.groupBedsTaken = taken; }
 
+<<<<<<< HEAD
+>>>>>>> master
+=======
     /**
      *
      * @return the coordinates of the shelter
      */
+>>>>>>> master
     public GeoPoint getCoordinates()
     { return coordinates; }
 
@@ -394,27 +434,34 @@ public class Shelter {
         this.coordinates = coordinates;
     }
 
+<<<<<<< HEAD
+    public List<String> getNotes()
+    { return notes; }
+=======
     /**
      *
      * @return the notes of the shelter
      */
     public Iterable<String> getNotes()
     { return Collections.unmodifiableList(notes); }
+>>>>>>> master
 
     /**
      * sets notes of the shelter
      * @param notes notes about the shelter
      */
     public void setNotes(List<String> notes) {
-        //noinspection AssignmentOrReturnOfFieldWithMutableType
         this.notes = notes;
     }
 
+<<<<<<< HEAD
+=======
     /**
      *
      * @return age range allowed
      */
     @SuppressWarnings("TypeMayBeWeakened")
+>>>>>>> master
     public String getAgeRange() {
         return ageRange;
     }
@@ -427,11 +474,14 @@ public class Shelter {
         this.ageRange = ageRange;
     }
 
+<<<<<<< HEAD
+=======
     /**
      *
      * @return gender allowed
      */
     @SuppressWarnings("TypeMayBeWeakened")
+>>>>>>> master
     public String getGender() {
         return gender;
     }
@@ -459,11 +509,40 @@ public class Shelter {
     public void setChildrenAllowed(boolean childrenAllowed) {
         this.childrenAllowed = childrenAllowed;
     }
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+    public String getGroupCapacity() {
+        return groupCapacity;
+    }
+
+    public void setGroupCapacity(String groupCapacity) {
+        this.groupCapacity = groupCapacity;
+    }
+
+    public String getBedsTaken() {
+        return bedsTaken;
+    }
+
+    public void setBedsTaken(String bedsTaken) {
+        this.bedsTaken = bedsTaken;
+    }
+
+    public String getGroupsTaken() {
+        return groupsTaken;
+    }
+
+    public void setGroupsTaken(String groupsTaken) {
+        this.groupsTaken = groupsTaken;
+    }
+=======
+=======
 
     /**
      *  sets the occupants of the shelter
      * @param map the occupants of the shelter
      */
+>>>>>>> master
     @SuppressWarnings("AssignmentOrReturnOfFieldWithMutableType")
     public void setOccupants(HashMap<String, Integer> map) {
         occupants = map;
@@ -503,4 +582,5 @@ public class Shelter {
         occupants.remove(username);
     }
 
+>>>>>>> master
 }
