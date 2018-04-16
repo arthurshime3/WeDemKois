@@ -21,6 +21,8 @@ import com.wedemkois.protecc.R;
 import com.wedemkois.protecc.model.Shelter;
 import com.wedemkois.protecc.model.User;
 
+import java.util.Objects;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -81,7 +83,7 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 currentShelter = documentSnapshot.toObject(Shelter.class);
-                Log.d("DashboardActivity", currentShelter.toString());
+                Log.d("DashboardActivity", Objects.requireNonNull(currentShelter).toString());
                 onShelterLoaded(currentShelter);
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -95,14 +97,15 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
 
         @SuppressLint("RestrictedApi") String uid = mAuth.getUid();
 
-        DocumentReference docRef = mDatabase.collection("users").document(uid);
+        DocumentReference docRef = mDatabase.collection("users")
+                .document(Objects.requireNonNull(uid));
 
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Log.d("DashboardActivity", documentSnapshot.toString());
                 currentUser = documentSnapshot.toObject(User.class);
-                Log.d("DashboardActivity", currentUser.toString());
+                Log.d("DashboardActivity", Objects.requireNonNull(currentUser).toString());
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -144,9 +147,6 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
             }
             else
             {
-//                Toast toast = Toast.makeText(getApplicationContext(), "checkInput() failed", Toast.LENGTH_SHORT);
-//                toast.show();
-                //display warning
                 inputErrorMessage.setVisibility(View.VISIBLE);
             }
         }
@@ -168,7 +168,8 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
                         Log.e("pushUpdates", e.toString());
                     }
                 });
-        mDatabase.collection("users").document(mAuth.getUid()).set(currentUser)
+        mDatabase.collection("users")
+                .document(Objects.requireNonNull(mAuth.getUid())).set(currentUser)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -188,7 +189,9 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
         int agesCheckedCount = getAgesCheckedCount();
         int gendersCheckedCount = getGendersCheckedCount();
 
-        if ((gendersCheckedCount == 0) || (agesCheckedCount == 0) || numOfUsers.getText().toString().trim().isEmpty()) {
+        if ((gendersCheckedCount == 0)
+                || (agesCheckedCount == 0)
+                || numOfUsers.getText().toString().trim().isEmpty()) {
             return false;
         }
 

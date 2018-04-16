@@ -1,4 +1,58 @@
 <resources>
     <string name="app_name">Protecc</string>
     <string name="title_activity_maps">Map</string>
+
+    <string name="textView_string">TextView</string>
+
+    <string name="shelter_string">Shelter</string>
+    <string name="findShelters_string">Find Shelters</string>
+    <string name="findAShelter_string">Find a Shelter!</string>
+    <string name="currentShelterHeader_string">Current Shelter:</string>
+    <string name="shelterName_string">Shelter name</string>
+    <string name="address_string">Address</string>
+    <string name="phoneNumber_string">Phone Number</string>
+    <string name="genderHeader_string">Gender Restriction:</string>
+    <string name="anyone_string">Anyone</string>
+    <string name="capacityHeader_string">Capacity:</string>
+    <string name="zero_string">0</string>
+    <string name="locationHeader_string">Location:</string>
+    <string name="checkOut_string">Check Out</string>
+    <string name="back_string">Back</string>
+    <string name="gender_string">Gender</string>
+
+    <string name="login_string">Login</string>
+    <string name="logout_string">Logout</string>
+    <string name="register_string">Register</string>
+    <string name="password_string">Password</string>
+    <string name="username_string">Username</string>
+    <string name="login_error_string">Invalid username or password</string>
+    <string name="register_error_string">Username already exists</string>
+
+    <string name="name_string">Name</string>
+    <string name="firstName_string">First Name</string>
+    <string name="lastName_string">Last Name</string>
+    <string name="userType_string">User Type</string>
+
+    <string name="none_string">None</string>
+    <string name="partySize_string">Party Size</string>
+    <string name="male_string">Male</string>
+    <string name="female_string">Female</string>
+    <string name="nonbinary_string">Non-binary</string>
+    <string name="ageRange_string">Age Range</string>
+    <string name="children_checkbox_string">Children (12 and younger)</string>
+    <string name="youngAdult_checkbox_string">Young Adults (13 to 17)</string>
+    <string name="adult_checkbox_string">Adults (18+)</string>
+    <string name="claimBeds_string">Claim Beds</string>
+    <string name="input_error_string">Error: Check that all fields are filled in and input values are\n valid for this shelter</string>
+    <string name="user_error_string">Error: User is already checked into a shelter</string>
+
+    <string name="family_radio_string">Families with Newborns</string>
+    <string name="youngAdult_radio_string">Young Adults</string>
+    <string name="adult_radio_string">Adults</string>
+    <string name="search_string">Search</string>
+    <string name="mapSearch_string">Map Search</string>
+
+    <string name="helpfulMessage_string">Already a user?  Tap login!\n\nOr, tap register to sign up.</string>
+    <string name="welcome_string">Welcome to Protecc!</string>
+
 </resources>

@@ -53,7 +53,8 @@ public class MapsActivity extends AppCompatActivity implements
 
     private GoogleMap mMap;
     private static final String FINE_LOCATION = android.Manifest.permission.ACCESS_FINE_LOCATION;
-    private static final String COURSE_LOCATION = android.Manifest.permission.ACCESS_COARSE_LOCATION;
+    private static final String COURSE_LOCATION =
+            android.Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private Boolean mLocationPermissionsGranted = false;
 
@@ -74,7 +75,7 @@ public class MapsActivity extends AppCompatActivity implements
         mapFragment.getMapAsync(this);
 
 
-        filters = getIntent().getExtras().getParcelable("filter_parcel");
+        filters = Objects.requireNonNull(getIntent().getExtras()).getParcelable("filter_parcel");
 
         mDatabase = FirebaseFirestore.getInstance();
 
@@ -83,7 +84,8 @@ public class MapsActivity extends AppCompatActivity implements
 
     }
     private void initMap() {
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -120,7 +122,8 @@ public class MapsActivity extends AppCompatActivity implements
     private void addMarkersToMap() {
         for (Shelter shelter: shelters) {
             Marker newMarker = mMap.addMarker(new MarkerOptions()
-            .position(new LatLng(shelter.getCoordinates().getLatitude(), shelter.getCoordinates().getLongitude()))
+            .position(new LatLng(shelter.getCoordinates().getLatitude(),
+                    shelter.getCoordinates().getLongitude()))
             .title(shelter.getName())
             .snippet(shelter.getPhoneNumber()));
             markers.add(newMarker);
@@ -255,7 +258,9 @@ public class MapsActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         mLocationPermissionsGranted = false;
         switch(requestCode) {
             case LOCATION_PERMISSION_REQUEST_CODE: {
