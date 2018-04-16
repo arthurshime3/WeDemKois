@@ -20,12 +20,14 @@ public class Filters implements Parcelable {
     public void setName(String name) { this.name = name; }
     public boolean hasName() { return !TextUtils.isEmpty(name); }
 
+    @Nullable
     public Shelter.Gender getGender() { return gender; }
-    public void setGender(Shelter.Gender gender) { this.gender = gender; }
+    public void setGender(@Nullable Shelter.Gender gender) { this.gender = gender; }
     public boolean hasGender() { return gender != null;}
 
+    @Nullable
     public Shelter.AgeRange getAgeRange() { return ageRange; }
-    public void setAgeRange(Shelter.AgeRange ageRange) { this.ageRange = ageRange; }
+    public void setAgeRange(@Nullable Shelter.AgeRange ageRange) { this.ageRange = ageRange; }
     public boolean hasAgeRange() {return ageRange!=null; }
 
     // Parcelization stuff
