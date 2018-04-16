@@ -12,13 +12,11 @@ import static org.junit.Assert.assertEquals;
  * Example local unit test, which will execute on the development machine (host).
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
-
-/**
  * Created by jeffrey on 4/16/18.
  */
 
 
+@SuppressWarnings("ALL")
 public class RemoveOccupantTest {
     Shelter shelter = new Shelter("", "10", "10",
             "1", "3", "ALL",

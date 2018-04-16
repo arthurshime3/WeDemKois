@@ -47,13 +47,13 @@ public class User
 
     public CharSequence getName() {return firstName + " " + lastName;}
 
-//    public String getFirstName() {
-//        return firstName;
-//    }
+    public String getFirstName() {
+        return firstName;
+    }
 
-//    public String getLastName() {
-//        return lastName;
-//    }
+    public String getLastName() {
+        return lastName;
+    }
 
     public OccupantType getOccupantType()
     {
