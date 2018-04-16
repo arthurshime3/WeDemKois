@@ -1,5 +1,6 @@
 package com.wedemkois.protecc.controllers;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,10 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -19,7 +17,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.wedemkois.protecc.Filters;
 import com.wedemkois.protecc.R;
 import com.wedemkois.protecc.model.Shelter;
 import com.wedemkois.protecc.model.User;
@@ -67,7 +64,6 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore mDatabase;
-    private DocumentReference mShelterRef;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,7 +76,7 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
         shelterId = getIntent().getStringExtra("shelter_id");
 
         mDatabase = FirebaseFirestore.getInstance();
-        mShelterRef = mDatabase.collection("shelters").document(shelterId);
+        DocumentReference mShelterRef = mDatabase.collection("shelters").document(shelterId);
         mShelterRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -97,7 +93,7 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
 
         mAuth = FirebaseAuth.getInstance();
 
-        String uid = mAuth.getUid();
+        @SuppressLint("RestrictedApi") String uid = mAuth.getUid();
 
         DocumentReference docRef = mDatabase.collection("users").document(uid);
 
@@ -116,7 +112,7 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
-    public void onShelterLoaded(Shelter shelter)
+    private void onShelterLoaded(Shelter shelter)
     {
         currentShelter = shelter;
         shelterNameTextView.setText(currentShelter.getName());
@@ -126,17 +122,19 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View view) {
         int i = view.getId();
         if (i == R.id.sc_claimBedsButton) {
-            if (currentUser.getShelterId() != "")   // user is already checked into a shelter
+            if (!"".equals(currentUser.getShelterId()))   // user is already checked into a shelter
             {
                 userErrorMessage.setVisibility(View.VISIBLE);
             }
             else if (checkIn())
             {
                 // beds successfully claimed
-                if (inputErrorMessage.getVisibility() == View.VISIBLE)
+                if (inputErrorMessage.getVisibility() == View.VISIBLE) {
                     inputErrorMessage.setVisibility(View.INVISIBLE);
-                if (userErrorMessage.getVisibility() == View.VISIBLE)
+                }
+                if (userErrorMessage.getVisibility() == View.VISIBLE) {
                     userErrorMessage.setVisibility(View.INVISIBLE);
+                }
 
                 pushUpdates();
                 Intent newIntent = new Intent(ShelterClaimActivity.this, DashboardActivity.class);
@@ -155,6 +153,7 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
     }
 
 
+    @SuppressLint("RestrictedApi")
     private void pushUpdates() {
         mDatabase.collection("shelters").document(shelterId).set(currentShelter)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -183,38 +182,20 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
                     }
                 });
     }
+    @SuppressWarnings("FeatureEnvy")
     private boolean checkIn()
     {
-        int gendersCheckedCount = 0, agesCheckedCount = 0;
-        if (maleCheckBox.isChecked()) gendersCheckedCount++;
-        if (femaleCheckBox.isChecked()) gendersCheckedCount++;
-        if (nonBinaryCheckBox.isChecked()) gendersCheckedCount++;
+        int agesCheckedCount = getAgesCheckedCount();
+        int gendersCheckedCount = getGendersCheckedCount();
 
-        if (gendersCheckedCount == 0) return false;
-
-        if (childrenCheckBox.isChecked()) agesCheckedCount++;
-        if (youngAdultCheckBox.isChecked()) agesCheckedCount++;
-        if (adultCheckBox.isChecked()) agesCheckedCount++;
-
-        if (agesCheckedCount == 0) return false;
-
-        if (numOfUsers.getText().toString().trim().isEmpty())
+        if ((gendersCheckedCount == 0) || (agesCheckedCount == 0) || numOfUsers.getText().toString().trim().isEmpty()) {
             return false;
+        }
 
-        if (nonBinaryCheckBox.isChecked())
+        if (nonBinaryCheckBox.isChecked()) {
             gendersCheckedCount--;
-        String[] genders = new String[gendersCheckedCount];
-        int i = 0;
-        if (maleCheckBox.isChecked())
-        {
-            genders[i] = "MEN";
-            i++;
         }
-        if (femaleCheckBox.isChecked())
-        {
-            genders[i] = "WOMEN";
-            i++;
-        }
+        String[] genders = getGenders(gendersCheckedCount);
 
         boolean children = false;
         if (childrenCheckBox.isChecked())
@@ -222,18 +203,8 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
             agesCheckedCount--;
             children = true;
         }
-        String[] ages = new String[agesCheckedCount];
-        i = 0;
-        if (youngAdultCheckBox.isChecked())
-        {
-            ages[i] = "YOUNGADULTS";
-            i++;
-        }
-        if (adultCheckBox.isChecked())
-        {
-            ages[i] = "ADULT";
-            i++;
-        }
+        String[] ages = getAges(agesCheckedCount);
+
 
         int numOfPeople = Integer.parseInt(numOfUsers.getText().toString());
         Log.d("checkInput", "We got past checkInput");
@@ -245,9 +216,11 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
             currentUser.setShelterId(shelterId);
             Log.d("Check In", currentUser.getShelterId() + " has been added");
             if (vacancyData[1]) //group
+            {
                 currentUser.setOccupantType(User.OccupantType.GROUP);
-            else
+            } else {
                 currentUser.setOccupantType(User.OccupantType.INDIVIDUAL);
+            }
 
             currentShelter.addOccupant(currentUser.getUsername(), numOfPeople);
 
@@ -256,4 +229,71 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
         return false;
     }
 
+    private int getGendersCheckedCount()
+    {
+        int gendersCheckedCount = 0;
+        if (maleCheckBox.isChecked()) {
+            gendersCheckedCount++;
+        }
+        if (femaleCheckBox.isChecked()) {
+            gendersCheckedCount++;
+        }
+        if (nonBinaryCheckBox.isChecked()) {
+            gendersCheckedCount++;
+        }
+        return gendersCheckedCount;
+    }
+
+    private int getAgesCheckedCount()
+    {
+        int agesCheckedCount = 0;
+        if (childrenCheckBox.isChecked()) {
+            agesCheckedCount++;
+        }
+        if (youngAdultCheckBox.isChecked()) {
+            agesCheckedCount++;
+        }
+        if (adultCheckBox.isChecked()) {
+            agesCheckedCount++;
+        }
+        return agesCheckedCount;
+    }
+
+    private String[] getGenders(int gendersCheckedCount)
+    {
+        String[] genders = new String[gendersCheckedCount];
+
+        int i = 0;
+        if (maleCheckBox.isChecked())
+        {
+            genders[i] = "MEN";
+//            i++;
+        }
+        if (femaleCheckBox.isChecked())
+        {
+            genders[i] = "WOMEN";
+//            i++;
+        }
+
+        return  genders;
+    }
+
+    private String[] getAges(int agesCheckedCount)
+    {
+        String[] ages = new String[agesCheckedCount];
+
+        int i = 0;
+        if (youngAdultCheckBox.isChecked())
+        {
+            ages[i] = "YOUNGADULTS";
+//            i++;
+        }
+        if (adultCheckBox.isChecked())
+        {
+            ages[i] = "ADULT";
+//            i++;
+        }
+
+        return ages;
+    }
 }

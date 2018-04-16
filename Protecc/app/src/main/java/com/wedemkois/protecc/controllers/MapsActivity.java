@@ -3,8 +3,6 @@ package com.wedemkois.protecc.controllers;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,19 +19,16 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 
 import android.Manifest;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -46,6 +41,7 @@ import com.wedemkois.protecc.model.Shelter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MapsActivity extends AppCompatActivity implements
         OnMapReadyCallback,
@@ -54,22 +50,21 @@ public class MapsActivity extends AppCompatActivity implements
         ActivityCompat.OnRequestPermissionsResultCallback,
         OnMarkerClickListener
 {
-    private final int LIMIT = 50;
 
     private GoogleMap mMap;
     private static final String FINE_LOCATION = android.Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COURSE_LOCATION = android.Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private Boolean mLocationPermissionsGranted = false;
-    private LatLng myLocation;
 
     private FirebaseFirestore mDatabase;
-    private Query mQuery;
+//    private Query mQuery;
     private Filters filters;
 
     private List<Shelter> shelters;
     private List<Marker> markers;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
@@ -121,6 +116,7 @@ public class MapsActivity extends AppCompatActivity implements
     /**
      * place to add the markers
      */
+    @SuppressWarnings("FeatureEnvy")
     private void addMarkersToMap() {
         for (Shelter shelter: shelters) {
             Marker newMarker = mMap.addMarker(new MarkerOptions()
@@ -147,7 +143,8 @@ public class MapsActivity extends AppCompatActivity implements
 //                .snippet("Phone Number: (404) 367-2465"));
     }
 
-    public void filterShelters() {
+    @SuppressWarnings("FeatureEnvy")
+    private void filterShelters() {
         Query query = mDatabase.collection("shelters");
 
         if (filters.hasName()) {
@@ -155,14 +152,17 @@ public class MapsActivity extends AppCompatActivity implements
         }
 
         if (filters.hasGender()) {
+            assert filters.getGender() != null;
             query = query.whereEqualTo("gender", filters.getGender().toString());
         }
 
         if (filters.hasAgeRange()) {
+            assert filters.getAgeRange() != null;
             query = query.whereEqualTo("ageRange", filters.getAgeRange().toString());
         }
 
         // Limit items
+        final int LIMIT = 50;
         query = query.limit(LIMIT);
 
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -174,7 +174,7 @@ public class MapsActivity extends AppCompatActivity implements
                         addMarkersToMap();
                     }
                 } else {
-                    Log.d("MapsActivity", task.getException().toString());
+                    Log.d("MapsActivity", Objects.requireNonNull(task.getException()).toString());
                 }
             }
         });
@@ -198,15 +198,18 @@ public class MapsActivity extends AppCompatActivity implements
         Criteria criteria = new Criteria();
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
+            assert locationManager != null;
             Location location = locationManager.getLastKnownLocation(locationManager
                     .getBestProvider(criteria, true));
-            myLocation = new LatLng(location.getLatitude(), location.getLongitude());
+            LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
             CameraUpdate point = CameraUpdateFactory.newLatLng(myLocation);
             mMap.moveCamera(point);
             mMap.animateCamera(point);
 
             mMap.setMyLocationEnabled(true);
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 15f));
+            //noinspection MagicNumber
+            float displayBuffer = 15f;
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, displayBuffer));
         }
 
         return false;
@@ -257,8 +260,8 @@ public class MapsActivity extends AppCompatActivity implements
         switch(requestCode) {
             case LOCATION_PERMISSION_REQUEST_CODE: {
                 if (grantResults.length > 0) {
-                    for (int i = 0; i < grantResults.length; i++) {
-                        if (grantResults[i] != PackageManager.PERMISSION_GRANTED){
+                    for (int grantResult : grantResults) {
+                        if (grantResult != PackageManager.PERMISSION_GRANTED) {
                             mLocationPermissionsGranted = false;
                             return;
                         }
