@@ -46,8 +46,8 @@ public class CheckQualificationsTest {
 
     @Test
     public void checkFamilyQualificationsTest() {
-        ageGroups[0] = Shelter.AgeRange.ALL.name();
-        ageGroups[1] = Shelter.AgeRange.YOUNGADULTS.name();
+        ageGroups[0] = Shelter.AgeRange.FAMILY.name();
+        ageGroups[1] = Shelter.AgeRange.FAMILY.name();
         ageGroups[2] = Shelter.AgeRange.FAMILY.name();
         shelterALL.setAgeRange(Shelter.AgeRange.FAMILY.name());
         shelterALL.setGender(Shelter.Gender.BOTH.name());
@@ -58,12 +58,13 @@ public class CheckQualificationsTest {
 
     @Test
     public void checkMenOnlyQualificationsTest() {
-        ageGroups[0] = Shelter.AgeRange.ALL.name();
-        ageGroups[1] = Shelter.AgeRange.YOUNGADULTS.name();
-        ageGroups[2] = Shelter.AgeRange.FAMILY.name();
+        ageGroups[0] = Shelter.AgeRange.ADULT.name();
+        ageGroups[1] = Shelter.AgeRange.ADULT.name();
+        ageGroups[2] = Shelter.AgeRange.ADULT.name();
         genders[0] = Shelter.Gender.MEN.name();
         genders[1] = Shelter.Gender.MEN.name();
         shelterALL.setAgeRange("ADULT");
+        shelterALL.setGender("MEN");
         shelterALL.setChildrenAllowed(false);
         childrenAllowed = false;
         assertEquals(true,
