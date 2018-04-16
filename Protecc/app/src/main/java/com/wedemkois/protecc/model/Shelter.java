@@ -9,6 +9,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A class representing a Shelter
+ *
+ * @version 1.0
+ * @author Miguel De lod Reyes
+ */
 public class Shelter {
     private String name;
     private String individualCapacity;
@@ -23,7 +29,7 @@ public class Shelter {
     private String address;
     private List<String> notes;
     private String phoneNumber;
-    private HashMap<String, Integer> occupants;   // maps username to number of people in their group
+    private HashMap<String, Integer> occupants; // maps username to number of people in their group
 
     public enum Gender {
         MEN, WOMEN, BOTH
@@ -32,14 +38,44 @@ public class Shelter {
     public enum AgeRange {
         ADULT, FAMILY, YOUNGADULTS, ALL
     }
-
+    /**
+     * Creates a Shelter class with nothing in it
+     */
     public Shelter() { }
 
+    /**
+     * Shelter Constructor
+     * @param name name of the shelter
+     * @param individualCapacity max number of individual occupants allowed
+     * @param groupCapacity max number of group occupants allowed
+     * @param individualBedsTaken number of individual beds used
+     * @param groupBedsTaken number of group beds used
+     * @param ageRange range of the ages allowed
+     * @param gender genders allowed in the shelter
+     * @param childrenAllowed if children are allowed
+     * @param requirements extra requirements
+     * @param longitude longitude of the shelter
+     * @param latitude latitude of the shelter
+     * @param address address of the shelter
+     * @param notes notes about the shelter
+     * @param phone phone number of the shelter
+     */
     // The parser constructor, calls the full param constructor
     @SuppressWarnings("ConstructorWithTooManyParameters")
-    public Shelter(String name, String individualCapacity, String groupCapacity, String individualBedsTaken, String groupBedsTaken,
-                   String ageRange, String gender, String childrenAllowed, String requirements, String longitude, String latitude,
-                   String address, String notes, String phone)
+    public Shelter(String name,
+                   String individualCapacity,
+                   String groupCapacity,
+                   String individualBedsTaken,
+                   String groupBedsTaken,
+                   String ageRange,
+                   String gender,
+                   String childrenAllowed,
+                   String requirements,
+                   String longitude,
+                   String latitude,
+                   String address,
+                   String notes,
+                   String phone)
     {
         this(
                 name.trim(),
@@ -57,10 +93,37 @@ public class Shelter {
                 phone);
     }
 
+    /**
+     * Shelter Constructor
+     *
+     * @param name name of the shelter
+     * @param individualCapacity max number of individual occupants allowed
+     * @param groupCapacity max number of group occupants allowed
+     * @param individualBedsTaken number of individual beds used
+     * @param groupBedsTaken number of group beds used
+     * @param ageRange range of the ages allowed
+     * @param gender genders allowed in the shelter
+     * @param childrenAllowed if children are allowed
+     * @param requirements extra requirements
+     * @param coordinates coordinates of the shelter
+     * @param address address of the shelter
+     * @param notes notes about the shelter
+     * @param phone phone number of the shelter
+     */
     @SuppressWarnings("ConstructorWithTooManyParameters")
-    public Shelter(String name, String individualCapacity, String groupCapacity, String individualBedsTaken, String groupBedsTaken,
-                   String ageRange, String gender, boolean childrenAllowed, String requirements, GeoPoint coordinates,
-                   String address, List<String> notes, String phone) {
+    public Shelter(String name,
+                   String individualCapacity,
+                   String groupCapacity,
+                   String individualBedsTaken,
+                   String groupBedsTaken,
+                   String ageRange,
+                   String gender,
+                   boolean childrenAllowed,
+                   String requirements,
+                   GeoPoint coordinates,
+                   String address,
+                   List<String> notes,
+                   String phone) {
         this.name = name;
         this.individualCapacity = individualCapacity;
         this.groupCapacity = groupCapacity;
@@ -79,15 +142,25 @@ public class Shelter {
         occupants = new HashMap<>();
     }
 
-    public boolean checkQualifications(String[] ageGroup, String[] gender, boolean childrenAllowed) {
-        if (!"ALL".equals(getAgeRange())) {
+    /**
+     * Checks to see if all person are within the shelter requirements
+     * @param ageGroup ageGroup of the people
+     * @param gender genders of the people
+     * @param childrenAllowed states if children are allowed
+     * @return if the requirements are met
+     */
+    @SuppressWarnings("OverlyComplexMethod")
+    public boolean checkQualifications(String[] ageGroup,
+                                       String[] gender, boolean childrenAllowed) {
+        if (!"ALL".equals(this.ageRange)) {
             for (String anAgeGroup : ageGroup) {
                 if (!(anAgeGroup.equals(getAgeRange()))) {
                     return false;
                 }
             }
         }
-        if (!"BOTH".equals(getGender())) {
+        if (!"BOTH".equals(this.gender)) {
+
             for (String aGender : gender) {
                 if (!(aGender.equals(getGender()))) {
                     return false;
@@ -97,12 +170,14 @@ public class Shelter {
         return childrenAllowed == isChildrenAllowed();
     }
 
-    /*
+    /**
     * Method that updates number of vacant beds at the shelter if possible.
     * @param users can be positive (checking in) or negative (checking out)
     * @param group true if a "group bed" is updating its vacancy
-    * @return boolean array of length 2, with index 0 being true if check-in/out was valid, false if not
-    *   and index 1 being true if the check in/out was a type group, false for type individual
+    * @return boolean array of length 2, with index 0 being true if check-in/out was valid,
+    * false if not
+     * and index 1 being true if the check in/out was a type group,
+    * false for type individual
     */
     public boolean[] updateVacancy(int users, boolean group) {
         if ((users == 1) && group) {
@@ -124,7 +199,13 @@ public class Shelter {
         }
     }
 
-    private boolean[] checkInOneOrCheckOut(int users, boolean[] output)
+    /**
+     * Checks in and out individuals
+     * @param users the numbers of individual users checking in or out
+     * @param output the boolean to be returned if the method was activated
+     * @return the check that the method happened
+     */
+    public boolean[] checkInOneOrCheckOut(int users, boolean[] output)
     {
         int bedsTaken = Integer.parseInt(getIndividualBedsTaken());
         if ((bedsTaken == 0) && (users < 0)) {
@@ -137,7 +218,7 @@ public class Shelter {
             output[0] = true;
             return output;
         }
-        else    // individual beds full, check group beds (this code is only reached for checking in)
+        else  // individual beds full, check group beds (this code is only reached for checking in)
         {
             bedsTaken = Integer.parseInt(getGroupBedsTaken());
             vacancies = Integer.parseInt(getGroupCapacity()) - bedsTaken;
@@ -152,7 +233,12 @@ public class Shelter {
             return output;  // no beds found
         }
     }
-
+    /**
+     * Checks in and out groups
+     * @param users the numbers of group users checking in or out
+     * @param output the boolean to be returned if the method was activated
+     * @return the check that the method happened
+     */
     private boolean[] checkInGroupOrCheckOut(int users, boolean[] output)
     {
         output[1] = true;
@@ -163,7 +249,7 @@ public class Shelter {
         }
         int vacancies = Integer.parseInt(getGroupCapacity()) - bedsTaken;
         if (vacancies >= users) {
-            setIndividualBedsTaken((Integer.parseInt(getIndividualBedsTaken()) + users) + "");
+            setGroupBedsTaken((Integer.parseInt(getGroupBedsTaken()) + users) + "");
             output[0] = true;
             return output;
         }
@@ -183,104 +269,230 @@ public class Shelter {
         }
     }
 
+    /**
+     *
+     * @return name of shelter
+     */
     public String getName()
     { return name; }
 
-//    public void setName(String name) {
-//        this.name = name;
-//    }
+    /**
+     * changes shelter name the parameter name
+     * @param name name of the shelter
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    /**
+     *
+     * @return the character sequence of the requirements
+     */
     public CharSequence getRequirements()
     { return requirements; }
 
-//    public void setRequirements(String requirements) {
-//        this.requirements = requirements;
-//    }
+    /**
+     * sets requirements to the shelter
+     * @param requirements requirements of the shelter
+     */
+    public void setRequirements(String requirements) {
+        this.requirements = requirements;
+    }
 
+    /**
+     *
+     * @return this shelter address
+     */
     public CharSequence getAddress()
     { return address; }
 
-//    public void setAddress(String address) {
-//        this.address = address;
-//    }
+    /**
+     * sets the address to the parameter
+     * @param address address of shelter
+     */
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
+    /**
+     *
+     * @return shelter phone number
+     */
     public String getPhoneNumber()
     { return phoneNumber; }
 
-//    public void setPhoneNumber(String phoneNumber) {
-//        this.phoneNumber = phoneNumber;
-//    }
+    /**
+     * sets the shelter's phone number
+     * @param phoneNumber takes in a phone number
+     */
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
+    /**
+     *
+     * @return the max capacity of the individual beds
+     */
     public String getIndividualCapacity()
     { return individualCapacity; }
 
-//    public void setIndividualCapacity(String capacity) {
-//        this.individualCapacity = capacity;
-//    }
-
+    /**
+     * sets the individual capacity of beds of the shelter
+     * @param capacity number of individual bed spots
+     */
+    public void setIndividualCapacity(String capacity) {
+        this.individualCapacity = capacity;
+    }
+    /**
+     *
+     * @return the max capacity of the group beds
+     */
     public String getGroupCapacity() { return groupCapacity; }
 
-//    public void setGroupCapacity(String capacity) { this.groupCapacity = capacity; }
+    /**
+     * sets the group capacity of beds of the shelter
+     * @param capacity number of group bed spots
+     */
+    public void setGroupCapacity(String capacity) { this.groupCapacity = capacity; }
 
+    /**
+     *
+     * @return number of individual bed spots taken
+     */
     public String getIndividualBedsTaken() { return individualBedsTaken; }
 
+    /**
+     * sets the individual beds taken
+     * @param taken number of individual beds taken
+     */
     private void setIndividualBedsTaken(String taken) { this.individualBedsTaken = taken; }
 
+    /**
+     *
+     * @return number of group bed spots taken
+     */
     public String getGroupBedsTaken() { return groupBedsTaken; }
 
+    /**
+     * sets the group beds taken
+     * @param taken number of group beds taken
+     */
     private void setGroupBedsTaken(String taken) { this.groupBedsTaken = taken; }
 
+    /**
+     *
+     * @return the coordinates of the shelter
+     */
     public GeoPoint getCoordinates()
     { return coordinates; }
 
-//    public void setCoordinates(GeoPoint coordinates) {
-//        this.coordinates = coordinates;
-//    }
+    /**
+     * sets the coordinates of the shelter
+     * @param coordinates coordinates of the shelter
+     */
+    public void setCoordinates(GeoPoint coordinates) {
+        this.coordinates = coordinates;
+    }
 
+    /**
+     *
+     * @return the notes of the shelter
+     */
     public Iterable<String> getNotes()
     { return Collections.unmodifiableList(notes); }
 
-//    public void setNotes(List<String> notes) {
-//        //noinspection AssignmentOrReturnOfFieldWithMutableType
-//        this.notes = notes;
-//    }
+    /**
+     * sets notes of the shelter
+     * @param notes notes about the shelter
+     */
+    public void setNotes(List<String> notes) {
+        //noinspection AssignmentOrReturnOfFieldWithMutableType
+        this.notes = notes;
+    }
 
+    /**
+     *
+     * @return age range allowed
+     */
     @SuppressWarnings("TypeMayBeWeakened")
     public String getAgeRange() {
         return ageRange;
     }
 
-//    public void setAgeRange(String ageRange) {
-//        this.ageRange = ageRange;
-//    }
+    /**
+     * sets the age range allowed
+     * @param ageRange age range allowed
+     */
+    public void setAgeRange(String ageRange) {
+        this.ageRange = ageRange;
+    }
 
+    /**
+     *
+     * @return gender allowed
+     */
     @SuppressWarnings("TypeMayBeWeakened")
     public String getGender() {
         return gender;
     }
 
-//    public void setGender(String gender) {
-//        this.gender = gender;
-//    }
+    /**
+     * sets gender of the shelter
+     * @param gender gender allowed
+     */
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
+    /**
+     *
+     * @return if children are allowed
+     */
     public boolean isChildrenAllowed() {
         return childrenAllowed;
     }
 
-//    public void setChildrenAllowed(boolean childrenAllowed) {
-//        this.childrenAllowed = childrenAllowed;
-//    }
+    /**
+     * sets the boolean for children allowed
+     * @param childrenAllowed if children are allowed
+     */
+    public void setChildrenAllowed(boolean childrenAllowed) {
+        this.childrenAllowed = childrenAllowed;
+    }
 
+    /**
+     *  sets the occupants of the shelter
+     * @param map the occupants of the shelter
+     */
+    @SuppressWarnings("AssignmentOrReturnOfFieldWithMutableType")
+    public void setOccupants(HashMap<String, Integer> map) {
+        occupants = map;
+    }
+
+    /**
+     * adds an occupant to a designated bed
+     * @param user the user who needs the bed
+     * @param num number of bed spots needed
+     */
     public void addOccupant(String user, int num)
     {
         occupants.put(user, num);
     }
 
-//    public Map<String,Integer> getOccupants()
-//    {
-//        return Collections.unmodifiableMap(occupants);
-//    }
+    /**
+     *
+     * @return the occupantsin the hashmap
+     */
+    public Map<String,Integer> getOccupants()
+    {
+        return Collections.unmodifiableMap(occupants);
+    }
 
+    /**
+     * removes an occupant from the shelter
+     * @param username username of the occupant
+     * @param occupantType type of the user
+     */
     public void removeOccupant(String username, User.OccupantType occupantType)
     {
         if (!occupants.keySet().contains(username)) {

@@ -23,6 +23,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.wedemkois.protecc.R;
 import com.wedemkois.protecc.model.User;
 
+import java.util.Objects;
+
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText mEmailField;
     private EditText mPasswordField;
@@ -51,7 +53,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         registerButton = findViewById(R.id.registerButton);
         userAdminSpinner = findViewById(R.id.userAdminSpinner);
 
-        ArrayAdapter<User.UserType> userAdminAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, User.UserType.values());
+        ArrayAdapter<User.UserType> userAdminAdapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, User.UserType.values());
         userAdminAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         userAdminSpinner.setAdapter(userAdminAdapter);
 
@@ -61,7 +64,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         mDatabase = FirebaseFirestore.getInstance();
     }
 
-    private void register(final String email, final String password, final String firstname, final String lastname, final User.UserType userType) {
+    private void register(final String email,
+                          final String password,
+                          final String firstname,
+                          final String lastname,
+                          final User.UserType userType) {
         if(!validateForm()) {
             return;
         }
@@ -76,13 +83,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
                             currentUserModel = new User(email, userType, firstname, lastname);
-                            mDatabase.collection("users").document(user.getUid()).set(currentUserModel);
-                            Intent i = new Intent(RegisterActivity.this, DashboardActivity.class);
-                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                            mDatabase.collection("users")
+                                    .document(Objects.requireNonNull(user).getUid())
+                                    .set(currentUserModel);
+                            Intent i = new Intent(RegisterActivity.this,
+                                    DashboardActivity.class);
+                            i.addFlags(
+                                    Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(RegisterActivity.this, "Authentication failed.",
+                            Toast.makeText(RegisterActivity.this,
+                                    "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
                         hideProgressBar();
@@ -138,8 +150,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             // Hide the keyboard
             View currentFocus = getWindow().getDecorView().getRootView();
             if (currentFocus != null) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+                InputMethodManager imm =
+                        (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                Objects.requireNonNull(imm)
+                        .hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
             }
             //
             register(mEmailField.getText().toString(),

@@ -17,6 +17,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.wedemkois.protecc.R;
 import com.wedemkois.protecc.model.Shelter;
 
+import java.util.Objects;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -25,34 +27,34 @@ public class ShelterDetailActivity extends AppCompatActivity implements View.OnC
     private String shelterId;
 
     @BindView(R.id.shelterDetailShelterName)
-    private TextView shelterNameTextView;
+    TextView shelterNameTextView;
 
     @BindView(R.id.shelterDetailCapacity)
-    private TextView shelterCapacityTextView;
+    TextView shelterCapacityTextView;
 
     @BindView(R.id.shelterDetailAgeGroupTextView)
-    private TextView shelterAgeGroupTextView;
+    TextView shelterAgeGroupTextView;
 
     @BindView(R.id.shelterDetailGenderTextView)
-    private TextView shelterGenderTextView;
+    TextView shelterGenderTextView;
 
     @BindView(R.id.shelterDetailChildrenAllowedTextView)
-    private TextView shelterChildrenTextView;
+    TextView shelterChildrenTextView;
 
     @BindView(R.id.shelterDetailRequirementsTextView)
-    private TextView shelterRequirementsTextView;
+    TextView shelterRequirementsTextView;
 
     @BindView(R.id.shelterDetailCoordinatesTextView)
-    private TextView shelterCoordinatesTextView;
+    TextView shelterCoordinatesTextView;
 
     @BindView(R.id.shelterDetailAddressTextView)
-    private TextView shelterAddressTextView;
+    TextView shelterAddressTextView;
 
     @BindView(R.id.shelterDetailNotesTextView)
-    private TextView shelterNotesTextView;
+    TextView shelterNotesTextView;
 
     @BindView(R.id.shelterDetailPhoneTextView)
-    private TextView shelterPhoneTextView;
+    TextView shelterPhoneTextView;
 
     private Shelter currentShelter;
 
@@ -71,7 +73,7 @@ public class ShelterDetailActivity extends AppCompatActivity implements View.OnC
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 currentShelter = documentSnapshot.toObject(Shelter.class);
-                Log.d("DashboardActivity", currentShelter.toString());
+                Log.d("DashboardActivity", Objects.requireNonNull(currentShelter).toString());
                 onShelterLoaded(currentShelter);
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -92,7 +94,8 @@ public class ShelterDetailActivity extends AppCompatActivity implements View.OnC
         updateCapacityTextView();
         shelterAgeGroupTextView.setText(shelter.getAgeRange());
         shelterGenderTextView.setText(shelter.getGender());
-        shelterChildrenTextView.setText(shelter.isChildrenAllowed() ? "Children allowed" : "Children not allowed");
+        shelterChildrenTextView.setText(
+                shelter.isChildrenAllowed() ? "Children allowed" : "Children not allowed");
         shelterRequirementsTextView.setText(shelter.getRequirements());
         shelterCoordinatesTextView.setText(shelter.getCoordinates().toString());
         shelterAddressTextView.setText(shelter.getAddress());
@@ -104,9 +107,12 @@ public class ShelterDetailActivity extends AppCompatActivity implements View.OnC
     @SuppressWarnings("FeatureEnvy")
     private void updateCapacityTextView()
     {
-        int totalCapacity = Integer.parseInt(currentShelter.getIndividualCapacity()) + (Integer.parseInt(currentShelter.getGroupCapacity()) * 4);
-        int bedsTaken = Integer.parseInt(currentShelter.getIndividualBedsTaken()) + (Integer.parseInt(currentShelter.getGroupBedsTaken()) * 4);
-        shelterCapacityTextView.setText((totalCapacity - bedsTaken) + " out of " + totalCapacity + " total beds");
+        int totalCapacity = Integer.parseInt(currentShelter.getIndividualCapacity())
+                + (Integer.parseInt(currentShelter.getGroupCapacity()) * 4);
+        int bedsTaken = Integer.parseInt(currentShelter.getIndividualBedsTaken())
+                + (Integer.parseInt(currentShelter.getGroupBedsTaken()) * 4);
+        shelterCapacityTextView.setText(
+                (totalCapacity - bedsTaken) + " out of " + totalCapacity + " total beds");
     }
 
     @Override
