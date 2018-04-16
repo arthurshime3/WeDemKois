@@ -104,7 +104,8 @@ public class ShelterDetailActivity extends AppCompatActivity {
         shelterCapacityTextView.setText(shelter.getCapacity());
         shelterAgeGroupTextView.setText(shelter.getAgeRange());
         shelterGenderTextView.setText(shelter.getGender());
-        shelterChildrenTextView.setText(shelter.isChildrenAllowed() ? "Children allowed" : "Children not allowed");
+        shelterChildrenTextView.setText(shelter.isChildrenAllowed()
+                ? "Children allowed" : "Children not allowed");
         shelterRequirementsTextView.setText(shelter.getRequirements());
         shelterCoordinatesTextView.setText(shelter.getCoordinates().toString());
         shelterAddressTextView.setText(shelter.getAddress());

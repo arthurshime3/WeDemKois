@@ -63,7 +63,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
                             Intent i = new Intent(LoginActivity.this, DashboardActivity.class);
-                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|
+                                    Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -123,7 +124,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             // Hide the keyboard
             View currentFocus = getWindow().getDecorView().getRootView();
             if (currentFocus != null) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
             }
             //

@@ -71,7 +71,8 @@ public class ShelterActivity extends AppCompatActivity implements
             @Override
             protected void onError(FirebaseFirestoreException e) {
                 // Show a toast on errors
-                Toast toast = Toast.makeText(getApplicationContext(), "Something went wrong, check logs", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Something went wrong, check logs", Toast.LENGTH_SHORT);
                 toast.show();
             }
         };

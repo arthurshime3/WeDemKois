@@ -141,7 +141,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             // Hide the keyboard
             View currentFocus = getWindow().getDecorView().getRootView();
             if (currentFocus != null) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
             }
             //
