@@ -12,8 +12,8 @@ import static org.junit.Assert.assertEquals;
 
 public class checkInOneOrCheckOutTest {
 
-    Shelter shelterALL = new Shelter("", "", "",
-            "", "", "ALL",
+    Shelter shelterALL = new Shelter("", "5", "",
+            "0", "", "ALL",
             "BOTH", "T", "",
             "0", "0", "", "", "");
 
