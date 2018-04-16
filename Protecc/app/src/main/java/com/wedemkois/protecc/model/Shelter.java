@@ -290,4 +290,5 @@ public class Shelter {
         updateVacancy(occupants.get(username) * -1, occupantType == User.OccupantType.GROUP);
         occupants.remove(username);
     }
+
 }
