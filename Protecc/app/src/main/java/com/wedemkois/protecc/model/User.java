@@ -1,8 +1,11 @@
 package com.wedemkois.protecc.model;
 
 /**
- * Created by Arthur Shim on 2/13/18.
- */
+ * A class representing a User
+ *
+ * @version 1.0
+ * @author Arthur Shim
+ * */
 
 public class User
 {
@@ -23,12 +26,22 @@ public class User
         INDIVIDUAL, GROUP
     }
 
-    // Default no-arg constructor needed to retrieve a User from firestore
+    /**
+     * Default no-arg constructor needed to retrieve a User from firestore
+     */
+
     public User()
     {
 
     }
 
+    /**
+     * user constructor
+     * @param user username of the user
+     * @param uT user type of the user
+     * @param firstName first name of the user
+     * @param lastName last name of the suer
+     */
     public User(String user, UserType uT, String firstName, String lastName)
     {
         this.username = user;
@@ -38,37 +51,73 @@ public class User
         this.shelterId = "";
     }
 
+    /**
+     *
+     * @return username
+     */
     public String getUsername()
     {
         return username;
     }
 
+    /**
+     *
+     * @return user type
+     */
     public UserType getUserType() {return userType;}
 
+    /**
+     *
+     * @return first and last name
+     */
     public CharSequence getName() {return firstName + " " + lastName;}
 
+    /**
+     *
+     * @return first name
+     */
     public String getFirstName() {
         return firstName;
     }
 
+    /**
+     *
+     * @return last name
+     */
     public String getLastName() {
         return lastName;
     }
 
+    /**
+     *
+     * @return occupant type
+     */
     public OccupantType getOccupantType()
     {
         return occupantType;
     }
 
+    /**
+     * sets occupant type
+     * @param o occupant type of the user
+     */
     public void setOccupantType(OccupantType o)
     {
         occupantType = o;
     }
 
+    /**
+     *
+     * @return shelter id that the user is currently in
+     */
     public String getShelterId() {
         return shelterId;
     }
 
+    /**
+     * sets the shelter id for the user
+     * @param shelterId shelter id of the shelter
+     */
     public void setShelterId(String shelterId) {
         this.shelterId = shelterId;
     }
