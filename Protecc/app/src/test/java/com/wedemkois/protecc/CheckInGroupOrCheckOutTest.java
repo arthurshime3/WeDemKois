@@ -32,7 +32,7 @@ public class CheckInGroupOrCheckOutTest
     public void checkInvalidCheckout() {
         int users = -2;
         boolean[] output = {false, false};
-        output = shelterALL1.checkInOneOrCheckOut(users, output);
+        output = shelterALL1.checkInGroupOrCheckOut(users, output);
         assertEquals(false, output[0]);
         assertEquals("0", shelterALL1.getGroupBedsTaken());
     }
@@ -41,7 +41,7 @@ public class CheckInGroupOrCheckOutTest
     public void checkValidCheckout() {
         int users = -2;
         boolean[] output = {false, false};
-        output = shelterALL2.checkInOneOrCheckOut(users, output);
+        output = shelterALL2.checkInGroupOrCheckOut(users, output);
         assertEquals(true, output[0]);
         assertEquals("3", shelterALL2.getGroupBedsTaken());
 
@@ -51,7 +51,7 @@ public class CheckInGroupOrCheckOutTest
     public void checkGroupBedsAvailableCheckIn() {
         int users = 2;
         boolean[] output = {false, false};
-        output = shelterALL3.checkInOneOrCheckOut(users, output);
+        output = shelterALL3.checkInGroupOrCheckOut(users, output);
         assertEquals(true, output[0]);
         assertEquals("2", shelterALL3.getGroupBedsTaken());
 
@@ -61,9 +61,9 @@ public class CheckInGroupOrCheckOutTest
     public void checkIndividualBedsAvailableCheckIn() {
         int users = 2;
         boolean[] output = {false, false};
-        output = shelterALL4.checkInOneOrCheckOut(users, output);
+        output = shelterALL4.checkInGroupOrCheckOut(users, output);
         assertEquals(true, output[0]);
-        assertEquals("2", shelterALL3.getIndividualBedsTaken());
+        assertEquals("0", shelterALL3.getGroupBedsTaken());
 
     }
 
@@ -71,7 +71,7 @@ public class CheckInGroupOrCheckOutTest
     public void checkFailedCheckIn() {
         int users = 2;
         boolean[] output = {false, false};
-        output = shelterALL1.checkInOneOrCheckOut(users, output);
+        output = shelterALL1.checkInGroupOrCheckOut(users, output);
         assertEquals(false, output[0]);
         assertEquals("0", shelterALL1.getGroupBedsTaken());
     }

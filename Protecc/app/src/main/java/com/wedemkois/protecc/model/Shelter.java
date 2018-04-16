@@ -241,7 +241,7 @@ public class Shelter {
      * @param output the boolean to be returned if the method was activated
      * @return the check that the method happened
      */
-    private boolean[] checkInGroupOrCheckOut(int users, boolean[] output)
+    public boolean[] checkInGroupOrCheckOut(int users, boolean[] output)
     {
         output[1] = true;
         int bedsTaken = Integer.parseInt(getGroupBedsTaken());
