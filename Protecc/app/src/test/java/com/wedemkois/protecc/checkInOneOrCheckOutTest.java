@@ -12,18 +12,52 @@ import static org.junit.Assert.assertEquals;
 
 public class checkInOneOrCheckOutTest {
 
-    Shelter shelterALL = new Shelter("", "5", "",
+    Shelter shelterALL1 = new Shelter("", "", "",
             "0", "", "ALL",
             "BOTH", "T", "",
             "0", "0", "", "", "");
 
-    private int users = 1;
-    private boolean[] output = {};
+    Shelter shelterALL2 = new Shelter("", "5", "",
+            "0", "", "ALL",
+            "BOTH", "T", "",
+            "0", "0", "", "", "");
+
+    Shelter shelterALL3 = new Shelter("", "", "5",
+            "0", "0", "ALL",
+            "BOTH", "T", "",
+            "0", "0", "", "", "");
+
+    Shelter shelterALL4 = new Shelter("", "0", "0",
+            "0", "0", "ALL",
+            "BOTH", "T", "",
+            "0", "0", "", "", "");
 
     @Test
-    public void checkBasicQualificationsTest() {
-        assertEquals(shelterALL.checkInOneOrCheckOut(users, output), true);
+    public void branchOneTest() {
+        int users = -1;
+        boolean[] output = {};
+        assertEquals(shelterALL1.checkInOneOrCheckOut(users, output), false);
     }
 
+    @Test
+    public void branchTwoTest() {
+        int users = 1;
+        boolean[] output = {};
+        assertEquals(shelterALL2.checkInOneOrCheckOut(users, output), true);
+    }
+
+    @Test
+    public void branchThreeTest() {
+        int users = 1;
+        boolean[] output = {};
+        assertEquals(shelterALL3.checkInOneOrCheckOut(users, output), true);
+    }
+
+    @Test
+    public void branchFourTest() {
+        int users = 1;
+        boolean[] output = {false};
+        assertEquals(shelterALL4.checkInOneOrCheckOut(users, output), false);
+    }
 
 }
