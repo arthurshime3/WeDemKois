@@ -25,7 +25,8 @@ public class CheckQualificationsTest {
 
     @Test
     public void checkBasicQualificationsTest() {
-        assertEquals(shelterALL.checkQualifications(ageGroups, genders, childrenAllowed), true);
+        assertEquals(true,
+                shelterALL.checkQualifications(ageGroups, genders, childrenAllowed));
     }
 
     @Test
@@ -38,7 +39,8 @@ public class CheckQualificationsTest {
         shelterALL.setAgeRange(Shelter.AgeRange.ADULT.name());
         shelterALL.setChildrenAllowed(false);
 
-        assertEquals(shelterALL.checkQualifications(ageGroups, genders, childrenAllowed), false);
+        assertEquals(false,
+                shelterALL.checkQualifications(ageGroups, genders, childrenAllowed));
     }
 
     @Test
@@ -49,7 +51,8 @@ public class CheckQualificationsTest {
         shelterALL.setAgeRange(Shelter.AgeRange.FAMILY.name());
         shelterALL.setGender(Shelter.Gender.BOTH.name());
         shelterALL.setChildrenAllowed(true);
-        assertEquals(shelterALL.checkQualifications(ageGroups, genders, childrenAllowed), true);
+        assertEquals(true,
+                shelterALL.checkQualifications(ageGroups, genders, childrenAllowed));
     }
 
     @Test
@@ -62,7 +65,8 @@ public class CheckQualificationsTest {
         shelterALL.setAgeRange("ADULT");
         shelterALL.setChildrenAllowed(false);
         childrenAllowed = false;
-        assertEquals(shelterALL.checkQualifications(ageGroups, genders, childrenAllowed), true);
+        assertEquals(true,
+                shelterALL.checkQualifications(ageGroups, genders, childrenAllowed));
 
     }
 }

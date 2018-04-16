@@ -169,7 +169,7 @@ public class Shelter {
         }
         int vacancies = Integer.parseInt(getGroupCapacity()) - bedsTaken;
         if (vacancies >= users) {
-            setIndividualBedsTaken((Integer.parseInt(getIndividualBedsTaken()) + users) + "");
+            setGroupBedsTaken((Integer.parseInt(getGroupBedsTaken()) + users) + "");
             output[0] = true;
             return output;
         }
@@ -276,7 +276,9 @@ public class Shelter {
     public void setChildrenAllowed(boolean childrenAllowed) {
         this.childrenAllowed = childrenAllowed;
     }
-
+    public void setOccupants(HashMap<String, Integer> map) {
+        occupants = map;
+    }
     public void addOccupant(String user, int num)
     {
         occupants.put(user, num);
