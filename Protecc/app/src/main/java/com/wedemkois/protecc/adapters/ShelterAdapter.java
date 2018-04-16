@@ -12,6 +12,8 @@ import com.google.firebase.firestore.Query;
 import com.wedemkois.protecc.R;
 import com.wedemkois.protecc.model.Shelter;
 
+import java.util.Objects;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -64,17 +66,17 @@ public class ShelterAdapter extends FirestoreAdapter<ShelterAdapter.ViewHolder> 
         @BindView(R.id.Shelter_item_city)
         TextView cityView; */
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(final DocumentSnapshot snapshot,
-                         final OnShelterSelectedListener listener) {
+        void bind(final DocumentSnapshot snapshot,
+                  final OnShelterSelectedListener listener) {
 
             Shelter shelter = snapshot.toObject(Shelter.class);
 
-            Log.d("shelterAdapter", shelter.toString());
+            Log.d("shelterAdapter", Objects.requireNonNull(shelter).toString());
             nameView.setText(shelter.getName());
 //            ratingBar.setRating((float) Shelter.getAvgRating());
 //            cityView.setText(Shelter.getCity());

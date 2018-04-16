@@ -20,6 +20,8 @@ import com.wedemkois.protecc.Filters;
 import com.wedemkois.protecc.R;
 import com.wedemkois.protecc.adapters.ShelterAdapter;
 
+import java.util.Objects;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -45,7 +47,7 @@ public class ShelterActivity extends AppCompatActivity implements
         setContentView(R.layout.shelters);
         ButterKnife.bind(this);
 
-        filters = getIntent().getExtras().getParcelable("filter_parcel");
+        filters = Objects.requireNonNull(getIntent().getExtras()).getParcelable("filter_parcel");
 
         mDatabase = FirebaseFirestore.getInstance();
 
@@ -111,11 +113,13 @@ public class ShelterActivity extends AppCompatActivity implements
         }
 
         if(filters.hasGender()) {
-            query = query.whereEqualTo("gender", filters.getGender().toString());
+            query = query.whereEqualTo("gender",
+                    Objects.requireNonNull(filters.getGender()).toString());
         }
 
         if(filters.hasAgeRange()) {
-            query = query.whereEqualTo("ageRange", filters.getAgeRange().toString());
+            query = query.whereEqualTo("ageRange",
+                    Objects.requireNonNull(filters.getAgeRange()).toString());
         }
 
         // Limit items

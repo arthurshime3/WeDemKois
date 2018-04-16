@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress AndroidElementNotAllowed -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/sc_shelterName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/shelter_string"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/sc_numOfPeopleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/partySize_string"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"/>
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/sc_numOfPeople"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="5"
+            android:inputType="number"
+            app:layout_constraintTop_toBottomOf="@+id/sc_numOfPeopleTextView"
+            android:hint="@string/partySize_string" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/sc_genderTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gender"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            tools:ignore="HardcodedText" />
+
+        <CheckBox
+            android:id="@+id/sc_maleCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/male_string"
+            app:layout_constraintTop_toBottomOf="@+id/sc_genderTextView"
+            tools:ignore="HardcodedText" />
+
+        <CheckBox
+            android:id="@+id/sc_femaleCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/female_string"
+            app:layout_constraintTop_toBottomOf="@+id/sc_maleCheckBox"  />
+
+        <CheckBox
+            android:id="@+id/sc_nonBinaryCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/nonbinary_string"
+            app:layout_constraintTop_toBottomOf="@+id/sc_femaleCheckBox"  />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/sc_ageTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ageRange_string"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
+
+
+        <CheckBox
+            android:id="@+id/sc_childrenCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/children_checkbox_string"
+            tools:layout_editor_absoluteY="32dp"
+            app:layout_constraintTop_toBottomOf="@+id/sc_ageTextView" />
+
+        <CheckBox
+            android:id="@+id/sc_youngAdultCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/youngAdult_checkbox_string"
+            tools:layout_editor_absoluteY="32dp"
+            app:layout_constraintTop_toBottomOf="@+id/sc_childrenCheckBox" />
+
+        <CheckBox
+            android:id="@+id/sc_adultCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/adult_checkbox_string"
+            tools:layout_editor_absoluteY="32dp"
+            app:layout_constraintTop_toBottomOf="@+id/sc_youngAdultCheckBox" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <Button
+        android:id="@+id/sc_claimBedsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/claimBeds_string" />
+
+    <TextView
+    android:id="@+id/sc_inputError"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/input_error_string"
+    android:textColor="@android:color/black"
+    android:visibility="invisible"
+    android:textSize="12sp"  />
+
+    <TextView
+        android:id="@+id/sc_userError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/user_error_string"
+        android:textColor="@android:color/black"
+        android:visibility="invisible"
+        android:textSize="12sp"  />
+
+</LinearLayout>

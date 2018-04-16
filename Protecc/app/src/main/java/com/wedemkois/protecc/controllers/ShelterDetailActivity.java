@@ -1,5 +1,10 @@
 package com.wedemkois.protecc.controllers;
 
+<<<<<<< HEAD
+=======
+import android.annotation.SuppressLint;
+import android.content.Intent;
+>>>>>>> master
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
@@ -22,6 +27,8 @@ import com.wedemkois.protecc.model.User;
 import org.w3c.dom.Text;
 
 import java.util.Arrays;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,6 +67,10 @@ public class ShelterDetailActivity extends AppCompatActivity {
     @BindView(R.id.shelterDetailPhoneTextView)
     TextView shelterPhoneTextView;
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> master
     @BindView(R.id.shelterDetailGroupTextView)
     TextView shelterGroupTextView;
 
@@ -71,6 +82,11 @@ public class ShelterDetailActivity extends AppCompatActivity {
 
     private FirebaseFirestore mDatabase;
     private DocumentReference mShelterRef;
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> master
+>>>>>>> master
     private Shelter currentShelter;
 
 
@@ -88,7 +104,7 @@ public class ShelterDetailActivity extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 currentShelter = documentSnapshot.toObject(Shelter.class);
-                Log.d("DashboardActivity", currentShelter.toString());
+                Log.d("DashboardActivity", Objects.requireNonNull(currentShelter).toString());
                 onShelterLoaded(currentShelter);
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -99,20 +115,66 @@ public class ShelterDetailActivity extends AppCompatActivity {
         });
     }
 
+<<<<<<< HEAD
     public void onShelterLoaded(Shelter shelter) {
+=======
+    @SuppressWarnings("FeatureEnvy")
+    private void onShelterLoaded(Shelter shelter) {
+        currentShelter = shelter;
+
+>>>>>>> master
         shelterNameTextView.setText(shelter.getName());
         shelterCapacityTextView.setText(shelter.getCapacity());
         shelterAgeGroupTextView.setText(shelter.getAgeRange());
         shelterGenderTextView.setText(shelter.getGender());
+<<<<<<< HEAD
         shelterChildrenTextView.setText(shelter.isChildrenAllowed()
                 ? "Children allowed" : "Children not allowed");
+=======
+        shelterChildrenTextView.setText(
+                shelter.isChildrenAllowed() ? "Children allowed" : "Children not allowed");
+>>>>>>> master
         shelterRequirementsTextView.setText(shelter.getRequirements());
         shelterCoordinatesTextView.setText(shelter.getCoordinates().toString());
         shelterAddressTextView.setText(shelter.getAddress());
         shelterNotesTextView.setText(String.join(",", shelter.getNotes()));
         shelterPhoneTextView.setText(shelter.getPhoneNumber());
 
+<<<<<<< HEAD
+=======
+    @SuppressLint("SetTextI18n")
+    @SuppressWarnings("FeatureEnvy")
+    private void updateCapacityTextView()
+    {
+        int totalCapacity = Integer.parseInt(currentShelter.getIndividualCapacity())
+                + (Integer.parseInt(currentShelter.getGroupCapacity()) * 4);
+        int bedsTaken = Integer.parseInt(currentShelter.getIndividualBedsTaken())
+                + (Integer.parseInt(currentShelter.getGroupBedsTaken()) * 4);
+        shelterCapacityTextView.setText(
+                (totalCapacity - bedsTaken) + " out of " + totalCapacity + " total beds");
+    }
+>>>>>>> master
 
+    }
+<<<<<<< HEAD
+
+    public boolean checkQualifications(String[] ageGroup, String[] gender, boolean childrenAllowed) {
+        if (!(currentShelter.getAgeRange().equals("All"))) {
+            for (int i = 0; i < ageGroup.length; i++) {
+                if (!(ageGroup[i].equals(currentShelter.getAgeRange()))) {
+                    return false;
+                }
+            }
+        }
+        if (!(currentShelter.getGender().equals("Both"))) {
+            for (int i = 0; i < gender.length; i++) {
+                if (!(gender[i].equals(currentShelter.getGender()))) {
+                    return false;
+                }
+            }
+        }
+        if (!(childrenAllowed == currentShelter.isChildrenAllowed())) return false;
+        return true;
     }
     /*
     * Method that updates number of vacant beds at the shelter if possible.
@@ -147,4 +209,6 @@ public class ShelterDetailActivity extends AppCompatActivity {
         return false;
     }
 
+=======
+>>>>>>> master
 }
