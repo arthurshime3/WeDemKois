@@ -80,21 +80,27 @@ public class Shelter {
     }
 
     public boolean checkQualifications(String[] ageGroup, String[] gender, boolean childrenAllowed) {
-        if (!"ALL".equals(getAgeRange())) {
+        boolean checkAge = false;
+        boolean checkGender = false;
+        if (this.ageRange.equals("ALL")) {
+            checkAge = true;
+        } else {
             for (String anAgeGroup : ageGroup) {
-                if (!(anAgeGroup.equals(getAgeRange()))) {
-                    return false;
+                if (anAgeGroup.equals(getAgeRange()) || anAgeGroup.equals("ALL")) {
+                    checkAge = true;
                 }
             }
         }
-        if (!"BOTH".equals(getGender())) {
+        if (this.gender.equals("BOTH")) {
+            checkGender = true;
+        } else {
             for (String aGender : gender) {
-                if (!(aGender.equals(getGender()))) {
-                    return false;
+                if (aGender.equals(getGender()) || aGender.equals("BOTH")) {
+                    checkGender = true;
                 }
             }
         }
-        return childrenAllowed == isChildrenAllowed();
+        return checkAge && checkGender && childrenAllowed == isChildrenAllowed();
     }
 
     /*
@@ -163,7 +169,7 @@ public class Shelter {
         }
         int vacancies = Integer.parseInt(getGroupCapacity()) - bedsTaken;
         if (vacancies >= users) {
-            setIndividualBedsTaken((Integer.parseInt(getIndividualBedsTaken()) + users) + "");
+            setGroupBedsTaken((Integer.parseInt(getGroupBedsTaken()) + users) + "");
             output[0] = true;
             return output;
         }
@@ -267,10 +273,12 @@ public class Shelter {
         return childrenAllowed;
     }
 
-//    public void setChildrenAllowed(boolean childrenAllowed) {
-//        this.childrenAllowed = childrenAllowed;
-//    }
-
+    public void setChildrenAllowed(boolean childrenAllowed) {
+        this.childrenAllowed = childrenAllowed;
+    }
+    public void setOccupants(HashMap<String, Integer> map) {
+        occupants = map;
+    }
     public void addOccupant(String user, int num)
     {
         occupants.put(user, num);
