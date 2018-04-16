@@ -1,5 +1,6 @@
 package com.wedemkois.protecc.controllers;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -92,7 +93,7 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
 
         mAuth = FirebaseAuth.getInstance();
 
-        String uid = mAuth.getUid();
+        @SuppressLint("RestrictedApi") String uid = mAuth.getUid();
 
         DocumentReference docRef = mDatabase.collection("users").document(uid);
 
@@ -152,6 +153,7 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
     }
 
 
+    @SuppressLint("RestrictedApi")
     private void pushUpdates() {
         mDatabase.collection("shelters").document(shelterId).set(currentShelter)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -186,7 +188,7 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
         int agesCheckedCount = getAgesCheckedCount();
         int gendersCheckedCount = getGendersCheckedCount();
 
-        if (gendersCheckedCount == 0 || agesCheckedCount == 0 || numOfUsers.getText().toString().trim().isEmpty()) {
+        if ((gendersCheckedCount == 0) || (agesCheckedCount == 0) || numOfUsers.getText().toString().trim().isEmpty()) {
             return false;
         }
 
@@ -265,12 +267,12 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
         if (maleCheckBox.isChecked())
         {
             genders[i] = "MEN";
-            i++;
+//            i++;
         }
         if (femaleCheckBox.isChecked())
         {
             genders[i] = "WOMEN";
-            i++;
+//            i++;
         }
 
         return  genders;
@@ -284,12 +286,12 @@ public class ShelterClaimActivity extends AppCompatActivity implements View.OnCl
         if (youngAdultCheckBox.isChecked())
         {
             ages[i] = "YOUNGADULTS";
-            i++;
+//            i++;
         }
         if (adultCheckBox.isChecked())
         {
             ages[i] = "ADULT";
-            i++;
+//            i++;
         }
 
         return ages;

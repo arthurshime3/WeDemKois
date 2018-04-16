@@ -1,5 +1,6 @@
 package com.wedemkois.protecc.adapters;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,14 +34,15 @@ public class ShelterAdapter extends FirestoreAdapter<ShelterAdapter.ViewHolder> 
         mListener = listener;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         return new ViewHolder(inflater.inflate(R.layout.shelter_list_content, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(getSnapshot(position), mListener);
     }
 

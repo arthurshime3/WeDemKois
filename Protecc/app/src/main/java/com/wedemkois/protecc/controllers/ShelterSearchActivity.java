@@ -91,7 +91,6 @@ public class ShelterSearchActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View view) {
         int i = view.getId();
-
         if (i == R.id.mapSearchButton) {
             Log.d("HELLO", "Map Search Button Clicked");
             Filters filters = createFiltersFromView();

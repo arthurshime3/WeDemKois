@@ -36,6 +36,7 @@ public class Shelter {
     public Shelter() { }
 
     // The parser constructor, calls the full param constructor
+    @SuppressWarnings("ConstructorWithTooManyParameters")
     public Shelter(String name, String individualCapacity, String groupCapacity, String individualBedsTaken, String groupBedsTaken,
                    String ageRange, String gender, String childrenAllowed, String requirements, String longitude, String latitude,
                    String address, String notes, String phone)
@@ -56,6 +57,7 @@ public class Shelter {
                 phone);
     }
 
+    @SuppressWarnings("ConstructorWithTooManyParameters")
     public Shelter(String name, String individualCapacity, String groupCapacity, String individualBedsTaken, String groupBedsTaken,
                    String ageRange, String gender, boolean childrenAllowed, String requirements, GeoPoint coordinates,
                    String address, List<String> notes, String phone) {
@@ -288,4 +290,5 @@ public class Shelter {
         updateVacancy(occupants.get(username) * -1, occupantType == User.OccupantType.GROUP);
         occupants.remove(username);
     }
+
 }

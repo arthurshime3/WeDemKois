@@ -1,5 +1,6 @@
 package com.wedemkois.protecc.controllers;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -65,7 +66,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             addSheltersToDatabase();
         }
 
-        String uid = mAuth.getUid();
+        @SuppressLint("RestrictedApi") String uid = mAuth.getUid();
 
         DocumentReference docRef = mDatabase.collection("users").document(uid);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -216,6 +217,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                     }
                 });
     }
+    @SuppressLint("RestrictedApi")
     private void pushUserUpdates() {
         mDatabase.collection("users").document(mAuth.getUid()).set(currentUser)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

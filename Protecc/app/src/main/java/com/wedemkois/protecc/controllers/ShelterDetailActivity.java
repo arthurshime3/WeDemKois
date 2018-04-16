@@ -1,5 +1,6 @@
 package com.wedemkois.protecc.controllers;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -99,6 +100,7 @@ public class ShelterDetailActivity extends AppCompatActivity implements View.OnC
         shelterPhoneTextView.setText(shelter.getPhoneNumber());
     }
 
+    @SuppressLint("SetTextI18n")
     @SuppressWarnings("FeatureEnvy")
     private void updateCapacityTextView()
     {
