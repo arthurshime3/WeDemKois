@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:keep="@layout/shelter">
 
 
     <TextView
@@ -11,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="47dp"
         android:gravity="center_vertical"
-        android:text="Shelter name"
+        android:text="@string/shelterName_string"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="96dp"
-        android:text="Address"
+        android:text="@string/address_string"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="15dp"
-        android:text="Phone Number"
+        android:text="@string/phoneNumber_string"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/shelterAddress" />
 
@@ -40,7 +42,7 @@
         android:id="@+id/genderHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Gender Restriction:"
+        android:text="@string/genderHeader_string"
         app:layout_constraintBaseline_toBaselineOf="@+id/shelterGender"
         app:layout_constraintEnd_toEndOf="@+id/capacityHeader"
         app:layout_constraintStart_toEndOf="@+id/capacityHeader" />
@@ -51,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginTop="21dp"
-        android:text="Anyone"
+        android:text="@string/anyone_string"
         app:layout_constraintStart_toEndOf="@+id/genderHeader"
         app:layout_constraintTop_toBottomOf="@+id/shelterPhoneNumber" />
 
@@ -60,7 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Capacity:"
+        android:text="@string/capacityHeader_string"
         app:layout_constraintBaseline_toBaselineOf="@+id/shelterCapacity"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -70,7 +72,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="16dp"
-        android:text="0"
+        android:text="@string/zero_string"
         app:layout_constraintStart_toEndOf="@+id/capacityHeader"
         app:layout_constraintTop_toBottomOf="@+id/genderHeader" />
 
@@ -80,7 +82,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="22dp"
-        android:text="Location:"
+        android:text="@string/locationHeader_string"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/capacityHeader" />
 
@@ -88,7 +90,7 @@
         android:id="@+id/longitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0"
+        android:text="@string/zero_string"
         app:layout_constraintStart_toStartOf="@+id/locationHeader"
         app:layout_constraintTop_toBottomOf="@+id/locationHeader" />
 
@@ -96,7 +98,7 @@
         android:id="@+id/latitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0"
+        android:text="@string/zero_string"
         app:layout_constraintStart_toStartOf="@+id/longitude"
         app:layout_constraintTop_toBottomOf="@+id/longitude" />
 
@@ -105,7 +107,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="7dp"
-        android:text="Back"
+        android:text="@string/back_string"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

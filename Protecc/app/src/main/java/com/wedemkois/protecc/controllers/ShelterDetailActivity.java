@@ -1,5 +1,6 @@
 package com.wedemkois.protecc.controllers;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,6 +16,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.wedemkois.protecc.R;
 import com.wedemkois.protecc.model.Shelter;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -70,7 +73,7 @@ public class ShelterDetailActivity extends AppCompatActivity implements View.OnC
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 currentShelter = documentSnapshot.toObject(Shelter.class);
-                Log.d("DashboardActivity", currentShelter.toString());
+                Log.d("DashboardActivity", Objects.requireNonNull(currentShelter).toString());
                 onShelterLoaded(currentShelter);
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -84,14 +87,15 @@ public class ShelterDetailActivity extends AppCompatActivity implements View.OnC
     }
 
     @SuppressWarnings("FeatureEnvy")
-    public void onShelterLoaded(Shelter shelter) {
+    private void onShelterLoaded(Shelter shelter) {
         currentShelter = shelter;
 
         shelterNameTextView.setText(shelter.getName());
         updateCapacityTextView();
         shelterAgeGroupTextView.setText(shelter.getAgeRange());
         shelterGenderTextView.setText(shelter.getGender());
-        shelterChildrenTextView.setText(shelter.isChildrenAllowed() ? "Children allowed" : "Children not allowed");
+        shelterChildrenTextView.setText(
+                shelter.isChildrenAllowed() ? "Children allowed" : "Children not allowed");
         shelterRequirementsTextView.setText(shelter.getRequirements());
         shelterCoordinatesTextView.setText(shelter.getCoordinates().toString());
         shelterAddressTextView.setText(shelter.getAddress());
@@ -99,12 +103,16 @@ public class ShelterDetailActivity extends AppCompatActivity implements View.OnC
         shelterPhoneTextView.setText(shelter.getPhoneNumber());
     }
 
+    @SuppressLint("SetTextI18n")
     @SuppressWarnings("FeatureEnvy")
     private void updateCapacityTextView()
     {
-        int totalCapacity = Integer.parseInt(currentShelter.getIndividualCapacity()) + (Integer.parseInt(currentShelter.getGroupCapacity()) * 4);
-        int bedsTaken = Integer.parseInt(currentShelter.getIndividualBedsTaken()) + (Integer.parseInt(currentShelter.getGroupBedsTaken()) * 4);
-        shelterCapacityTextView.setText((totalCapacity - bedsTaken) + " out of " + totalCapacity + " total beds");
+        int totalCapacity = Integer.parseInt(currentShelter.getIndividualCapacity())
+                + (Integer.parseInt(currentShelter.getGroupCapacity()) * 4);
+        int bedsTaken = Integer.parseInt(currentShelter.getIndividualBedsTaken())
+                + (Integer.parseInt(currentShelter.getGroupBedsTaken()) * 4);
+        shelterCapacityTextView.setText(
+                (totalCapacity - bedsTaken) + " out of " + totalCapacity + " total beds");
     }
 
     @Override

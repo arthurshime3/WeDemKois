@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--suppress AndroidElementNotAllowed -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -12,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Find a Shelter!"
+        android:text="@string/findAShelter_string"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:ems="10"
-            android:hint="Shelter Name"
+            android:hint="@string/shelterName_string"
             android:inputType="textPersonName"
             app:layout_constraintStart_toStartOf="parent" />
     </android.support.constraint.ConstraintLayout>
@@ -42,18 +43,16 @@
             android:id="@+id/genderTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Gender"
+            android:text="@string/gender_string"
             android:textColor="@android:color/black"
             android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="parent"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="7dp" />
+            android:visibility="visible" />
 
         <RadioGroup
             android:id="@+id/genderRadioGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="visible"
             app:layout_constraintTop_toBottomOf="@+id/genderTextView">
 
             <RadioButton
@@ -61,32 +60,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="12sp"
-                android:text="Male" />
+                android:text="@string/male_string"
+                android:textSize="12sp" />
 
             <RadioButton
                 android:id="@+id/femaleRadio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="12sp"
-                android:text="Female" />
+                android:text="@string/female_string"
+                android:textSize="12sp" />
 
             <RadioButton
                 android:id="@+id/nonbinaryRadio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="12sp"
-                android:text="Non-binary" />
+                android:text="@string/nonbinary_string"
+                android:textSize="12sp" />
 
             <RadioButton
                 android:id="@+id/neitherRadio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="12sp"
-                android:text="None" />
+                android:text="@string/none_string"
+                android:textSize="12sp" />
         </RadioGroup>
     </android.support.constraint.ConstraintLayout>
 
@@ -98,7 +97,7 @@
             android:id="@+id/ageTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Age Range"
+            android:text="@string/ageRange_string"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
@@ -116,7 +115,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Families with Newborns"
+                android:text="@string/family_radio_string"
                 android:textSize="12sp"
                 tools:layout_editor_absoluteY="32dp" />
 
@@ -125,7 +124,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Adults"
+                android:text="@string/adult_radio_string"
                 android:textSize="12sp"
                 tools:layout_editor_absoluteY="32dp" />
 
@@ -134,7 +133,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Young Adults"
+                android:text="@string/youngAdult_radio_string"
                 android:textSize="12sp"
                 tools:layout_editor_absoluteY="32dp" />
 
@@ -143,7 +142,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Anyone"
+                android:text="@string/anyone_string"
                 android:textSize="12sp"
                 tools:layout_editor_absoluteY="32dp" />
         </RadioGroup>
@@ -162,7 +161,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             style="?android:attr/buttonBarButtonStyle"
-            android:text="Search" />
+            android:text="@string/search_string" />
 
         <Button
             android:id="@+id/mapSearchButton"
@@ -170,7 +169,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             style="?android:attr/buttonBarButtonStyle"
-            android:text="Map Search" />
+            android:text="@string/mapSearch_string" />
     </LinearLayout>
 
 </LinearLayout>

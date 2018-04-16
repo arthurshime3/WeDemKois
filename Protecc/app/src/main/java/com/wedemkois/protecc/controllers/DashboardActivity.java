@@ -26,6 +26,7 @@ import com.wedemkois.protecc.model.User;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Objects;
 
 public class DashboardActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView nameView;
@@ -68,13 +69,14 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
         @SuppressLint("RestrictedApi") String uid = mAuth.getUid();
 
-        DocumentReference docRef = mDatabase.collection("users").document(uid);
+        DocumentReference docRef = mDatabase.collection("users")
+                .document(Objects.requireNonNull(uid));
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Log.d("DashboardActivity", documentSnapshot.toString());
                 currentUser = documentSnapshot.toObject(User.class);
-                Log.d("DashboardActivity", currentUser.toString());
+                Log.d("DashboardActivity", Objects.requireNonNull(currentUser).toString());
                 retrieveCurrentShelter();
                 updateUI(currentUser);
             }
@@ -93,7 +95,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     private void addSheltersToDatabase () {
         CSVReader reader = null;
         try {
-            reader = new CSVReaderBuilder(new InputStreamReader(getResources().openRawResource(R.raw.shelterdb)))
+            reader = new CSVReaderBuilder(
+                    new InputStreamReader(getResources().openRawResource(R.raw.shelterdb)))
                     .withCSVParser(new CSVParserBuilder()
                             .withQuoteChar('"')
                             .withSeparator(',')
@@ -103,9 +106,10 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             String[] splitLine = reader.readNext();
             int counter = 0;
             while (splitLine != null) {
-                Shelter newShelter = new Shelter(splitLine[1], splitLine[2], splitLine[3], splitLine[4],
-                        splitLine[5], splitLine[6], splitLine[7], splitLine[8], splitLine[9], splitLine[10],
-                        splitLine[11], splitLine[12], splitLine[13], splitLine[14]);
+                Shelter newShelter = new Shelter(splitLine[1], splitLine[2], splitLine[3],
+                        splitLine[4], splitLine[5], splitLine[6], splitLine[7], splitLine[8],
+                        splitLine[9], splitLine[10], splitLine[11], splitLine[12], splitLine[13],
+                        splitLine[14]);
                 Log.d("addSheltersToDatabase","Hi");
                 mDatabase.collection("shelters").document(counter + "").set(newShelter);
                 counter++;
@@ -118,7 +122,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             Log.d("addSheltersToDatabase", "IOException!");
         } finally {
             try {
-                reader.close();
+                Objects.requireNonNull(reader).close();
             } catch (IOException ignored) {
                 Log.d("addSheltersToDatabase", ignored.toString());
             }
@@ -189,7 +193,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 break;
             case R.id.shelterCheckOutButton:
                 if (!"".equals(currentUser.getShelterId())) {
-                    currentShelter.removeOccupant(currentUser.getUsername(), currentUser.getOccupantType());
+                    currentShelter.removeOccupant(currentUser.getUsername(),
+                            currentUser.getOccupantType());
                     pushShelterUpdates();
                     currentUser.setShelterId("");
                     pushUserUpdates();
@@ -219,7 +224,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     }
     @SuppressLint("RestrictedApi")
     private void pushUserUpdates() {
-        mDatabase.collection("users").document(mAuth.getUid()).set(currentUser)
+        mDatabase.collection("users")
+                .document(Objects.requireNonNull(mAuth.getUid())).set(currentUser)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

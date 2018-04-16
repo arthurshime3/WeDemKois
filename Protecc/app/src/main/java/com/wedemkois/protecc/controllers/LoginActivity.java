@@ -18,6 +18,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.wedemkois.protecc.R;
 
+import java.util.Objects;
+
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText mEmailField;
@@ -58,8 +60,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Intent i = new Intent(LoginActivity.this, DashboardActivity.class);
-                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                            Intent i = new Intent(LoginActivity.this,
+                                    DashboardActivity.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    |Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -119,8 +123,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             // Hide the keyboard
             View currentFocus = getWindow().getDecorView().getRootView();
             if (currentFocus != null) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+                InputMethodManager imm =
+                        (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                Objects.requireNonNull(imm)
+                        .hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
             }
             //
             signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
