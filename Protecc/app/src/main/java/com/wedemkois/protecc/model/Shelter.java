@@ -1,5 +1,7 @@
 package com.wedemkois.protecc.model;
 
+import android.util.Log;
+
 import com.google.firebase.firestore.GeoPoint;
 
 import java.util.ArrayList;
