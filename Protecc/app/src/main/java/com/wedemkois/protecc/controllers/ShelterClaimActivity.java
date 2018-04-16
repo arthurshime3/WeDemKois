@@ -26,37 +26,37 @@ import butterknife.ButterKnife;
 
 public class ShelterClaimActivity extends AppCompatActivity implements View.OnClickListener{
     @BindView(R.id.sc_shelterName)
-    TextView shelterNameTextView;
+    private TextView shelterNameTextView;
 
     @BindView(R.id.sc_claimBedsButton)
-    Button claimBedsButton;
+    private Button claimBedsButton;
 
     @BindView(R.id.sc_numOfPeople)
-    TextView numOfUsers;
+    private TextView numOfUsers;
 
     @BindView(R.id.sc_maleCheckBox)
-    CheckBox maleCheckBox;
+    private CheckBox maleCheckBox;
 
     @BindView(R.id.sc_femaleCheckBox)
-    CheckBox femaleCheckBox;
+    private CheckBox femaleCheckBox;
 
     @BindView(R.id.sc_nonBinaryCheckBox)
-    CheckBox nonBinaryCheckBox;
+    private CheckBox nonBinaryCheckBox;
 
     @BindView(R.id.sc_childrenCheckBox)
-    CheckBox childrenCheckBox;
+    private CheckBox childrenCheckBox;
 
     @BindView(R.id.sc_youngAdultCheckBox)
-    CheckBox youngAdultCheckBox;
+    private CheckBox youngAdultCheckBox;
 
     @BindView(R.id.sc_adultCheckBox)
-    CheckBox adultCheckBox;
+    private CheckBox adultCheckBox;
 
     @BindView(R.id.sc_inputError)
-    TextView inputErrorMessage;
+    private TextView inputErrorMessage;
 
     @BindView(R.id.sc_userError)
-    TextView userErrorMessage;
+    private TextView userErrorMessage;
 
     private Shelter currentShelter;
     private User currentUser;

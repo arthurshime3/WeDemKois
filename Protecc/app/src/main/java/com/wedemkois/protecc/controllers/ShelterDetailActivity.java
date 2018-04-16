@@ -25,34 +25,34 @@ public class ShelterDetailActivity extends AppCompatActivity implements View.OnC
     private String shelterId;
 
     @BindView(R.id.shelterDetailShelterName)
-    TextView shelterNameTextView;
+    private TextView shelterNameTextView;
 
     @BindView(R.id.shelterDetailCapacity)
-    TextView shelterCapacityTextView;
+    private TextView shelterCapacityTextView;
 
     @BindView(R.id.shelterDetailAgeGroupTextView)
-    TextView shelterAgeGroupTextView;
+    private TextView shelterAgeGroupTextView;
 
     @BindView(R.id.shelterDetailGenderTextView)
-    TextView shelterGenderTextView;
+    private TextView shelterGenderTextView;
 
     @BindView(R.id.shelterDetailChildrenAllowedTextView)
-    TextView shelterChildrenTextView;
+    private TextView shelterChildrenTextView;
 
     @BindView(R.id.shelterDetailRequirementsTextView)
-    TextView shelterRequirementsTextView;
+    private TextView shelterRequirementsTextView;
 
     @BindView(R.id.shelterDetailCoordinatesTextView)
-    TextView shelterCoordinatesTextView;
+    private TextView shelterCoordinatesTextView;
 
     @BindView(R.id.shelterDetailAddressTextView)
-    TextView shelterAddressTextView;
+    private TextView shelterAddressTextView;
 
     @BindView(R.id.shelterDetailNotesTextView)
-    TextView shelterNotesTextView;
+    private TextView shelterNotesTextView;
 
     @BindView(R.id.shelterDetailPhoneTextView)
-    TextView shelterPhoneTextView;
+    private TextView shelterPhoneTextView;
 
     private Shelter currentShelter;
 
@@ -85,7 +85,7 @@ public class ShelterDetailActivity extends AppCompatActivity implements View.OnC
     }
 
     @SuppressWarnings("FeatureEnvy")
-    public void onShelterLoaded(Shelter shelter) {
+    private void onShelterLoaded(Shelter shelter) {
         currentShelter = shelter;
 
         shelterNameTextView.setText(shelter.getName());
