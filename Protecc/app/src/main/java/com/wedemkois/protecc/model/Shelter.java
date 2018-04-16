@@ -124,7 +124,7 @@ public class Shelter {
         }
     }
 
-    private boolean[] checkInOneOrCheckOut(int users, boolean[] output)
+    public boolean[] checkInOneOrCheckOut(int users, boolean[] output)
     {
         int bedsTaken = Integer.parseInt(getIndividualBedsTaken());
         if ((bedsTaken == 0) && (users < 0)) {
