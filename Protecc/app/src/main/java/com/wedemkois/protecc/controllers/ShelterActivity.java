@@ -25,7 +25,7 @@ public class ShelterActivity extends AppCompatActivity implements
     private final int LIMIT = 50;
 
     @BindView(R.id.shelterRecyclerView)
-    RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
 
     private ShelterAdapter mAdapter;
 

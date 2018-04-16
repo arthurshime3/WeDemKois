@@ -8,65 +8,65 @@
         android:id="@+id/shelterDetailShelterName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="@string/textView_string" />
 
     <TextView
         android:id="@+id/shelterDetailCapacity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="@string/textView_string" />
 
     <TextView
         android:id="@+id/shelterDetailAgeGroupTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="@string/textView_string" />
 
     <TextView
         android:id="@+id/shelterDetailGenderTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="@string/textView_string" />
 
     <TextView
         android:id="@+id/shelterDetailRequirementsTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="@string/textView_string" />
 
     <TextView
         android:id="@+id/shelterDetailChildrenAllowedTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="@string/textView_string" />
 
     <TextView
         android:id="@+id/shelterDetailCoordinatesTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="@string/textView_string" />
 
     <TextView
         android:id="@+id/shelterDetailAddressTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="@string/textView_string" />
 
     <TextView
         android:id="@+id/shelterDetailNotesTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="@string/textView_string" />
 
     <TextView
         android:id="@+id/shelterDetailPhoneTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="@string/textView_string" />
 
     <Button
         android:id="@+id/shelterDetailClaimBedsButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Claim Beds" />
+        android:text="@string/claimBeds_string" />
 </LinearLayout>

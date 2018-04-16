@@ -18,19 +18,19 @@ import butterknife.ButterKnife;
 
 public class ShelterSearchActivity extends AppCompatActivity implements View.OnClickListener{
     @BindView(R.id.shelterNameEditText)
-    EditText shelterNameEditText;
+    private EditText shelterNameEditText;
 
     @BindView(R.id.genderRadioGroup)
-    RadioGroup genderRadioGroup;
+    private RadioGroup genderRadioGroup;
 
     @BindView(R.id.ageRangeRadioGroup)
-    RadioGroup ageRangeRadioGroup;
+    private RadioGroup ageRangeRadioGroup;
 
     @BindView(R.id.shelterSearchButton)
-    Button shelterSearchButton;
+    private Button shelterSearchButton;
 
     @BindView(R.id.mapSearchButton)
-    Button mapSearchButton;
+    private Button mapSearchButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

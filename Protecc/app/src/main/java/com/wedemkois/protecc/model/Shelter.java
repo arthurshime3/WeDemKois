@@ -186,100 +186,100 @@ public class Shelter {
     public String getName()
     { return name; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+//    public void setName(String name) {
+//        this.name = name;
+//    }
 
     public CharSequence getRequirements()
     { return requirements; }
 
-    public void setRequirements(String requirements) {
-        this.requirements = requirements;
-    }
+//    public void setRequirements(String requirements) {
+//        this.requirements = requirements;
+//    }
 
     public CharSequence getAddress()
     { return address; }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+//    public void setAddress(String address) {
+//        this.address = address;
+//    }
 
     public String getPhoneNumber()
     { return phoneNumber; }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+//    public void setPhoneNumber(String phoneNumber) {
+//        this.phoneNumber = phoneNumber;
+//    }
 
     public String getIndividualCapacity()
     { return individualCapacity; }
 
-    public void setIndividualCapacity(String capacity) {
-        this.individualCapacity = capacity;
-    }
+//    public void setIndividualCapacity(String capacity) {
+//        this.individualCapacity = capacity;
+//    }
 
     public String getGroupCapacity() { return groupCapacity; }
 
-    public void setGroupCapacity(String capacity) { this.groupCapacity = capacity; }
+//    public void setGroupCapacity(String capacity) { this.groupCapacity = capacity; }
 
     public String getIndividualBedsTaken() { return individualBedsTaken; }
 
-    public void setIndividualBedsTaken(String taken) { this.individualBedsTaken = taken; }
+    private void setIndividualBedsTaken(String taken) { this.individualBedsTaken = taken; }
 
     public String getGroupBedsTaken() { return groupBedsTaken; }
 
-    public void setGroupBedsTaken(String taken) { this.groupBedsTaken = taken; }
+    private void setGroupBedsTaken(String taken) { this.groupBedsTaken = taken; }
 
     public GeoPoint getCoordinates()
     { return coordinates; }
 
-    public void setCoordinates(GeoPoint coordinates) {
-        this.coordinates = coordinates;
-    }
+//    public void setCoordinates(GeoPoint coordinates) {
+//        this.coordinates = coordinates;
+//    }
 
     public Iterable<String> getNotes()
     { return Collections.unmodifiableList(notes); }
 
-    public void setNotes(List<String> notes) {
-        //noinspection AssignmentOrReturnOfFieldWithMutableType
-        this.notes = notes;
-    }
+//    public void setNotes(List<String> notes) {
+//        //noinspection AssignmentOrReturnOfFieldWithMutableType
+//        this.notes = notes;
+//    }
 
     @SuppressWarnings("TypeMayBeWeakened")
     public String getAgeRange() {
         return ageRange;
     }
 
-    public void setAgeRange(String ageRange) {
-        this.ageRange = ageRange;
-    }
+//    public void setAgeRange(String ageRange) {
+//        this.ageRange = ageRange;
+//    }
 
     @SuppressWarnings("TypeMayBeWeakened")
     public String getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
+//    public void setGender(String gender) {
+//        this.gender = gender;
+//    }
 
     public boolean isChildrenAllowed() {
         return childrenAllowed;
     }
 
-    public void setChildrenAllowed(boolean childrenAllowed) {
-        this.childrenAllowed = childrenAllowed;
-    }
+//    public void setChildrenAllowed(boolean childrenAllowed) {
+//        this.childrenAllowed = childrenAllowed;
+//    }
 
     public void addOccupant(String user, int num)
     {
         occupants.put(user, num);
     }
 
-    public Map<String,Integer> getOccupants()
-    {
-        return Collections.unmodifiableMap(occupants);
-    }
+//    public Map<String,Integer> getOccupants()
+//    {
+//        return Collections.unmodifiableMap(occupants);
+//    }
 
     public void removeOccupant(String username, User.OccupantType occupantType)
     {
