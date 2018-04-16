@@ -22,6 +22,9 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * Activity to display list of shelters (utilizes ShelterAdapter and RecyclerView)
+ */
 public class ShelterActivity extends AppCompatActivity implements
         ShelterAdapter.OnShelterSelectedListener {
     private final int LIMIT = 50;

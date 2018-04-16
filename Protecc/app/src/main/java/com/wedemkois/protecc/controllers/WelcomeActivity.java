@@ -10,6 +10,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.wedemkois.protecc.R;
 
+/**
+ * Activity that first greets new (or logged out) users
+ */
 public class WelcomeActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 

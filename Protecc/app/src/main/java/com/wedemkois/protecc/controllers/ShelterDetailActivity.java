@@ -22,7 +22,9 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
+/**
+ * Activity that displays details about a shelter
+ */
 public class ShelterDetailActivity extends AppCompatActivity implements View.OnClickListener{
     private String shelterId;
 

@@ -26,6 +26,9 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * Activity that allows users to input information about checking in to a shelter
+ */
 public class ShelterClaimActivity extends AppCompatActivity implements View.OnClickListener{
     @BindView(R.id.sc_shelterName)
     TextView shelterNameTextView;

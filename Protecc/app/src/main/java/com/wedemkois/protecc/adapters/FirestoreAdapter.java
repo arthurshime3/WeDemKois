@@ -65,6 +65,9 @@ public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
         onDataChanged();
     }
 
+    /**
+     * Adds SnapshotListener to the query
+     */
     public void startListening() {
         if ((mQuery != null) && (mRegistration == null)) {
             mRegistration = mQuery.addSnapshotListener(this);
@@ -81,6 +84,10 @@ public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
         notifyDataSetChanged();
     }
 
+    /**
+     * Sets a new query by stopping the old one and starting a new one
+     * @param query new query
+     */
     public void setQuery(Query query) {
         // Stop listening
         stopListening();

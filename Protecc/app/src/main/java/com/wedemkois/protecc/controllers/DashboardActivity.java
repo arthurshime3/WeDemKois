@@ -28,6 +28,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Objects;
 
+/**
+ * Activity that displays most user data, including name and user type
+ * Also displays current shelter (if applicable) and allows for shelter search and check out
+ */
 public class DashboardActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView nameView;
     private TextView userTypeView;

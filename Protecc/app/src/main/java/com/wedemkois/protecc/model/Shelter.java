@@ -239,7 +239,7 @@ public class Shelter {
      * @param output the boolean to be returned if the method was activated
      * @return the check that the method happened
      */
-    private boolean[] checkInGroupOrCheckOut(int users, boolean[] output)
+    public boolean[] checkInGroupOrCheckOut(int users, boolean[] output)
     {
         output[1] = true;
         int bedsTaken = Integer.parseInt(getGroupBedsTaken());
@@ -365,7 +365,7 @@ public class Shelter {
      * sets the individual beds taken
      * @param taken number of individual beds taken
      */
-    private void setIndividualBedsTaken(String taken) { this.individualBedsTaken = taken; }
+    public void setIndividualBedsTaken(String taken) { this.individualBedsTaken = taken; }
 
     /**
      *
@@ -377,7 +377,7 @@ public class Shelter {
      * sets the group beds taken
      * @param taken number of group beds taken
      */
-    private void setGroupBedsTaken(String taken) { this.groupBedsTaken = taken; }
+    public void setGroupBedsTaken(String taken) { this.groupBedsTaken = taken; }
 
     /**
      *
@@ -481,7 +481,7 @@ public class Shelter {
 
     /**
      *
-     * @return the occupantsin the hashmap
+     * @return the occupants in the hash map
      */
     public Map<String,Integer> getOccupants()
     {

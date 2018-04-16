@@ -20,7 +20,9 @@ import com.wedemkois.protecc.R;
 
 import java.util.Objects;
 
-
+/**
+ * Activity that allows users to log in using email and password
+ */
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText mEmailField;
     private EditText mPasswordField;

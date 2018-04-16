@@ -16,6 +16,9 @@ import com.wedemkois.protecc.model.Shelter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * Activity that allows users to enter search criteria for finding a shelter
+ */
 public class ShelterSearchActivity extends AppCompatActivity implements View.OnClickListener{
     @BindView(R.id.shelterNameEditText)
     EditText shelterNameEditText;

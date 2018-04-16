@@ -24,13 +24,21 @@ import butterknife.ButterKnife;
 public class ShelterAdapter extends FirestoreAdapter<ShelterAdapter.ViewHolder> {
 
     public interface OnShelterSelectedListener {
-
+        /**
+         * Callback function to handle shelter selection from the RecyclerView
+         * @param Shelter the shelter selected
+         */
         void onShelterSelected(DocumentSnapshot Shelter);
 
     }
 
     private final OnShelterSelectedListener mListener;
 
+    /**
+     * Constructor
+     * @param query query
+     * @param listener listener for adapter
+     */
     public ShelterAdapter(Query query, OnShelterSelectedListener listener) {
         super(query);
         mListener = listener;

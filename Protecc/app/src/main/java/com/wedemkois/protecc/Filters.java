@@ -7,6 +7,9 @@ import android.text.TextUtils;
 
 import com.wedemkois.protecc.model.Shelter;
 
+/**
+ * Class that handles filtering of the shelters for use in searching
+ */
 public class Filters implements Parcelable {
     private String name = null;
     @Nullable
@@ -14,20 +17,65 @@ public class Filters implements Parcelable {
     @Nullable
     private Shelter.AgeRange ageRange = null;
 
+    /**
+     * Default no-arg constructor
+     */
     public Filters() {}
 
+    /**
+     * Gets name
+     * @return name
+     */
     public String getName() { return name; }
+
+    /**
+     * Sets name
+     * @param name new name
+     */
     public void setName(String name) { this.name = name; }
+
+    /**
+     * Checks if filter has name set
+     * @return true if name is not an empty string
+     */
     public boolean hasName() { return !TextUtils.isEmpty(name); }
 
+    /**
+     * Gets gender restriction
+     * @return gender restriction
+     */
     @Nullable
     public Shelter.Gender getGender() { return gender; }
+
+    /**
+     * Sets gender restriction
+     * @param gender new gender restriction
+     */
     public void setGender(@Nullable Shelter.Gender gender) { this.gender = gender; }
+
+    /**
+     * Checks if filter has gender restrictions
+     * @return true if gender is non-null
+     */
     public boolean hasGender() { return gender != null;}
 
+    /**
+     * Gets age range
+     * @return age range
+     */
     @Nullable
     public Shelter.AgeRange getAgeRange() { return ageRange; }
+
+    /**
+     * Sets age range restrictions
+     * @param ageRange new age range
+     */
     public void setAgeRange(@Nullable Shelter.AgeRange ageRange) { this.ageRange = ageRange; }
+
+    /**
+     * Checks if filter has age range restrictions set
+     * @return true if ageRange is non-null
+     */
     public boolean hasAgeRange() {return ageRange!=null; }
 
     // Parcelization stuff

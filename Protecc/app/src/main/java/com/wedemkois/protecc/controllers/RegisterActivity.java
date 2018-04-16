@@ -25,6 +25,9 @@ import com.wedemkois.protecc.model.User;
 
 import java.util.Objects;
 
+/**
+ * Activity that allows users to register for the app with email and password
+ */
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText mEmailField;
     private EditText mPasswordField;

@@ -40,7 +40,7 @@ public class User
      * @param user username of the user
      * @param uT user type of the user
      * @param firstName first name of the user
-     * @param lastName last name of the suer
+     * @param lastName last name of the user
      */
     public User(String user, UserType uT, String firstName, String lastName)
     {

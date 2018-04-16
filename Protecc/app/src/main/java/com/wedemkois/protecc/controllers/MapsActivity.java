@@ -43,6 +43,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Activity to display results of shelter search using google maps
+ */
 public class MapsActivity extends AppCompatActivity implements
         OnMapReadyCallback,
         OnMyLocationButtonClickListener,
