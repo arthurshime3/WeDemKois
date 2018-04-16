@@ -53,7 +53,8 @@
             android:layout_height="wrap_content"
             android:text="Gender"
             android:textColor="@android:color/black"
-            android:textSize="18sp"  />
+            android:textSize="18sp"
+            tools:ignore="HardcodedText" />
 
         <CheckBox
             android:id="@+id/sc_maleCheckBox"
@@ -61,7 +62,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Male"
-            app:layout_constraintTop_toBottomOf="@+id/sc_genderTextView"  />
+            app:layout_constraintTop_toBottomOf="@+id/sc_genderTextView"
+            tools:ignore="HardcodedText" />
 
         <CheckBox
             android:id="@+id/sc_femaleCheckBox"
